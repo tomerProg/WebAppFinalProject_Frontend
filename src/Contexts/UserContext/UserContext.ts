@@ -3,12 +3,12 @@ import { createContext } from 'react';
 export type User = {
     _id: string;
     email: string;
-    nickname: string;
+    username: string;
     profileImage?: string;
 };
 
 export const UserContext = createContext<User>({
     _id: 'userId',
     email: 'defaultUser@gmail.com',
-    nickname: 'def user'
+    username: 'def user'
 });

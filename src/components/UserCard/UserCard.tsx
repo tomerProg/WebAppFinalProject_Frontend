@@ -25,7 +25,7 @@ const BaseUserCard: FunctionComponent<UserCardProps> = (props) => {
                 {user ? (
                     <>
                         <Typography variant='subtitle1'>
-                            {user.nickname}
+                            {user.username}
                         </Typography>
                         <Typography variant='subtitle2'>
                             {user.email}

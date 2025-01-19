@@ -37,7 +37,7 @@ const BaseComment: FunctionComponent<CommentProps> = (props) => {
                     color='textSecondary'
                     margin={'0 4px 8px 4px'}
                 >
-                    {commentOwner.nickname}
+                    {commentOwner.username}
                 </Typography>
                 <Typography whiteSpace={'pre-line'} variant='body2'>{comment.content}</Typography>
             </Paper>
