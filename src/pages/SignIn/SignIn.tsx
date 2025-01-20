@@ -39,7 +39,7 @@ export const SignIn: React.FC = () => {
     <Container component="main" maxWidth="xs" >
       <Paper elevation={3} className='paper'>
         <Box className='main-box'>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h4">
             Sign In
           </Typography>
           

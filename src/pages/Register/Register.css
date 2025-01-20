@@ -5,6 +5,10 @@
         flex-direction: column;
         align-items: center;
 
+        .register-title{
+            padding-bottom: 2rem;
+        }
+
         .submit-button{
             margin-top:1rem;
             margin-bottom: 1rem;

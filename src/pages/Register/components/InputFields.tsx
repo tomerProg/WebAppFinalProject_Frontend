@@ -1,6 +1,7 @@
 import React from 'react';
 import { TextField } from '@mui/material';
 import { RegisterInput, RegisterError } from './types';
+import IconUpload from './IconUpload/IconUpload';
 
 interface InputFieldsProps{
   setRegisterInput: React.Dispatch<React.SetStateAction<RegisterInput>>;

@@ -4,6 +4,7 @@ import { RegisterError, RegisterInput } from './components/types';
 import './Register.css'
 import { getRegisterError } from './components/utils';
 import InputFields from './components/InputFields';
+import IconUpload from './components/IconUpload/IconUpload';
 
 const Register: React.FC = () => {
   const [registerInput, setRegisterInput] = useState<RegisterInput>({
@@ -40,12 +41,13 @@ const Register: React.FC = () => {
     <Container component="main" maxWidth="xs">
       <Paper elevation={3} className="paper">
         <Box className="main-box">
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h4" marginBottom={3}>
             Register
           </Typography>          
           {submitError && (<Alert severity="error"> {submitError} </Alert>)}
 
           <Box component="form" onSubmit={handleSubmit}>
+            <IconUpload/>
             <InputFields 
               setRegisterInput={setRegisterInput} 
               registerInput={registerInput} 

@@ -1,0 +1,13 @@
+.icon-container{
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    gap: 2;
+
+    .input{
+        clip: rect(0 0 0 0);
+        position: absolute;
+    }
+}
+    
+
