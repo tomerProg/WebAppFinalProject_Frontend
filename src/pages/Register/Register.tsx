@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Box, Button, Typography, Container, Link, Paper, Alert} from '@mui/material';
 import { RegisterError, RegisterInput } from './components/types';
-import './Register.css'
 import { getRegisterError } from './components/utils';
 import InputFields from './components/InputFields';
-import IconUpload from './components/IconUpload/IconUpload';
+import IconUpload from './components/IconUpload';
 
 const Register: React.FC = () => {
   const [registerInput, setRegisterInput] = useState<RegisterInput>({
@@ -39,8 +38,8 @@ const Register: React.FC = () => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Paper elevation={3} className="paper">
-        <Box className="main-box">
+      <Paper elevation={3} sx={{p: 4}}>
+        <Box display={'flex'} flexDirection={'column'} alignItems={'center'}>
           <Typography component="h1" variant="h4" marginBottom={3}>
             Register
           </Typography>          
@@ -53,10 +52,10 @@ const Register: React.FC = () => {
               registerInput={registerInput} 
               setRegisterError={setRegisterError}
               registerError={registerError} />
-            <Button type="submit" variant="contained" fullWidth className='submit-button'>
+            <Button type="submit" variant="contained" fullWidth sx={{mb: 3, mt: 3}} >
               Register
             </Button>
-            <Box className='sign-in-box'>
+            <Box textAlign={'center'}>
               <Link href="/" variant="body2">
                 Already have an account? Sign In
               </Link>

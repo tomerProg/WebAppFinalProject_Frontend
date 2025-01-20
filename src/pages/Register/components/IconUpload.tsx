@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { IconButton, Avatar, Box, Button} from '@mui/material';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import './IconUpload.css'
 
 const IconUpload: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -19,7 +18,7 @@ const IconUpload: React.FC = () => {
   };
 
   return (
-    <Box className="icon-container">
+    <Box display={'flex'} flexDirection={'column'} alignItems={'center'} gap={2}>
       <IconButton sx={{width: 100, height: 100, padding: 0}}
         onClick={() => inputRef.current?.click()}>
         <Avatar sx={{ width: '100%', height: '100%',
@@ -34,7 +33,7 @@ const IconUpload: React.FC = () => {
         </Avatar>
       </IconButton>
 
-      <input className="input" type="file" accept="image/*"
+      <input type="file" accept="image/*" style={{clip: 'rect(0 0 0 0)', position: 'absolute'}}
         ref={inputRef}
         onChange={handleImageChange}/>
 

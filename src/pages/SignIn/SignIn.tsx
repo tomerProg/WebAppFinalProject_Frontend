@@ -3,7 +3,6 @@ import { Box, Button, Typography, Container, Link, Paper,  Alert} from '@mui/mat
 import { SignInInput, SignInError } from './components/types';
 import { getSignInError } from './components/utils';
 import InputFields from './components/InputFields';
-import './SignIn.css'
 export const SignIn: React.FC = () => {
   const [signInInput, setSignInInput] = useState<SignInInput>({
     email: '',
@@ -37,8 +36,8 @@ export const SignIn: React.FC = () => {
 
   return (
     <Container component="main" maxWidth="xs" >
-      <Paper elevation={3} className='paper'>
-        <Box className='main-box'>
+      <Paper elevation={3} sx={{p: 4}}>
+        <Box display={'flex'} flexDirection={'column'} alignItems={'center'}>
           <Typography component="h1" variant="h4">
             Sign In
           </Typography>
@@ -51,10 +50,10 @@ export const SignIn: React.FC = () => {
               signInInput={signInInput} 
               setSignInError={setSignInError} 
               signInError={signInError} />
-            <Button type="submit" fullWidth variant="contained" className='submit-button'>
+            <Button type="submit" fullWidth variant="contained" sx={{mt:2, mb: 2}}>
               Sign In
             </Button>
-            <Box className='register-box'>
+            <Box textAlign={'center'}>
               <Link href="/register" variant="body2">
                 Don't have an account? Sign Up
               </Link>
