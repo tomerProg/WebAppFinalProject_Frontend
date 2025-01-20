@@ -11,14 +11,9 @@ import {
 import { withStyles, WithStyles } from '@mui/styles';
 import { ChangeEvent, FunctionComponent, useState } from 'react';
 import defaultAvatar from '../../assets/default avatar.png';
+import { updateUser } from './api';
 import { styles } from './styles';
-
-// Define the user type
-interface User {
-    email: string;
-    username: string;
-    profileImageUrl?: string;
-}
+import { User } from './types';
 
 const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
     props
@@ -29,26 +24,31 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
         username: 'JohnDoe',
         profileImageUrl: 'https://via.placeholder.com/150'
     });
-
     const [isEditing, setIsEditing] = useState(false);
     const [username, setUsername] = useState(user.username);
     const [profileImageUrl, setProfileImageUrl] = useState(
-        user.profileImageUrl
+        user.profileImageUrl ?? defaultAvatar
     );
+    const [imageFile, setImageFile] = useState<File>();
 
-    const handleSave = () => {
-        setUser((prevUser) => ({
-            ...prevUser,
-            username,
-            profileImageUrl
-        }));
+    const stopEdit = () => {
+        setImageFile(undefined);
         setIsEditing(false);
+    };
+
+    const handleSave = async () => {
+        try {
+            const updatedUser = await updateUser(username, imageFile);
+            setUser({ ...user, ...updatedUser });
+        } finally {
+            stopEdit();
+        }
     };
 
     const handleCancel = () => {
         setUsername(user.username);
-        setProfileImageUrl(user.profileImageUrl);
-        setIsEditing(false);
+        setProfileImageUrl(user.profileImageUrl ?? defaultAvatar);
+        stopEdit();
     };
 
     const handleProfileImageChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -56,6 +56,7 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
         if (file) {
             const imageUrl = URL.createObjectURL(file);
             setProfileImageUrl(imageUrl);
+            setImageFile(file);
         }
     };
 
