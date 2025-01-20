@@ -7,7 +7,7 @@ import InputFields from './components/InputFields';
 
 const Register: React.FC = () => {
   const [registerInput, setRegisterInput] = useState<RegisterInput>({
-      name: '',
+      userName: '',
       email: '',
       password: '',
       confirmPassword: '',

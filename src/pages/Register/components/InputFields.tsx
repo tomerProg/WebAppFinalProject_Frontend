@@ -27,12 +27,12 @@ const InputFields: React.FC<InputFieldsProps> = ({setRegisterInput, registerInpu
 
   return (
     <>
-      <TextField id="name" label="Full Name" name="name" autoComplete="name" margin="normal"
+      <TextField id="userName" label="Full Name" name="userName" autoComplete="userName" margin="normal"
         required fullWidth autoFocus
-        value={registerInput.name}
+        value={registerInput.userName}
         onChange={onChangeField}
-        error={!!registerError.name}
-        helperText={registerError.name}
+        error={!!registerError.userName}
+        helperText={registerError.userName}
       />
       <TextField id="email" label="Email Address" name="email" autoComplete="email" margin="normal"
         required fullWidth

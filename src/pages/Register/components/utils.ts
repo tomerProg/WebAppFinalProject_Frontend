@@ -3,8 +3,8 @@ import { RegisterInput, RegisterError } from "./types";
 export const getRegisterError = (registerInput: RegisterInput): RegisterError => {
     const newErrors: RegisterError = {};
     
-    if (!registerInput.name.trim()) {
-      newErrors.name = 'Name is required';
+    if (!registerInput.userName.trim()) {
+      newErrors.userName = 'Name is required';
     }
 
     if (!registerInput.email) {
