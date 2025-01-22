@@ -5,10 +5,12 @@ export const styles = createStyles({
         width: '100%',
         height: '100%',
         padding: '2em',
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
+        display: 'flex',
+        flexDirection: 'column'
     },
     postsList: {
-        height: '80%',
+        flexGrow: 1,
         overflowY: 'auto',
         '&::-webkit-scrollbar': {
             width: '5px'
