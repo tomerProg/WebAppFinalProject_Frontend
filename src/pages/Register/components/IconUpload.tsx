@@ -1,8 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, FunctionComponent } from 'react';
 import { IconButton, Avatar, Box, Button} from '@mui/material';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import { withStyles, WithStyles } from '@mui/styles';
+import { styles } from './styles';
 
-const IconUpload: React.FC = () => {
+const IconUpload: FunctionComponent<WithStyles<typeof styles>> = (props) => {
+  const { classes } = props;
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -17,29 +20,38 @@ const IconUpload: React.FC = () => {
     }
   };
 
+  const handleRemoveIcon = () => {
+    setSelectedImage(null);
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
+  };
+
   return (
-    <Box display={'flex'} flexDirection={'column'} alignItems={'center'} gap={2}>
-      <IconButton sx={{width: 100, height: 100, padding: 0}}
+    <Box className={classes.mainBox}>
+      <IconButton className={classes.iconButton}
         onClick={() => inputRef.current?.click()}>
-        <Avatar sx={{ width: '100%', height: '100%',
-            bgcolor: selectedImage ? 'transparent' : 'action.selected'}}>
+        <Avatar //className={selectedImage ? classes.selectedIconAvatar : classes.defaultIconAvatar }
+          sx={{ width: '100%', height: '100%',
+             bgcolor: selectedImage ? 'transparent' : 'action.selected'}}
+            >
           {selectedImage ? (
-            <img style={{ width: '100%', height: '100%', objectFit: 'cover',}}
+            <img className={classes.selectedImage}
               src={selectedImage}
               alt="Selected icon"/>
           ) : (
-            <CameraAltIcon sx={{ fontSize: 32, color: 'action.active' }} />
+            <CameraAltIcon fontSize="large" className={classes.cameraIcon}/>
           )}
         </Avatar>
       </IconButton>
 
-      <input type="file" accept="image/*" style={{clip: 'rect(0 0 0 0)', position: 'absolute'}}
+      <input type="file" accept="image/*" className={classes.hideInput}
         ref={inputRef}
         onChange={handleImageChange}/>
 
       {selectedImage && (
         <Button variant="text" color="error" size="small"
-          onClick={() => setSelectedImage(null)}>
+          onClick={handleRemoveIcon}>
           Remove Icon
         </Button>
       )}
@@ -47,4 +59,4 @@ const IconUpload: React.FC = () => {
   );
 };
 
-export default IconUpload;
+export default withStyles(styles)(IconUpload)

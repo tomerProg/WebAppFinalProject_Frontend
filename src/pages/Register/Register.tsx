@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { Box, Button, Typography, Container, Link, Paper, Alert} from '@mui/material';
 import { RegisterError, RegisterInput } from './components/types';
 import { getRegisterError } from './components/utils';
 import InputFields from './components/InputFields';
 import IconUpload from './components/IconUpload';
+import { withStyles, WithStyles } from '@mui/styles';
+import { styles } from './components/styles';
 
-const Register: React.FC = () => {
+const Register: FunctionComponent<WithStyles<typeof styles>> = (props) => {
+  const { classes } = props;
   const [registerInput, setRegisterInput] = useState<RegisterInput>({
       userName: '',
       email: '',
@@ -38,24 +41,30 @@ const Register: React.FC = () => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Paper elevation={3} sx={{p: 4}}>
-        <Box display={'flex'} flexDirection={'column'} alignItems={'center'}>
-          <Typography component="h1" variant="h4" marginBottom={3}>
-            Register
-          </Typography>          
+      <Paper elevation={3} className={classes.paper}>
+        <Box className={classes.mainBox}>
+          <div className={classes.registerTitle}>
+            <Typography component="h1" variant="h4"  >
+              Register
+            </Typography>
+          </div>
+
           {submitError && (<Alert severity="error"> {submitError} </Alert>)}
 
           <Box component="form" onSubmit={handleSubmit}>
-            <IconUpload/>
+            <IconUpload/>  
             <InputFields 
               setRegisterInput={setRegisterInput} 
               registerInput={registerInput} 
               setRegisterError={setRegisterError}
               registerError={registerError} />
-            <Button type="submit" variant="contained" fullWidth sx={{mb: 3, mt: 3}} >
-              Register
-            </Button>
-            <Box textAlign={'center'}>
+            <div className={classes.frame}>
+              <Button type="submit" variant="contained" className={classes.registerButton}  >
+                Register
+              </Button>
+            </div>
+            
+            <Box className={classes.signInBox}>
               <Link href="/" variant="body2">
                 Already have an account? Sign In
               </Link>
@@ -67,4 +76,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register;
+export default withStyles(styles)(Register);

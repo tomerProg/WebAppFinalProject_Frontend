@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { Box, Button, Typography, Container, Link, Paper,  Alert} from '@mui/material';
 import { SignInInput, SignInError } from './components/types';
 import { getSignInError } from './components/utils';
 import InputFields from './components/InputFields';
-export const SignIn: React.FC = () => {
+import { withStyles, WithStyles } from '@mui/styles';
+import { styles } from './components/styles';
+
+const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
+  const { classes } = props;
+
   const [signInInput, setSignInInput] = useState<SignInInput>({
     email: '',
     password: '',
@@ -35,9 +40,9 @@ export const SignIn: React.FC = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs" >
-      <Paper elevation={3} sx={{p: 4}}>
-        <Box display={'flex'} flexDirection={'column'} alignItems={'center'}>
+    <Container component="main" maxWidth="xs">
+      <Paper elevation={3} className={classes.paper}>
+        <Box className={classes.mainBox}>
           <Typography component="h1" variant="h4">
             Sign In
           </Typography>
@@ -50,10 +55,13 @@ export const SignIn: React.FC = () => {
               signInInput={signInInput} 
               setSignInError={setSignInError} 
               signInError={signInError} />
-            <Button type="submit" fullWidth variant="contained" sx={{mt:2, mb: 2}}>
-              Sign In
-            </Button>
-            <Box textAlign={'center'}>
+            <div className={classes.frame}> 
+              <Button type="submit" variant="contained" className={classes.signInButton}>
+                Sign In
+              </Button>
+            </div>
+            
+            <Box className={classes.registerBox}>
               <Link href="/register" variant="body2">
                 Don't have an account? Sign Up
               </Link>
@@ -64,3 +72,5 @@ export const SignIn: React.FC = () => {
     </Container>
   );
 };
+
+export default withStyles(styles)(SignIn);
