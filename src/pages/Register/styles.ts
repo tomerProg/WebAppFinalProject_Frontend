@@ -14,31 +14,6 @@ export const styles = createStyles({
         marginBottom: '1em',
     },
     
-    iconButton: {
-        width: '6em',
-        height: '6em',
-        padding: '0'
-    },
-    selectedAvatar:{
-        width: '100%', 
-        height: '100%', 
-    },
-    defaultAvatar: {
-        width: '100%', 
-        height: '100%',
-    },
-    selectedImage: {
-        width: '100%', 
-        height: '100%', 
-        objectFit: 'cover'
-    },
-    cameraIcon: {        
-        color: 'rgba(0, 0, 0, 0.5)'
-    },
-    hideInput: {
-        clip: 'rect(0 0 0 0)', 
-        position: 'absolute'
-    },
     registerButton: {
         width: '100%'
     },

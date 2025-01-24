@@ -4,7 +4,7 @@ import { SignInInput, SignInError } from './components/types';
 import { getSignInError } from './components/utils';
 import InputFields from './components/InputFields';
 import { withStyles, WithStyles } from '@mui/styles';
-import { styles } from './components/styles';
+import { styles } from './styles';
 
 const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const { classes } = props;

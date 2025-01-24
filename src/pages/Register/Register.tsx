@@ -3,9 +3,9 @@ import { Box, Button, Typography, Container, Link, Paper, Alert} from '@mui/mate
 import { RegisterError, RegisterInput } from './components/types';
 import { getRegisterError } from './components/utils';
 import InputFields from './components/InputFields';
-import IconUpload from './components/IconUpload';
+import IconUpload from './components/IconUpload/IconUpload';
 import { withStyles, WithStyles } from '@mui/styles';
-import { styles } from './components/styles';
+import { styles } from './styles';
 
 const Register: FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const { classes } = props;

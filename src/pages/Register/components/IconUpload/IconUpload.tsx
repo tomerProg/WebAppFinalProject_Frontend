@@ -3,21 +3,11 @@ import { IconButton, Avatar, Box, Button, styled} from '@mui/material';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { withStyles, WithStyles } from '@mui/styles';
 import { styles } from './styles';
-import { Style } from '@mui/icons-material';
-
-
 
 const IconUpload: FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const { classes } = props;
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const StyledAvatar = styled(Avatar)(({ theme }) => ({
-    width: '100%', 
-    height: '100%',
-    backgroundColor: 'transparent'
-  }));
-  
+  const inputRef = useRef<HTMLInputElement>(null);  
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
