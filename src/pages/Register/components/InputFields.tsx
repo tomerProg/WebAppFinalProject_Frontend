@@ -27,7 +27,7 @@ const InputFields: React.FC<InputFieldsProps> = ({setRegisterInput, registerInpu
 
   return (
     <>
-      <TextField id="userName" label="Full Name" name="userName" autoComplete="userName" margin="normal"
+      <TextField id="userName" label="Username" name="userName" autoComplete="userName" margin="normal"
         required fullWidth autoFocus
         value={registerInput.userName}
         onChange={onChangeField}
