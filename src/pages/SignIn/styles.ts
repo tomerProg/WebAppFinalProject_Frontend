@@ -19,5 +19,8 @@ export const styles = createStyles({
     },
     registerBox: {
         textAlign: 'center'
+    },
+    googleBtn: {
+        marginTop: '0.75em'
     }
 });
