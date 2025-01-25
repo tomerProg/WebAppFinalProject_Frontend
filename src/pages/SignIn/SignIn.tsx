@@ -11,14 +11,17 @@ import {
 import { withStyles, WithStyles } from '@mui/styles';
 import { GoogleLogin } from '@react-oauth/google';
 import React, { FunctionComponent, useState } from 'react';
+import { login } from '../../api/auth/auth-api';
 import InputFields from './components/InputFields';
 import { SignInError, SignInInput } from './components/types';
 import { getSignInError } from './components/utils';
 import { styles } from './styles';
 import { loginWithGoogle } from './utils';
+import { useNavigate } from 'react-router-dom';
 
 const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     const { classes } = props;
+    const navigate = useNavigate();
 
     const [signInInput, setSignInInput] = useState<SignInInput>({
         email: '',
@@ -47,7 +50,8 @@ const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
         }
 
         try {
-            console.log('Sign in data:', signInInput);
+            await login(signInInput.email, signInInput.password);
+            navigate('/posts');
         } catch (error) {
             setSubmitError('Failed to sign in. Please try again.');
         }
