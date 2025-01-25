@@ -72,7 +72,7 @@ const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
                             setSignInError={setSignInError}
                             signInError={signInError}
                         />
-                        <div className={classes.frame}>
+                        <div className={classes.signinActions}>
                             <Button
                                 type='submit'
                                 variant='contained'

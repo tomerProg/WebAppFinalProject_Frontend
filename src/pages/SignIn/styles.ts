@@ -13,7 +13,7 @@ export const styles = createStyles({
     signInButton: {
         width: '100%'
     },
-    frame: {
+    signinActions: {
         marginTop: '1em',
         marginBottom: '1em',
         width: '100%'
