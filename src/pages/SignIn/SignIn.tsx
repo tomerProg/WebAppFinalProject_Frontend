@@ -1,11 +1,12 @@
 import {
-  Alert,
-  Box,
-  Button,
-  Container,
-  Link,
-  Paper,
-  Typography
+    Alert,
+    Box,
+    Button,
+    Container,
+    Divider,
+    Link,
+    Paper,
+    Typography
 } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
 import { GoogleLogin } from '@react-oauth/google';
@@ -79,12 +80,18 @@ const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
                             >
                                 Sign In
                             </Button>
-                            <section className={classes.googleBtn}>
-                                <GoogleLogin
-                                    onSuccess={loginWithGoogle}
-                                    onError={onGoogleAuthError}
-                                />
-                            </section>
+                            <Divider className={classes.actionsDivider} />
+                            <GoogleLogin
+                                locale='en'
+                                containerProps={{
+                                    className: classes.googleBtn
+                                }}
+                                useOneTap
+                                text='continue_with'
+                                onSuccess={loginWithGoogle}
+                                onError={onGoogleAuthError}
+                            />
+                            <Divider />
                         </div>
 
                         <Box className={classes.registerBox}>
