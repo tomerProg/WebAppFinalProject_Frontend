@@ -9,15 +9,14 @@ import {
     Typography
 } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
-import { GoogleLogin } from '@react-oauth/google';
+import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import React, { FunctionComponent, useState } from 'react';
-import { login } from '../../api/auth/auth-api';
+import { useNavigate } from 'react-router-dom';
+import { login, loginWithGoogle } from '../../api/auth/auth-api';
 import InputFields from './components/InputFields';
 import { SignInError, SignInInput } from './components/types';
 import { getSignInError } from './components/utils';
 import { styles } from './styles';
-import { loginWithGoogle } from './utils';
-import { useNavigate } from 'react-router-dom';
 
 const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     const { classes } = props;
@@ -37,8 +36,17 @@ const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
         setSignInError(newError);
         return Object.keys(newError).length === 0;
     };
+
     const onGoogleAuthError = () => {
-        console.error('failed login via google');
+        alert('failed login via google');
+    };
+    const onGoogleSubmit = async (credentialResponse: CredentialResponse) => {
+        if (!credentialResponse.credential) {
+            return onGoogleAuthError();
+        }
+
+        await loginWithGoogle(credentialResponse.credential);
+        navigate('/posts');
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -92,7 +100,7 @@ const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
                                 }}
                                 useOneTap
                                 text='continue_with'
-                                onSuccess={loginWithGoogle}
+                                onSuccess={onGoogleSubmit}
                                 onError={onGoogleAuthError}
                             />
                             <Divider />
