@@ -3,7 +3,7 @@ export type Post = {
     title: string;
     owner: string;
     description: string;
-    suggastion: string;
+    suggastion?: string;
     likes: string[];
     dislikes: string[];
     postImage?: string;
