@@ -23,5 +23,10 @@ export const styles = createStyles({
     profileImage: {
         position: 'relative',
         display: 'inline-block'
+    },
+    userTextProperty: {
+        width: '100%',
+        marginTop: '1em',
+        textAlign: 'center'
     }
 });

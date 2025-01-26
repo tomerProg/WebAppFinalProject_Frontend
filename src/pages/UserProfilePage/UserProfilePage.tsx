@@ -5,13 +5,13 @@ import {
     Button,
     Card,
     IconButton,
+    Skeleton,
     TextField,
     Typography
 } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
-import { ChangeEvent, FunctionComponent, useState } from 'react';
-import defaultAvatar from '../../assets/default avatar.png';
-import { updateUser } from './api';
+import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
+import { getMyUser, updateUser } from '../../api/users/users.api';
 import { styles } from './styles';
 import { User } from './types';
 
@@ -19,17 +19,25 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
     props
 ) => {
     const { classes } = props;
-    const [user, setUser] = useState<User>({
-        email: 'user@example.com',
-        username: 'JohnDoe',
-        profileImageUrl: 'https://via.placeholder.com/150'
-    });
+    const [user, setUser] = useState<User>();
     const [isEditing, setIsEditing] = useState(false);
-    const [username, setUsername] = useState(user.username);
-    const [profileImageUrl, setProfileImageUrl] = useState(
-        user.profileImageUrl ?? defaultAvatar
-    );
+    const [username, setUsername] = useState<string>();
+    const [profileImageUrl, setProfileImageUrl] = useState<string>();
     const [imageFile, setImageFile] = useState<File>();
+
+    useEffect(() => {
+        const { request, abort } = getMyUser();
+        request.then(({ data: user }) => setUser(user));
+        
+        return () => abort();
+    }, []);
+
+    useEffect(() => {
+        if (user) {
+            setUsername(user.username);
+            setProfileImageUrl(user.profileImageUrl);
+        }
+    }, [user]);
 
     const stopEdit = () => {
         setImageFile(undefined);
@@ -38,16 +46,20 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
 
     const handleSave = async () => {
         try {
-            const updatedUser = await updateUser(username, imageFile);
-            setUser({ ...user, ...updatedUser });
+            if (username) {
+                const updatedUser = await updateUser(username, imageFile);
+                setUser({ ...user, ...updatedUser });
+            }
         } finally {
             stopEdit();
         }
     };
 
     const handleCancel = () => {
-        setUsername(user.username);
-        setProfileImageUrl(user.profileImageUrl ?? defaultAvatar);
+        if (user) {
+            setUsername(user.username);
+            setProfileImageUrl(user.profileImageUrl);
+        }
         stopEdit();
     };
 
@@ -62,15 +74,15 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
 
     return (
         <div className={classes.root}>
-            <Card className={classes.card}>
+            <Card className={classes.card} >
                 <Typography variant='h4' gutterBottom>
                     User Profile
                 </Typography>
 
                 <div className={classes.profileImage}>
                     <Avatar
-                        src={profileImageUrl ?? defaultAvatar}
-                        alt={user.username}
+                        src={profileImageUrl}
+                        alt=''
                         sx={{ width: 150, height: 150, mb: 2, fontSize: '3em' }}
                     />
                     {isEditing && (
@@ -89,8 +101,12 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
                     )}
                 </div>
 
-                <Typography variant='subtitle1' color='textSecondary'>
-                    Email: {user.email}
+                <Typography
+                    className={classes.userTextProperty}
+                    variant='subtitle1'
+                    color='textSecondary'
+                >
+                    {user ? user.email : <Skeleton />}
                 </Typography>
                 {isEditing ? (
                     <TextField
@@ -101,8 +117,12 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
                         sx={{ mt: 2 }}
                     />
                 ) : (
-                    <Typography variant='h6' sx={{ mt: 2 }}>
-                        {user.username}
+                    <Typography
+                        className={classes.userTextProperty}
+                        variant='h6'
+                        // sx={{ mt: 2 }}
+                    >
+                        {user ? user.username : <Skeleton />}
                     </Typography>
                 )}
             </Card>
