@@ -174,6 +174,7 @@ export type Post = {
     title: string;
     owner: string;
     description: string;
+    suggastion?: string;
     imageSrc?: string;
 };
 

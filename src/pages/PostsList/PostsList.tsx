@@ -16,9 +16,11 @@ import { FunctionComponent, useEffect, useState } from 'react';
 import { fetchPosts, Post } from './api';
 import { styles } from './styles';
 import { isEmpty, repeat } from 'ramda';
+import { useNavigate } from 'react-router-dom';
 
 const PostsPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     const { classes } = props;
+    const navigate = useNavigate();
     const [posts, setPosts] = useState<Post[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -32,7 +34,9 @@ const PostsPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     const onCreatePostClick = () =>
         alert('Implement Create Post functionality!');
 
-    const onPostItemClick = () => alert('navigate(`/posts/${post._id}`)');
+    const onPostItemClick = (post: Post) => () =>{
+        navigate('/post', { state: post });
+    };
 
     return (
         <div className={classes.root}>
@@ -48,7 +52,7 @@ const PostsPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
                     <Typography variant='h5'>No posts found</Typography>
                 ) : (
                     posts.map((post, index) => (
-                        <ListItem key={index} onClick={onPostItemClick}>
+                        <ListItem key={index} onClick={onPostItemClick(post)}>
                             <Paper className={classes.postItem}>
                                 <ListItemAvatar>
                                     <Avatar
