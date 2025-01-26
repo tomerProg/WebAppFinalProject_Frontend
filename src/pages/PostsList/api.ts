@@ -175,6 +175,8 @@ export type Post = {
     owner: string;
     description: string;
     suggastion?: string;
+    likes: string[];
+    dislikes: string[];
     imageSrc?: string;
 };
 
