@@ -3,13 +3,15 @@ import { Box, IconButton, InputAdornment, OutlinedInput } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
 import {
     FunctionComponent,
-    useContext,
     useEffect,
     useRef,
     useState
 } from 'react';
-import { UserContext } from '../../../../Contexts/UserContext/UserContext';
-import { fetchPostComments, PostComment, uploadComment } from './api';
+import {
+    getPostComments,
+    uploadComment
+} from '../../../../api/comments/comment.api';
+import { PostComment } from '../../../../api/comments/types';
 import Comment from './Comment/Comment';
 import { styles } from './styles';
 
@@ -19,12 +21,14 @@ interface CommentsChatProps extends WithStyles<typeof styles> {
 
 const BaseCommentsChat: FunctionComponent<CommentsChatProps> = (props) => {
     const { classes, postId } = props;
-    const user = useContext(UserContext);
     const [comments, setComments] = useState<PostComment[]>([]);
     const commentInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        fetchPostComments(postId).then(setComments);
+        const { request, abort } = getPostComments(postId);
+        request.then(({ data: comments }) => setComments(comments));
+
+        return () => abort();
     }, [postId]);
 
     const sendComment = async () => {
@@ -33,12 +37,7 @@ const BaseCommentsChat: FunctionComponent<CommentsChatProps> = (props) => {
         }
 
         const content = commentInputRef.current?.value.trim();
-        await uploadComment(content);
-        const { _id: userId } = user;
-        const comment: PostComment = {
-            owner: userId,
-            content
-        };
+        const { data: comment } = await uploadComment(content);
         setComments((comments) => comments.concat(comment));
         commentInputRef.current.value = '';
     };
