@@ -1,18 +1,6 @@
 import { createStyles } from '@mui/styles';
 
 export const styles = createStyles({
-    '@global': {
-        '*::-webkit-scrollbar': {
-            width: '5px'
-        },
-        '*::-webkit-scrollbar-track': {
-            background: '#E4EFEF'
-        },
-        '*::-webkit-scrollbar-thumb': {
-            background: '#1D388F61',
-            borderRadius: '2px'
-        }
-    },
     root: {
         width: '100%',
         height: '100%',
