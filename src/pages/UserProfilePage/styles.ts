@@ -20,7 +20,7 @@ export const styles = createStyles({
     editUsername: {
         marginTop: '8px'
     },
-    profileImage: {
+    profileImageDiv: {
         position: 'relative',
         display: 'inline-block'
     },
@@ -28,5 +28,9 @@ export const styles = createStyles({
         width: '100%',
         marginTop: '1em',
         textAlign: 'center'
+    },
+    imageEditIcon: {
+        bottom: 0,
+        right: 0
     }
 });

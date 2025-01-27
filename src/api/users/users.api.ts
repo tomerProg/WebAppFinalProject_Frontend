@@ -1,6 +1,6 @@
-import { User } from '../../pages/UserProfilePage/types';
 import apiClient from '../api-client';
 import { AbortableRequest } from '../utils';
+import { User } from './types';
 
 const uploadProfileImage = async (imageFile: File): Promise<string> => {
     const formData = new FormData();
@@ -27,10 +27,8 @@ export const updateUser = async (
         username,
         ...(imageUrl ? { profileImageUrl: imageUrl } : {})
     };
-    // TODO: put request to server
-    const { data: user } = await apiClient.put<User>('/users', updatedUser);
 
-    return user;
+    return apiClient.put<User>('/users', updatedUser);
 };
 
 export const getMyUser = () =>

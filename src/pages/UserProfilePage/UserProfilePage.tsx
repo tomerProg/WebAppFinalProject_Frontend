@@ -11,9 +11,9 @@ import {
 } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
 import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
+import { User } from '../../api/users/types';
 import { getMyUser, updateUser } from '../../api/users/users.api';
 import { styles } from './styles';
-import { User } from './types';
 
 const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
     props
@@ -28,7 +28,7 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
     useEffect(() => {
         const { request, abort } = getMyUser();
         request.then(({ data: user }) => setUser(user));
-        
+
         return () => abort();
     }, []);
 
@@ -47,7 +47,10 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
     const handleSave = async () => {
         try {
             if (username) {
-                const updatedUser = await updateUser(username, imageFile);
+                const { data: updatedUser } = await updateUser(
+                    username,
+                    imageFile
+                );
                 setUser({ ...user, ...updatedUser });
             }
         } finally {
@@ -74,12 +77,12 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
 
     return (
         <div className={classes.root}>
-            <Card className={classes.card} >
+            <Card className={classes.card}>
                 <Typography variant='h4' gutterBottom>
                     User Profile
                 </Typography>
 
-                <div className={classes.profileImage}>
+                <div className={classes.profileImageDiv}>
                     <Avatar
                         src={profileImageUrl}
                         alt=''
@@ -88,7 +91,8 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
                     {isEditing && (
                         <IconButton
                             component='label'
-                            sx={{ position: 'absolute', bottom: 0, right: 0 }}
+                            className={classes.imageEditIcon}
+                            sx={{ position: 'absolute' }}
                         >
                             <EditIcon />
                             <input
@@ -120,7 +124,6 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
                     <Typography
                         className={classes.userTextProperty}
                         variant='h6'
-                        // sx={{ mt: 2 }}
                     >
                         {user ? user.username : <Skeleton />}
                     </Typography>
