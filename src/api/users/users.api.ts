@@ -6,7 +6,7 @@ const uploadProfileImage = async (imageFile: File): Promise<string> => {
     const formData = new FormData();
     formData.append('profileImage', imageFile);
     const { data: imageUrl } = await apiClient.post<string>(
-        '/users/profile-image',
+        '/files/profile-image',
         formData,
         {
             headers: {
