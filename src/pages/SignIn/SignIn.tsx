@@ -2,7 +2,6 @@ import {
     Alert,
     Box,
     Button,
-    Container,
     Divider,
     Link,
     Paper,
@@ -10,15 +9,27 @@ import {
 } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
 import { GoogleLogin } from '@react-oauth/google';
-import React, { FunctionComponent, useState } from 'react';
+import React, {
+    Dispatch,
+    FunctionComponent,
+    SetStateAction,
+    useState
+} from 'react';
+import CenteredPage from '../../components/CenteredPage/CenteredPage';
 import InputFields from './components/InputFields';
 import { SignInError, SignInInput } from './components/types';
 import { getSignInError } from './components/utils';
 import { styles } from './styles';
 import { loginWithGoogle } from './utils';
+import { useNavigate } from 'react-router-dom';
+import { globalPost } from '../PostPage/consts';
 
-const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
-    const { classes } = props;
+interface SignInProps extends WithStyles<typeof styles> {
+    setUserId?: Dispatch<SetStateAction<string>>;
+}
+const SignIn: FunctionComponent<SignInProps> = (props) => {
+    const { classes, setUserId } = props;
+    const navigate = useNavigate()
 
     const [signInInput, setSignInInput] = useState<SignInInput>({
         email: '',
@@ -48,13 +59,18 @@ const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
 
         try {
             console.log('Sign in data:', signInInput);
+            if (setUserId) {
+                setUserId('userIdefdwgwre');
+            }
+            navigate('/post', {state: globalPost})
         } catch (error) {
+            console.error(error);
             setSubmitError('Failed to sign in. Please try again.');
         }
     };
 
     return (
-        <Container component='main' maxWidth='xs'>
+        <CenteredPage>
             <Paper elevation={3} className={classes.paper}>
                 <Box className={classes.mainBox}>
                     <Typography component='h1' variant='h4'>
@@ -102,7 +118,7 @@ const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
                     </Box>
                 </Box>
             </Paper>
-        </Container>
+        </CenteredPage>
     );
 };
 
