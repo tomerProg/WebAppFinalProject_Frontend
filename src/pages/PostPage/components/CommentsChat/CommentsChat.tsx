@@ -7,9 +7,9 @@ import {
     uploadComment
 } from '../../../../api/comments/comment.api';
 import { PostComment } from '../../../../api/comments/types';
+import { ignoreCanceledRequest } from '../../../../api/utils';
 import Comment from './Comment/Comment';
 import { styles } from './styles';
-import { ignoreCanceledRequest } from '../../../../api/utils';
 
 interface CommentsChatProps extends WithStyles<typeof styles> {
     postId: string;
@@ -21,12 +21,19 @@ const BaseCommentsChat: FunctionComponent<CommentsChatProps> = (props) => {
     const commentInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        const { request, abort } = getPostComments(postId);
-        request
-            .then(({ data: comments }) => setComments(comments))
-            .catch(ignoreCanceledRequest);
+        const abortControler = new AbortController();
+        const requestPostComments = getPostComments(postId);
 
-        return () => abort();
+        const intervalId = setInterval(() => {
+            requestPostComments(abortControler)
+                .then(({ data: comments }) => setComments(comments))
+                .catch(ignoreCanceledRequest);
+        }, 10_000);
+
+        return () => {
+            clearInterval(intervalId);
+            abortControler.abort();
+        };
     }, [postId]);
 
     const sendComment = async () => {

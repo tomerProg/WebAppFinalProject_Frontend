@@ -1,14 +1,12 @@
 import apiClient from '../api-client';
-import { AbortableRequest } from '../utils';
 import { PostComment } from './types';
 
-export const getPostComments = (postId: string) =>
-    AbortableRequest((abortControler) =>
+export const getPostComments =
+    (postId: string) => (abortControler?: AbortController) =>
         apiClient.get<PostComment[]>('/comments', {
             params: { postId },
-            signal: abortControler.signal
-        })
-    );
+            signal: abortControler?.signal
+        });
 
 export const uploadComment = async (content: string) =>
     apiClient.post<PostComment>('/comments', { content });
