@@ -1,4 +1,4 @@
-import { AxiosPromise } from 'axios';
+import { AxiosPromise, CanceledError } from 'axios';
 
 export const AbortableRequest = <T>(
     axiosRequest: (aborController: AbortController) => AxiosPromise<T>
@@ -7,4 +7,11 @@ export const AbortableRequest = <T>(
     const request = axiosRequest(abortController);
 
     return { request, abort: () => abortController.abort() };
+};
+
+export const ignoreCanceledRequest = (error: Error) => {
+    if (!(error instanceof CanceledError)) {
+        console.error(error);
+        throw error;
+    }
 };

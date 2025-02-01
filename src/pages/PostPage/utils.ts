@@ -3,8 +3,8 @@ import {
     likePost,
     removeDislikePost,
     removeLikePost
-} from './api';
-import { Post } from './types';
+} from '../../api/posts/posts.api';
+import { Post } from '../../api/posts/types';
 
 export const removeFromArray = (arr: string[], item: string) =>
     arr.filter((arrItem) => arrItem !== item);

@@ -1,12 +1,7 @@
 import { Send } from '@mui/icons-material';
 import { Box, IconButton, InputAdornment, OutlinedInput } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
-import {
-    FunctionComponent,
-    useEffect,
-    useRef,
-    useState
-} from 'react';
+import { FunctionComponent, useEffect, useRef, useState } from 'react';
 import {
     getPostComments,
     uploadComment
@@ -14,6 +9,7 @@ import {
 import { PostComment } from '../../../../api/comments/types';
 import Comment from './Comment/Comment';
 import { styles } from './styles';
+import { ignoreCanceledRequest } from '../../../../api/utils';
 
 interface CommentsChatProps extends WithStyles<typeof styles> {
     postId: string;
@@ -26,7 +22,9 @@ const BaseCommentsChat: FunctionComponent<CommentsChatProps> = (props) => {
 
     useEffect(() => {
         const { request, abort } = getPostComments(postId);
-        request.then(({ data: comments }) => setComments(comments));
+        request
+            .then(({ data: comments }) => setComments(comments))
+            .catch(ignoreCanceledRequest);
 
         return () => abort();
     }, [postId]);

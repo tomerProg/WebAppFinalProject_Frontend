@@ -3,8 +3,8 @@ import { withStyles, WithStyles } from '@mui/styles';
 import clsx from 'clsx';
 import { FunctionComponent } from 'react';
 import defaultAvatar from '../../assets/default avatar.png';
-import { User } from '../../Contexts/UserContext/UserContext';
 import { styles } from './styles';
+import { User } from '../../api/users/types';
 
 interface UserCardProps extends WithStyles<typeof styles> {
     user?: User | null;

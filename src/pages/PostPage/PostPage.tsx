@@ -8,43 +8,48 @@ import {
     useState
 } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { User } from '../../api/users/types';
+import { getUserById } from '../../api/users/users.api';
 import defaultPostImage from '../../assets/default-post-image.png';
 import UserCard from '../../components/UserCard/UserCard';
-import { fetchUserDetails } from '../../Contexts/UserContext/api';
-import { User, UserContext } from '../../Contexts/UserContext/UserContext';
+import { UserIdContext } from '../../Contexts/UserIdContext/UserContext';
 import CommentsChat from './components/CommentsChat/CommentsChat';
 import LikeDislike from './components/LikeDislike/LikeDislike';
 import PostInfo from './components/PostInfo/PostInfo';
 import { styles } from './styles';
-import { Post, postZodSchema } from './types';
 import { toggleDislikeInPost, toggleLikeInPost } from './utils';
+import { ignoreCanceledRequest } from '../../api/utils';
+import { Post, postZodSchema } from '../../api/posts/types';
 
-const BasePostPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
+const PostPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     const { classes } = props;
     const location = useLocation();
     const navigate = useNavigate();
 
-    const { _id: userId } = useContext(UserContext);
+    const userId = useContext(UserIdContext);
     const [post, setPost] = useState<Post | null>(null);
     const [postOwner, setPostOwner] = useState<User | null>(null);
     const [likedPost, setLikedPost] = useState<boolean | null>(null);
 
     useEffect(() => {
-        console.log(location);
         const post = location.state;
         const validation = postZodSchema.safeParse(post);
         if (validation.error) {
             console.error(validation.error);
             navigate('/posts');
         } else {
-            // setPost(globalPost);
             setPost(validation.data);
         }
     }, [location, navigate]);
 
     useEffect(() => {
         if (post) {
-            fetchUserDetails(post.owner).then(setPostOwner);
+            const { request, abort } = getUserById(post.owner);
+            request
+                .then(({ data }) => setPostOwner(data))
+                .catch(ignoreCanceledRequest);
+
+            return () => abort();
         }
     }, [post]);
 
@@ -113,5 +118,4 @@ const BasePostPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     );
 };
 
-const PostPage = withStyles(styles)(BasePostPage);
-export default PostPage;
+export default withStyles(styles)(PostPage);

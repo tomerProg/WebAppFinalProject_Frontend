@@ -1,49 +1,58 @@
-import { Avatar, Paper, Typography } from '@mui/material';
+import { Avatar, Paper, Skeleton, Typography } from '@mui/material';
 import { WithStyles, withStyles } from '@mui/styles';
 import clsx from 'clsx';
 import { FunctionComponent, useContext, useEffect, useState } from 'react';
+import { PostComment } from '../../../../../api/comments/types';
+import { User } from '../../../../../api/users/types';
+import { getUserById } from '../../../../../api/users/users.api';
 import defaultAvatar from '../../../../../assets/default avatar.png';
-import { fetchUserDetails } from '../../../../../Contexts/UserContext/api';
-import {
-    User,
-    UserContext
-} from '../../../../../Contexts/UserContext/UserContext';
-import { PostComment } from '../api';
+import { UserIdContext } from '../../../../../Contexts/UserIdContext/UserContext';
 import { styles } from './styles';
+import { ignoreCanceledRequest } from '../../../../../api/utils';
 
 interface CommentProps extends WithStyles<typeof styles> {
     comment: PostComment;
 }
 
-const BaseComment: FunctionComponent<CommentProps> = (props) => {
+const Comment: FunctionComponent<CommentProps> = (props) => {
     const { classes, comment } = props;
-    const { _id: userId } = useContext(UserContext);
+    const userId = useContext(UserIdContext);
     const [commentOwner, setCommentOwner] = useState<User | null>(null);
 
     useEffect(() => {
-        fetchUserDetails(comment.owner).then(setCommentOwner);
+        const { request, abort } = getUserById(comment.owner);
+        request
+            .then(({ data }) => setCommentOwner(data))
+            .catch(ignoreCanceledRequest);
+
+        return () => abort();
     }, [comment.owner]);
 
-    return commentOwner ? (
+    return (
         <div
             className={clsx(classes.root, {
-                [classes.ownComment]: commentOwner._id === userId
+                [classes.ownComment]: comment.owner === userId
             })}
         >
-            <Avatar alt={defaultAvatar} src={commentOwner.profileImage} />
+            <Avatar alt={defaultAvatar} src={commentOwner?.profileImage} />
             <Paper className={classes.commentContent}>
-                <Typography
-                    variant='subtitle1'
-                    color='textSecondary'
-                    margin={'0 4px 8px 4px'}
-                >
-                    {commentOwner.username}
+                {commentOwner ? (
+                    <Typography
+                        variant='subtitle1'
+                        color='textSecondary'
+                        margin={'0 4px 8px 4px'}
+                    >
+                        {commentOwner.username}
+                    </Typography>
+                ) : (
+                    <Skeleton />
+                )}
+                <Typography whiteSpace={'pre-line'} variant='body2'>
+                    {comment.content}
                 </Typography>
-                <Typography whiteSpace={'pre-line'} variant='body2'>{comment.content}</Typography>
             </Paper>
         </div>
-    ): null;
+    );
 };
 
-const Comment = withStyles(styles)(BaseComment);
-export default Comment;
+export default withStyles(styles)(Comment);
