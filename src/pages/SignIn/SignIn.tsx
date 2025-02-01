@@ -21,15 +21,12 @@ import { SignInError, SignInInput } from './components/types';
 import { getSignInError } from './components/utils';
 import { styles } from './styles';
 import { loginWithGoogle } from './utils';
-import { useNavigate } from 'react-router-dom';
-import { globalPost } from '../PostPage/consts';
 
 interface SignInProps extends WithStyles<typeof styles> {
     setUserId?: Dispatch<SetStateAction<string>>;
 }
 const SignIn: FunctionComponent<SignInProps> = (props) => {
     const { classes, setUserId } = props;
-    const navigate = useNavigate()
 
     const [signInInput, setSignInInput] = useState<SignInInput>({
         email: '',
@@ -62,7 +59,6 @@ const SignIn: FunctionComponent<SignInProps> = (props) => {
             if (setUserId) {
                 setUserId('userIdefdwgwre');
             }
-            navigate('/post', {state: globalPost})
         } catch (error) {
             console.error(error);
             setSubmitError('Failed to sign in. Please try again.');
