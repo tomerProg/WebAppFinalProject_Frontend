@@ -14,7 +14,7 @@ import { User } from '../../api/users/types';
 import { getUserById } from '../../api/users/users.api';
 import { ignoreCanceledRequest } from '../../api/utils';
 import defaultPostImage from '../../assets/default-post-image.png';
-import { useAlertSnackbar } from '../../components/AlertSnackbar/AlertSnackbar';
+import { useAlertSnackbar } from '../../components/AlertSnackbar/globalProvider';
 import UserCard from '../../components/UserCard/UserCard';
 import { UserIdContext } from '../../Contexts/UserIdContext/UserContext';
 import CommentsChat from './components/CommentsChat/CommentsChat';
