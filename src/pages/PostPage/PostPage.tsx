@@ -14,6 +14,7 @@ import { User } from '../../api/users/types';
 import { getUserById } from '../../api/users/users.api';
 import { ignoreCanceledRequest } from '../../api/utils';
 import defaultPostImage from '../../assets/default-post-image.png';
+import { useAlertSnackbar } from '../../components/AlertSnackbar/AlertSnackbar';
 import UserCard from '../../components/UserCard/UserCard';
 import { UserIdContext } from '../../Contexts/UserIdContext/UserContext';
 import CommentsChat from './components/CommentsChat/CommentsChat';
@@ -30,6 +31,7 @@ const PostPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     const [post, setPost] = useState<Post | null>(null);
     const [postOwner, setPostOwner] = useState<User | null>(null);
     const [likedPost, setLikedPost] = useState<boolean>();
+    const { showSnackbar } = useAlertSnackbar();
 
     useEffect(() => {
         const post = location.state;
@@ -69,10 +71,11 @@ const PostPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
         const oldLikedPost = likedPost;
         const newLikedPost = likedPost === false ? undefined : false;
         setLikedPost(newLikedPost);
-        updatePostLike(post._id, newLikedPost).catch(() =>
-            setLikedPost(oldLikedPost)
-        );
-    }, [post, likedPost]);
+        updatePostLike(post._id, newLikedPost).catch(() => {
+            showSnackbar('failed to dislike post', 'error', 1000);
+            setLikedPost(oldLikedPost);
+        });
+    }, [post, likedPost, showSnackbar]);
 
     const toggleLike = useCallback(async () => {
         if (!post) {
@@ -81,10 +84,11 @@ const PostPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
         const oldLikedPost = likedPost;
         const newLikedPost = likedPost ? undefined : true;
         setLikedPost(newLikedPost);
-        updatePostLike(post._id, newLikedPost).catch(() =>
-            setLikedPost(oldLikedPost)
-        );
-    }, [post, likedPost]);
+        updatePostLike(post._id, newLikedPost).catch(() => {
+            showSnackbar('failed to like post', 'error', 1000);
+            setLikedPost(oldLikedPost);
+        });
+    }, [post, likedPost, showSnackbar]);
 
     return (
         <div className={classes.root}>

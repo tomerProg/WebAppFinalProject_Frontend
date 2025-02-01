@@ -1,10 +1,9 @@
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import React, { useState } from 'react';
 import { RouterProvider } from 'react-router-dom';
-import {
-    UserIdContext
-} from './Contexts/UserIdContext/UserContext';
+import { UserIdContext } from './Contexts/UserIdContext/UserContext';
 import { createRouter } from './router';
+import { AlertSnackbarProvider } from './components/AlertSnackbar/AlertSnackbar';
 
 const theme = createTheme({
     palette: {
@@ -23,8 +22,10 @@ const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
             <UserIdContext.Provider value={userId}>
-                <CssBaseline />
-                <RouterProvider router={createRouter(setUserId)} />
+                <AlertSnackbarProvider>
+                    <CssBaseline />
+                    <RouterProvider router={createRouter(setUserId)} />
+                </AlertSnackbarProvider>
             </UserIdContext.Provider>
         </ThemeProvider>
     );
