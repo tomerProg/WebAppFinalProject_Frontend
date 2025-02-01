@@ -10,7 +10,7 @@ import { FunctionComponent, MouseEventHandler } from 'react';
 import { styles } from './styles';
 
 interface LikeDislikeProps extends WithStyles<typeof styles> {
-    isLiked: boolean | null;
+    isLiked?: boolean;
     onDislikeClick: MouseEventHandler;
     onLikeClick: MouseEventHandler;
 }
