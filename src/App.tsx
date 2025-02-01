@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import { UserIdContext } from './Contexts/UserIdContext/UserContext';
 import { createRouter } from './router';
-import { AlertSnackbarProvider } from './components/AlertSnackbar/AlertSnackbar';
+import { AlertSnackbarProvider } from './components/AlertSnackbar/globalProvider';
 
 const theme = createTheme({
     palette: {

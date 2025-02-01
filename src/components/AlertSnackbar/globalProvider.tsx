@@ -38,8 +38,18 @@ export const AlertSnackbarProvider: React.FC<PropsWithChildren> = ({
 
 export const useAlertSnackbar = () => {
     const context = useContext(alertSnackbarContext);
-    if (!context) {
-        throw new Error('useSnackbar must be used within a SnackbarProvider');
-    }
-    return context;
+    return (
+        context ?? {
+            showSnackbar: (
+                message: string,
+                severity?: AlertProps['severity'],
+                autoHideDuration?: number
+            ) => {
+                console.error(
+                    'try to alert when alert snackbar context is null:',
+                    { message, severity, autoHideDuration }
+                );
+            }
+        }
+    );
 };
