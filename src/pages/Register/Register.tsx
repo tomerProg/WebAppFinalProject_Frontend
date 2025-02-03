@@ -1,14 +1,14 @@
 import {
-  Alert,
-  Box,
-  Button,
-  Container,
-  Link,
-  Paper,
-  Typography
+    Alert,
+    Box,
+    Button,
+    Container,
+    Link,
+    Paper,
+    Typography
 } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login, register } from '../../api/auth/auth-api';
 import { UserWithPassword } from '../../api/auth/types';
@@ -17,6 +17,7 @@ import InputFields from './components/InputFields';
 import { RegisterError, RegisterInput } from './components/types';
 import { getRegisterError } from './components/utils';
 import { styles } from './styles';
+import { uploadProfileImage } from '../../api/users/users.api';
 
 const Register: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     const { classes } = props;
@@ -30,12 +31,25 @@ const Register: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     });
     const [registerError, setRegisterError] = useState<RegisterError>({});
     const [submitError, setSubmitError] = useState<string>('');
+    const [profileImage, setProfileImage] = useState<File | null>(null);
 
     const isValidRegisterInput = (): boolean => {
         const newError = getRegisterError(registerInput);
         setRegisterError(newError);
         return Object.keys(newError).length === 0;
     };
+
+    const tryUploadProfileFile = useCallback(async () => {
+        if (!profileImage) return undefined;
+
+        try {
+            const { data: imageUrl } = await uploadProfileImage(profileImage);
+            return imageUrl;
+        } catch (error) {
+            console.error('failed uploading profile image', error);
+            return undefined;
+        }
+    }, [profileImage]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -45,10 +59,12 @@ const Register: FunctionComponent<WithStyles<typeof styles>> = (props) => {
             return;
         }
 
+        const profileImageUrl = await tryUploadProfileFile();
         const userToRegister: UserWithPassword = {
             email: registerInput.email,
             password: registerInput.password,
-            username: registerInput.userName
+            username: registerInput.userName,
+            profileImage: profileImageUrl
         };
 
         try {
@@ -57,6 +73,7 @@ const Register: FunctionComponent<WithStyles<typeof styles>> = (props) => {
             );
             navigate('/posts');
         } catch (error) {
+            console.error(error);
             setSubmitError('Failed to register. Please try again.');
         }
     };
@@ -76,7 +93,7 @@ const Register: FunctionComponent<WithStyles<typeof styles>> = (props) => {
                     )}
 
                     <Box component='form' onSubmit={handleSubmit}>
-                        <IconUpload />
+                        <IconUpload setProfileImageFile={setProfileImage} />
                         <InputFields
                             setRegisterInput={setRegisterInput}
                             registerInput={registerInput}

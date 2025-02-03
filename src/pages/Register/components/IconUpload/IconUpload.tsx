@@ -1,61 +1,87 @@
 import React, { useState, useRef, FunctionComponent } from 'react';
-import { IconButton, Avatar, Box, Button, styled} from '@mui/material';
+import { IconButton, Avatar, Box, Button } from '@mui/material';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { withStyles, WithStyles } from '@mui/styles';
 import { styles } from './styles';
 
-const IconUpload: FunctionComponent<WithStyles<typeof styles>> = (props) => {
-  const { classes } = props;
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);  
+interface IconUploadProps extends WithStyles<typeof styles> {
+    setProfileImageFile: (profileImage: File) => void;
+}
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+const IconUpload: FunctionComponent<IconUploadProps> = (props) => {
+    const { classes, setProfileImageFile } = props;
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleRemoveIcon = () => {
-    setSelectedImage(null);
-    if (inputRef.current) {
-      inputRef.current.value = '';
-    }
-  };
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setSelectedImage(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+            setProfileImageFile(file);
+        }
+    };
 
-  return (
-    <Box className={classes.mainBox}>
-      <IconButton className={classes.iconButton}
-        onClick={() => inputRef.current?.click()}>
-          
-        <Avatar sx={{ width: '100%', height: '100%',
-            bgcolor: selectedImage ? 'transparent' : 'action.selected'}}>
-          {selectedImage ? (
-            <img className={classes.selectedImage}
-              src={selectedImage}
-              alt="Selected icon"/>
-          ) : (
-            <CameraAltIcon fontSize="large" className={classes.cameraIcon}/>
-          )}
-        </Avatar>
-      </IconButton>
+    const handleRemoveIcon = () => {
+        setSelectedImage(null);
+        if (inputRef.current) {
+            inputRef.current.value = '';
+        }
+    };
 
-      <input type="file" accept="image/*" className={classes.hideInput}
-        ref={inputRef}
-        onChange={handleImageChange}/>
+    return (
+        <Box className={classes.mainBox}>
+            <IconButton
+                className={classes.iconButton}
+                onClick={() => inputRef.current?.click()}
+            >
+                <Avatar
+                    sx={{
+                        width: '100%',
+                        height: '100%',
+                        bgcolor: selectedImage
+                            ? 'transparent'
+                            : 'action.selected'
+                    }}
+                >
+                    {selectedImage ? (
+                        <img
+                            className={classes.selectedImage}
+                            src={selectedImage}
+                            alt='Selected icon'
+                        />
+                    ) : (
+                        <CameraAltIcon
+                            fontSize='large'
+                            className={classes.cameraIcon}
+                        />
+                    )}
+                </Avatar>
+            </IconButton>
 
-      {selectedImage && (
-        <Button variant="text" color="error" size="small"
-          onClick={handleRemoveIcon}>
-          Remove Icon
-        </Button>
-      )}
-    </Box>
-  );
+            <input
+                type='file'
+                accept='image/*'
+                className={classes.hideInput}
+                ref={inputRef}
+                onChange={handleImageChange}
+            />
+
+            {selectedImage && (
+                <Button
+                    variant='text'
+                    color='error'
+                    size='small'
+                    onClick={handleRemoveIcon}
+                >
+                    Remove Icon
+                </Button>
+            )}
+        </Box>
+    );
 };
 
-export default withStyles(styles)(IconUpload)
+export default withStyles(styles)(IconUpload);
