@@ -9,16 +9,20 @@ import {
     Typography
 } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
+import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { GoogleLogin } from '@react-oauth/google';
+import { isEmpty } from 'ramda';
 import React, { FunctionComponent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { login, loginWithGoogle } from '../../api/auth/auth-api';
 import InputFields from './components/InputFields';
 import { SignInError, SignInInput } from './components/types';
 import { getSignInError } from './components/utils';
 import { styles } from './styles';
-import { loginWithGoogle } from './utils';
 
 const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     const { classes } = props;
+    const navigate = useNavigate();
 
     const [signInInput, setSignInInput] = useState<SignInInput>({
         email: '',
@@ -32,10 +36,19 @@ const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
         const newError: SignInError = getSignInError(signInInput);
 
         setSignInError(newError);
-        return Object.keys(newError).length === 0;
+        return isEmpty(newError);
     };
+
     const onGoogleAuthError = () => {
-        console.error('failed login via google');
+        alert('failed login via google');
+    };
+    const onGoogleSubmit = async (credentialResponse: CredentialResponse) => {
+        if (!credentialResponse.credential) {
+            return onGoogleAuthError();
+        }
+
+        await loginWithGoogle(credentialResponse.credential);
+        navigate('/posts');
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -47,8 +60,10 @@ const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
         }
 
         try {
-            console.log('Sign in data:', signInInput);
+            await login(signInInput.email, signInInput.password);
+            navigate('/posts');
         } catch (error) {
+            console.error(error);
             setSubmitError('Failed to sign in. Please try again.');
         }
     };
@@ -88,7 +103,7 @@ const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
                                 }}
                                 useOneTap
                                 text='continue_with'
-                                onSuccess={loginWithGoogle}
+                                onSuccess={onGoogleSubmit}
                                 onError={onGoogleAuthError}
                             />
                             <Divider />
