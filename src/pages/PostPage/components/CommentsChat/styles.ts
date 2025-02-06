@@ -8,8 +8,7 @@ export const styles = createStyles({
         display: 'flex',
         flexDirection: 'column',
         height: '60%',
-        justifyContent: 'space-between',
-        background: 'whitesmoke'
+        justifyContent: 'space-between'
     },
     comments: {
         display: 'flex',
@@ -23,6 +22,6 @@ export const styles = createStyles({
             maxHeight: '3.5em',
             borderRadius: `100px`,
             background: 'white'
-        },
+        }
     }
 });

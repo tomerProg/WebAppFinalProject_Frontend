@@ -110,9 +110,9 @@ const PostPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
             >
                 <img
                     className={clsx(classes.postImage, {
-                        [classes.defaultPostImage]: !post?.postImage
+                        [classes.defaultPostImage]: !post?.imageSrc
                     })}
-                    src={post?.postImage ?? defaultPostImage}
+                    src={post?.imageSrc ?? defaultPostImage}
                 />
 
                 <LikeDislike

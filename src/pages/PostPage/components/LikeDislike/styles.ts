@@ -4,8 +4,7 @@ export const styles = createStyles({
     root: {
         width: '100%',
         height: '100%',
-        display: 'flex',
-        background: 'whitesmoke'
+        display: 'flex'
     },
     pannel: {
         margin: '1%',
@@ -54,7 +53,7 @@ export const styles = createStyles({
         }
     },
     profileCard: {
-        display: 'flex',
+        display: 'flex'
     },
     profileAvatar: {
         margin: '8px'
