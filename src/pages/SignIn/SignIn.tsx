@@ -10,7 +10,6 @@ import {
 } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
-import { GoogleLogin } from '@react-oauth/google';
 import { isEmpty } from 'ramda';
 import React, { FunctionComponent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
