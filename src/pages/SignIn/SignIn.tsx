@@ -10,6 +10,8 @@ import {
 } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
+import { isEmpty } from 'ramda';
 import React, { FunctionComponent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login, loginWithGoogle } from '../../api/auth/auth-api';
@@ -34,7 +36,7 @@ const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
         const newError: SignInError = getSignInError(signInInput);
 
         setSignInError(newError);
-        return Object.keys(newError).length === 0;
+        return isEmpty(newError);
     };
 
     const onGoogleAuthError = () => {
@@ -61,6 +63,7 @@ const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
             await login(signInInput.email, signInInput.password);
             navigate('/posts');
         } catch (error) {
+            console.error(error);
             setSubmitError('Failed to sign in. Please try again.');
         }
     };
