@@ -2,6 +2,13 @@ import apiClient from '../api-client';
 import { AbortableRequest } from '../utils';
 import { User } from './types';
 
+export const getUserById = (userId: string) =>
+    AbortableRequest((abortController) =>
+        apiClient.get<User>(`/users/${userId}`, {
+            signal: abortController.signal
+        })
+    );
+
 export const updateUser = async (
     username: User['username'],
     imageFile?: File
@@ -24,7 +31,7 @@ export const uploadProfileImage = (profileImage: File) => {
     const formData = new FormData();
     formData.append('profileImage', profileImage);
     return apiClient.post<string>(
-        'files/profile-image?profileImage=123.jpeg',
+        'files/profile-image',
         formData,
         {
             headers: {

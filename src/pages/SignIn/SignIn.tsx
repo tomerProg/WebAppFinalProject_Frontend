@@ -2,7 +2,6 @@ import {
     Alert,
     Box,
     Button,
-    Container,
     Divider,
     Link,
     Paper,
@@ -11,16 +10,25 @@ import {
 import { withStyles, WithStyles } from '@mui/styles';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { isEmpty } from 'ramda';
-import React, { FunctionComponent, useState } from 'react';
+import React, {
+    Dispatch,
+    FunctionComponent,
+    SetStateAction,
+    useState
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login, loginWithGoogle } from '../../api/auth/auth-api';
+import CenteredPage from '../../components/CenteredPage/CenteredPage';
 import InputFields from './components/InputFields';
 import { SignInError, SignInInput } from './components/types';
 import { getSignInError } from './components/utils';
 import { styles } from './styles';
 
-const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
-    const { classes } = props;
+interface SignInProps extends WithStyles<typeof styles> {
+    setUserId?: Dispatch<SetStateAction<string>>;
+}
+const SignIn: FunctionComponent<SignInProps> = (props) => {
+    const { classes, setUserId } = props;
     const navigate = useNavigate();
 
     const [signInInput, setSignInInput] = useState<SignInInput>({
@@ -59,7 +67,13 @@ const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
         }
 
         try {
-            await login(signInInput.email, signInInput.password);
+            const { data: loginReposne } = await login(
+                signInInput.email,
+                signInInput.password
+            );
+            if (setUserId) {
+                setUserId(loginReposne._id);
+            }
             navigate('/posts');
         } catch (error) {
             console.error(error);
@@ -68,7 +82,7 @@ const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     };
 
     return (
-        <Container component='main' maxWidth='xs'>
+        <CenteredPage>
             <Paper elevation={3} className={classes.paper}>
                 <Box className={classes.mainBox}>
                     <Typography component='h1' variant='h4'>
@@ -116,7 +130,7 @@ const SignIn: FunctionComponent<WithStyles<typeof styles>> = (props) => {
                     </Box>
                 </Box>
             </Paper>
-        </Container>
+        </CenteredPage>
     );
 };
 

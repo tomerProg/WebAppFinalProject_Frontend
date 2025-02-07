@@ -12,11 +12,13 @@ import {
     Typography
 } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
-import { FunctionComponent, useEffect, useState } from 'react';
-import { fetchPosts, Post } from './api';
-import { styles } from './styles';
 import { isEmpty, repeat } from 'ramda';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getAllPosts } from '../../api/posts/posts.api';
+import { ignoreCanceledRequest } from '../../api/utils';
+import { styles } from './styles';
+import { Post } from '../../api/posts/types';
 
 const PostsPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     const { classes } = props;
@@ -26,15 +28,19 @@ const PostsPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
 
     useEffect(() => {
         setIsLoading(true);
-        fetchPosts()
-            .then(setPosts)
+        const { request, abort } = getAllPosts();
+        request
+            .then(({ data }) => setPosts(data))
+            .catch(ignoreCanceledRequest)
             .finally(() => setIsLoading(false));
+
+        return () => abort();
     }, []);
 
     const onCreatePostClick = () =>
         alert('Implement Create Post functionality!');
 
-    const onPostItemClick = (post: Post) => () =>{
+    const onPostItemClick = (post: Post) => () => {
         navigate('/post', { state: post });
     };
 

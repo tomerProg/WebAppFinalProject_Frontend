@@ -1,26 +1,34 @@
-import React from 'react';
-import { RouterProvider } from 'react-router-dom';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
-import { router } from './router';
+import React, { useState } from 'react';
+import { RouterProvider } from 'react-router-dom';
+import { UserIdContext } from './Contexts/UserIdContext/UserContext';
+import { createRouter } from './router';
+import { AlertSnackbarProvider } from './components/AlertSnackbar/globalProvider';
 
 const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#1976d2',
-    },
-    background: {
-      default: '#f5f5f5',
-    },
-  },
+    palette: {
+        primary: {
+            main: '#1976d2'
+        },
+        background: {
+            default: '#f5f5f5'
+        }
+    }
 });
 
 const App: React.FC = () => {
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline /> 
-        <RouterProvider router={router}/>
-    </ThemeProvider>
-  );
+    const [userId, setUserId] = useState('');
+
+    return (
+        <ThemeProvider theme={theme}>
+            <UserIdContext.Provider value={userId}>
+                <AlertSnackbarProvider>
+                    <CssBaseline />
+                    <RouterProvider router={createRouter(setUserId)} />
+                </AlertSnackbarProvider>
+            </UserIdContext.Provider>
+        </ThemeProvider>
+    );
 };
 
 export default App;

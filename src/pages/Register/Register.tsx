@@ -1,26 +1,29 @@
-import {
-    Alert,
-    Box,
-    Button,
-    Container,
-    Link,
-    Paper,
-    Typography
-} from '@mui/material';
+import { Alert, Box, Button, Link, Paper, Typography } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
-import React, { FunctionComponent, useCallback, useState } from 'react';
+import React, {
+    Dispatch,
+    FunctionComponent,
+    SetStateAction,
+    useCallback,
+    useState
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login, register } from '../../api/auth/auth-api';
 import { UserWithPassword } from '../../api/auth/types';
+import { uploadProfileImage } from '../../api/users/users.api';
+import CenteredPage from '../../components/CenteredPage/CenteredPage';
 import IconUpload from './components/IconUpload/IconUpload';
 import InputFields from './components/InputFields';
 import { RegisterError, RegisterInput } from './components/types';
 import { getRegisterError } from './components/utils';
 import { styles } from './styles';
-import { uploadProfileImage } from '../../api/users/users.api';
 
-const Register: FunctionComponent<WithStyles<typeof styles>> = (props) => {
-    const { classes } = props;
+interface RegisterProps extends WithStyles<typeof styles> {
+    setUserId?: Dispatch<SetStateAction<string>>;
+}
+
+const Register: FunctionComponent<RegisterProps> = (props) => {
+    const { classes, setUserId } = props;
     const navigate = useNavigate();
 
     const [registerInput, setRegisterInput] = useState<RegisterInput>({
@@ -68,9 +71,14 @@ const Register: FunctionComponent<WithStyles<typeof styles>> = (props) => {
         };
 
         try {
-            await register(userToRegister).then(() =>
-                login(userToRegister.email, userToRegister.password)
+            await register(userToRegister);
+            const { data: loginReposne } = await login(
+                userToRegister.email,
+                userToRegister.password
             );
+            if (setUserId) {
+                setUserId(loginReposne._id);
+            }
             navigate('/posts');
         } catch (error) {
             console.error(error);
@@ -79,7 +87,7 @@ const Register: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     };
 
     return (
-        <Container component='main' maxWidth='xs'>
+        <CenteredPage>
             <Paper elevation={3} className={classes.paper}>
                 <Box className={classes.mainBox}>
                     <div className={classes.registerTitle}>
@@ -118,7 +126,7 @@ const Register: FunctionComponent<WithStyles<typeof styles>> = (props) => {
                     </Box>
                 </Box>
             </Paper>
-        </Container>
+        </CenteredPage>
     );
 };
 
