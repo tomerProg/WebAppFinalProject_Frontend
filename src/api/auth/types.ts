@@ -15,5 +15,4 @@ export type LoggedUser = User & {
 export type LoginResponse = {
     _id: string;
     accessToken: string;
-    refreshToken: string;
 };
