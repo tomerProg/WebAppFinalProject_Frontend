@@ -25,10 +25,11 @@ import { getSignInError } from './components/utils';
 import { styles } from './styles';
 
 interface SignInProps extends WithStyles<typeof styles> {
-    setUserId?: Dispatch<SetStateAction<string>>;
+    setUserId: Dispatch<SetStateAction<string>>;
+    setAccessToken: Dispatch<SetStateAction<string | null>>;
 }
 const SignIn: FunctionComponent<SignInProps> = (props) => {
-    const { classes, setUserId } = props;
+    const { classes, setUserId, setAccessToken } = props;
     const navigate = useNavigate();
 
     const [signInInput, setSignInInput] = useState<SignInInput>({
@@ -71,9 +72,8 @@ const SignIn: FunctionComponent<SignInProps> = (props) => {
                 signInInput.email,
                 signInInput.password
             );
-            if (setUserId) {
-                setUserId(loginReposne._id);
-            }
+            setUserId(loginReposne._id);
+            setAccessToken(loginReposne.accessToken);
             navigate('/posts');
         } catch (error) {
             console.error(error);
