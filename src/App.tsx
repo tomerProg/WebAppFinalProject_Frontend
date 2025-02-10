@@ -1,6 +1,6 @@
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
-import React, { useState } from 'react';
-import { RouterProvider } from 'react-router-dom';
+import React, { FunctionComponent, useState } from 'react';
+import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import { useAuth } from './api/auth/use.auth';
 import { AlertSnackbarProvider } from './components/AlertSnackbar/globalProvider';
 import { UserIdContext } from './Contexts/UserIdContext/UserContext';
@@ -17,20 +17,33 @@ const theme = createTheme({
     }
 });
 
-const App: React.FC = () => {
+const Layout: FunctionComponent = () => {
+    const navigate = useNavigate();
     const [userId, setUserId] = useState('');
-    const { setToken: setAccessToken } = useAuth();
+    const { setToken: setAccessToken } = useAuth(navigate);
 
     return (
+        <UserIdContext.Provider value={userId}>
+            <Routes>
+                {createRouter(setUserId, setAccessToken).map(
+                    ({ path, element }) => (
+                        <Route key={path} path={path} element={element} />
+                    )
+                )}
+            </Routes>
+        </UserIdContext.Provider>
+    );
+};
+
+const App: React.FC = () => {
+    return (
         <ThemeProvider theme={theme}>
-            <UserIdContext.Provider value={userId}>
-                <AlertSnackbarProvider>
+            <AlertSnackbarProvider>
+                <BrowserRouter>
                     <CssBaseline />
-                    <RouterProvider
-                        router={createRouter(setUserId, setAccessToken)}
-                    />
-                </AlertSnackbarProvider>
-            </UserIdContext.Provider>
+                    <Layout />
+                </BrowserRouter>
+            </AlertSnackbarProvider>
         </ThemeProvider>
     );
 };

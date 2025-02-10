@@ -6,10 +6,11 @@ import {
 } from 'axios';
 import { identity } from 'ramda';
 import { useLayoutEffect, useState } from 'react';
+import { NavigateFunction } from 'react-router-dom';
 import apiClient from '../api-client';
 import { refreshAuthAccessToken } from './auth-api';
 
-export const useAuth = () => {
+export const useAuth = (navigate: NavigateFunction) => {
     const [token, setToken] = useState<string | null>(null);
 
     useLayoutEffect(() => {
@@ -47,9 +48,10 @@ export const useAuth = () => {
                             originalRequest.headers.Authorization = `JWT ${accessToken}`;
                             return apiClient(originalRequest);
                         }
-                    } catch (error) {
+                    } catch {
                         setToken(null);
-                        return Promise.reject(error);
+                        return navigate('/');
+                        // return Promise.reject(error);
                     }
                 }
 
@@ -60,7 +62,7 @@ export const useAuth = () => {
         return () => {
             apiClient.interceptors.response.eject(refreshInterceptor);
         };
-    }, []);
+    }, [navigate]);
 
     return { setToken };
 };
