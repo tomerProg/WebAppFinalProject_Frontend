@@ -46,12 +46,14 @@ export const useAuth = (navigate: NavigateFunction) => {
                         setToken(accessToken);
                         if (originalRequest) {
                             originalRequest.headers.Authorization = `JWT ${accessToken}`;
+
                             return apiClient(originalRequest);
                         }
-                    } catch {
+                    } catch (error) {
                         setToken(null);
+                        console.error('refresh token error:', error);
+
                         return navigate('/');
-                        // return Promise.reject(error);
                     }
                 }
 
