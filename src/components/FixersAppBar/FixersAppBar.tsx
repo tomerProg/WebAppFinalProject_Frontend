@@ -5,14 +5,15 @@ import { getUserById } from '../../api/users/users.api';
 import { ignoreCanceledRequest } from '../../api/utils';
 import { withStyles, WithStyles } from '@mui/styles';
 import { styles } from './styles';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { UserIdContext } from '../../Contexts/UserIdContext/UserContext';
 
 const FixersAppBar: FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const userId = useContext(UserIdContext);  
   const { classes } = props;
   const [loginUser, setLoginUser] = useState<User | null>(null);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
           const { request, abort } = getUserById(userId);
@@ -20,10 +21,14 @@ const FixersAppBar: FunctionComponent<WithStyles<typeof styles>> = (props) => {
               .then(({ data }) => setLoginUser(data))
               .catch(ignoreCanceledRequest);
           return () => abort();
-  }, [userId]);
+  }, [userId, location]);
 
   const handleOpenUserProfile = () => {
-    // navigate('/profile');
+    const {pathname} = location;
+    if (pathname !== '/' && pathname !=='/register'){
+      navigate('/profile');
+    }
+    
   }
 
   return (
