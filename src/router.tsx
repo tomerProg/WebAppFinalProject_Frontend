@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction } from 'react';
-// import { createBrowserRouter } from 'react-router-dom';
 import PostPage from './pages/PostPage/PostPage';
 import PostsList from './pages/PostsList/PostsList';
 import Register from './pages/Register/Register';

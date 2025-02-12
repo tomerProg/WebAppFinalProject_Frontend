@@ -5,6 +5,7 @@ import { useAuth } from './api/auth/use.auth';
 import { AlertSnackbarProvider } from './components/AlertSnackbar/globalProvider';
 import { UserIdContext } from './Contexts/UserIdContext/UserContext';
 import { createRouter } from './router';
+import FixersAppBar from './components/FixersAppBar/FixersAppBar';
 
 const theme = createTheme({
     palette: {
@@ -41,6 +42,7 @@ const App: React.FC = () => {
             <AlertSnackbarProvider>
                 <BrowserRouter>
                     <CssBaseline />
+                    <FixersAppBar />
                     <Layout />
                 </BrowserRouter>
             </AlertSnackbarProvider>
