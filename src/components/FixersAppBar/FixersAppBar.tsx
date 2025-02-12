@@ -12,6 +12,7 @@ const FixersAppBar: FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const userId = useContext(UserIdContext);  
   const { classes } = props;
   const [loginUser, setLoginUser] = useState<User | null>(null);
+  const [visible, setVisible] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -23,17 +24,19 @@ const FixersAppBar: FunctionComponent<WithStyles<typeof styles>> = (props) => {
           return () => abort();
   }, [userId, location]);
 
-  const handleOpenUserProfile = () => {
+  useEffect(() => {
     const {pathname} = location;
-    if (pathname !== '/' && pathname !=='/register'){
+    setVisible(pathname !== '/' && pathname !=='/register');
+}, [location]);
+
+
+  const handleOpenUserProfile = () => {
       navigate('/profile');
-    }
-    
   }
 
   return (
     <>
-    <AppBar position="static" color="default" elevation={1}>
+    {visible && (<AppBar position="static" color="default" elevation={1} >
       <Toolbar>
         <Box className={classes.leftBox}>          
           <Icon sx={{height: "4rem", width: "3rem"}} >
@@ -49,7 +52,7 @@ const FixersAppBar: FunctionComponent<WithStyles<typeof styles>> = (props) => {
           </IconButton>
         </Box>        
       </Toolbar>
-    </AppBar>
+    </AppBar>)}
     <Outlet />
     </>
   );
