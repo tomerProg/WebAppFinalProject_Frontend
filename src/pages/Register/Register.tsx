@@ -19,11 +19,12 @@ import { getRegisterError } from './components/utils';
 import { styles } from './styles';
 
 interface RegisterProps extends WithStyles<typeof styles> {
-    setUserId?: Dispatch<SetStateAction<string>>;
+    setUserId: Dispatch<SetStateAction<string>>;
+    setAccessToken: Dispatch<SetStateAction<string | null>>;
 }
 
 const Register: FunctionComponent<RegisterProps> = (props) => {
-    const { classes, setUserId } = props;
+    const { classes, setUserId, setAccessToken } = props;
     const navigate = useNavigate();
 
     const [registerInput, setRegisterInput] = useState<RegisterInput>({
@@ -76,9 +77,8 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
                 userToRegister.email,
                 userToRegister.password
             );
-            if (setUserId) {
-                setUserId(loginReposne._id);
-            }
+            setUserId(loginReposne._id);
+            setAccessToken(loginReposne.accessToken);
             navigate('/posts');
         } catch (error) {
             console.error(error);

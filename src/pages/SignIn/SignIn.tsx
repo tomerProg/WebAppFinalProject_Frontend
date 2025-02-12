@@ -14,6 +14,7 @@ import React, {
     Dispatch,
     FunctionComponent,
     SetStateAction,
+    useCallback,
     useState
 } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -23,21 +24,33 @@ import InputFields from './components/InputFields';
 import { SignInError, SignInInput } from './components/types';
 import { getSignInError } from './components/utils';
 import { styles } from './styles';
+import { LoginResponse } from '../../api/auth/types';
+import { useAlertSnackbar } from '../../components/AlertSnackbar/globalProvider';
 
 interface SignInProps extends WithStyles<typeof styles> {
-    setUserId?: Dispatch<SetStateAction<string>>;
+    setUserId: Dispatch<SetStateAction<string>>;
+    setAccessToken: Dispatch<SetStateAction<string | null>>;
 }
 const SignIn: FunctionComponent<SignInProps> = (props) => {
-    const { classes, setUserId } = props;
+    const { classes, setUserId, setAccessToken } = props;
     const navigate = useNavigate();
+    const { showSnackbar } = useAlertSnackbar();
 
     const [signInInput, setSignInInput] = useState<SignInInput>({
         email: '',
         password: ''
     });
-
     const [signInError, setSignInError] = useState<SignInError>({});
     const [submitError, setSubmitError] = useState<string>('');
+
+    const handleSuccessLogin = useCallback(
+        (loginResponse: LoginResponse) => {
+            setUserId(loginResponse._id);
+            setAccessToken(loginResponse.accessToken);
+            navigate('/posts');
+        },
+        [setUserId, setAccessToken, navigate]
+    );
 
     const checkInput = (): boolean => {
         const newError: SignInError = getSignInError(signInInput);
@@ -47,15 +60,18 @@ const SignIn: FunctionComponent<SignInProps> = (props) => {
     };
 
     const onGoogleAuthError = () => {
-        alert('failed login via google');
+        showSnackbar('failed login via google');
     };
+
     const onGoogleSubmit = async (credentialResponse: CredentialResponse) => {
         if (!credentialResponse.credential) {
             return onGoogleAuthError();
         }
 
-        await loginWithGoogle(credentialResponse.credential);
-        navigate('/posts');
+        const { data: loginResponse } = await loginWithGoogle(
+            credentialResponse.credential
+        );
+        handleSuccessLogin(loginResponse);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -67,14 +83,11 @@ const SignIn: FunctionComponent<SignInProps> = (props) => {
         }
 
         try {
-            const { data: loginReposne } = await login(
+            const { data: loginResponse } = await login(
                 signInInput.email,
                 signInInput.password
             );
-            if (setUserId) {
-                setUserId(loginReposne._id);
-            }
-            navigate('/posts');
+            handleSuccessLogin(loginResponse);
         } catch (error) {
             console.error(error);
             setSubmitError('Failed to sign in. Please try again.');
@@ -114,7 +127,6 @@ const SignIn: FunctionComponent<SignInProps> = (props) => {
                                 containerProps={{
                                     className: classes.googleBtn
                                 }}
-                                useOneTap
                                 text='continue_with'
                                 onSuccess={onGoogleSubmit}
                                 onError={onGoogleAuthError}
