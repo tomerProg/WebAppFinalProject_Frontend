@@ -16,9 +16,9 @@ import { isEmpty, repeat } from 'ramda';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAllPosts } from '../../api/posts/posts.api';
+import { Post } from '../../api/posts/types';
 import { ignoreCanceledRequest } from '../../api/utils';
 import { styles } from './styles';
-import { Post } from '../../api/posts/types';
 
 const PostsPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     const { classes } = props;
@@ -53,7 +53,9 @@ const PostsPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
             {isLoading && <LinearProgress />}
             <List className={classes.postsList}>
                 {isLoading ? (
-                    repeat(<Skeleton style={{ height: '10%' }} />, 10)
+                    repeat(0, 10).map((_val, index) => (
+                        <Skeleton key={index} style={{ height: '10%' }} />
+                    ))
                 ) : isEmpty(posts) ? (
                     <Typography variant='h5'>No posts found</Typography>
                 ) : (
