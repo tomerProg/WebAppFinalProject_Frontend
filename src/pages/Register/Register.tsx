@@ -105,9 +105,8 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
                         <InputFields
                             setRegisterInput={setRegisterInput}
                             registerInput={registerInput}
-                            setRegisterError={setRegisterError}
-                            registerError={registerError}
-                        />
+                            setRegisterErrors={setRegisterError}
+                            registerError={registerError}                        />
                         <div className={classes.frame}>
                             <Button
                                 type='submit'
