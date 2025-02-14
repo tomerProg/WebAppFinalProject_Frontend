@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Link, Paper, Typography } from '@mui/material';
+import { Alert, Box, Button, Divider, Link, Typography } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
 import React, {
     Dispatch,
@@ -12,12 +12,12 @@ import { login, register } from '../../api/auth/auth-api';
 import { UserWithPassword } from '../../api/auth/types';
 import { uploadProfileImage } from '../../api/users/users.api';
 import CenteredPage from '../../components/CenteredPage/CenteredPage';
+import EntryPaper from '../../components/EntryPaper/EntryPaper';
 import IconUpload from './components/IconUpload/IconUpload';
 import InputFields from './components/InputFields';
 import { RegisterError, RegisterInput } from './components/types';
 import { getRegisterError } from './components/utils';
 import { styles } from './styles';
-import EntryPaper from '../../components/EntryPaper/EntryPaper';
 
 interface RegisterProps extends WithStyles<typeof styles> {
     setUserId: Dispatch<SetStateAction<string>>;
@@ -89,33 +89,36 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
 
     return (
         <CenteredPage>
-            <EntryPaper>    
+            <EntryPaper>
                 <Box className={classes.registerTitle}>
                     <Typography component='h1' variant='h4'>
                         Register
                     </Typography>
                 </Box>
+                <Divider />
 
-                {submitError && (<Alert severity='error'> {submitError} </Alert>)}
+                {submitError && <Alert severity='error'> {submitError} </Alert>}
 
                 <Box className={classes.mainBox}>
-                    
                     <IconUpload setProfileImageFile={setProfileImage} />
-                    
-                    
-                    <Box component='form' onSubmit={handleSubmit}>        
+
+                    <Box component='form' onSubmit={handleSubmit}>
                         <InputFields
                             setRegisterInput={setRegisterInput}
                             registerInput={registerInput}
                             setRegisterErrors={setRegisterError}
-                            registerError={registerError}                        />
-                        
-                        
+                            registerError={registerError}
+                        />
                     </Box>
                 </Box>
 
+                <Divider />
                 <Box className={classes.frame}>
-                    <Button type='submit' variant='contained' className={classes.registerButton}>
+                    <Button
+                        type='submit'
+                        variant='contained'
+                        className={classes.registerButton}
+                    >
                         Register
                     </Button>
                 </Box>
