@@ -17,6 +17,7 @@ import InputFields from './components/InputFields';
 import { RegisterError, RegisterInput } from './components/types';
 import { getRegisterError } from './components/utils';
 import { styles } from './styles';
+import EntryPaper from '../../components/EntryPaper/EntryPaper';
 
 interface RegisterProps extends WithStyles<typeof styles> {
     setUserId: Dispatch<SetStateAction<string>>;
@@ -88,43 +89,42 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
 
     return (
         <CenteredPage>
-            <Paper elevation={3} className={classes.paper}>
+            <EntryPaper>    
+                <Box className={classes.registerTitle}>
+                    <Typography component='h1' variant='h4'>
+                        Register
+                    </Typography>
+                </Box>
+
+                {submitError && (<Alert severity='error'> {submitError} </Alert>)}
+
                 <Box className={classes.mainBox}>
-                    <div className={classes.registerTitle}>
-                        <Typography component='h1' variant='h4'>
-                            Register
-                        </Typography>
-                    </div>
-
-                    {submitError && (
-                        <Alert severity='error'> {submitError} </Alert>
-                    )}
-
-                    <Box component='form' onSubmit={handleSubmit}>
-                        <IconUpload setProfileImageFile={setProfileImage} />
+                    
+                    <IconUpload setProfileImageFile={setProfileImage} />
+                    
+                    
+                    <Box component='form' onSubmit={handleSubmit}>        
                         <InputFields
                             setRegisterInput={setRegisterInput}
                             registerInput={registerInput}
                             setRegisterErrors={setRegisterError}
                             registerError={registerError}                        />
-                        <div className={classes.frame}>
-                            <Button
-                                type='submit'
-                                variant='contained'
-                                className={classes.registerButton}
-                            >
-                                Register
-                            </Button>
-                        </div>
-
-                        <Box className={classes.signInBox}>
-                            <Link href='/' variant='body2'>
-                                Already have an account? Sign In
-                            </Link>
-                        </Box>
+                        
+                        
                     </Box>
                 </Box>
-            </Paper>
+
+                <Box className={classes.frame}>
+                    <Button type='submit' variant='contained' className={classes.registerButton}>
+                        Register
+                    </Button>
+                </Box>
+                <Box className={classes.signInBox}>
+                    <Link href='/' variant='body2'>
+                        Already have an account? Sign In
+                    </Link>
+                </Box>
+            </EntryPaper>
         </CenteredPage>
     );
 };

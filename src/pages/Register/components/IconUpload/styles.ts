@@ -1,7 +1,7 @@
 import { Theme } from '@mui/material/styles';
 import { createStyles, makeStyles } from '@mui/styles';
 
-    export const useStyles = makeStyles((theme: Theme) =>
+export const useStyles = makeStyles((theme: Theme) =>
     createStyles({
     mainBox: {
         display: 'flex',
@@ -11,20 +11,20 @@ import { createStyles, makeStyles } from '@mui/styles';
     },    
     iconButton: {
         [theme.breakpoints.down("sm")]: {
-            height: '3em',
-            width: '3em',
-        },
-        [theme.breakpoints.up("sm")]: {
-            height: '4em',
-            width: '4em',
-        },
-        [theme.breakpoints.up("md")]: {
             height: '5em',
             width: '5em',
         },
-        [theme.breakpoints.up("lg")]: {
+        [theme.breakpoints.up("sm")]: {
             height: '6em',
             width: '6em',
+        },
+        [theme.breakpoints.up("md")]: {
+            height: '8em',
+            width: '8em',
+        },
+        [theme.breakpoints.up("lg")]: {
+            height: '10em',
+            width: '10em',
         },
         padding: '0'
     },

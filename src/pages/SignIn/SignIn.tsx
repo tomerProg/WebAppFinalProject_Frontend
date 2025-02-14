@@ -26,6 +26,7 @@ import { getSignInError } from './components/utils';
 import { styles } from './styles';
 import { LoginResponse } from '../../api/auth/types';
 import { useAlertSnackbar } from '../../components/AlertSnackbar/globalProvider';
+import EntryPaper from '../../components/EntryPaper/EntryPaper';
 
 interface SignInProps extends WithStyles<typeof styles> {
     setUserId: Dispatch<SetStateAction<string>>;
@@ -96,7 +97,7 @@ const SignIn: FunctionComponent<SignInProps> = (props) => {
 
     return (
         <CenteredPage>
-            <Paper elevation={3} className={classes.paper}>
+            <EntryPaper>
                 <Box className={classes.mainBox}>
                     <Typography component='h1' variant='h4'>
                         Sign In
@@ -141,7 +142,7 @@ const SignIn: FunctionComponent<SignInProps> = (props) => {
                         </Box>
                     </Box>
                 </Box>
-            </Paper>
+            </EntryPaper>
         </CenteredPage>
     );
 };

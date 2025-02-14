@@ -1,26 +1,29 @@
 import { createStyles } from '@mui/styles';
 
 export const styles = createStyles({
-    paper: {
-        padding: '2em',
-        width: '30%'
-    },
-    mainBox: {
+    registerTitle: {
+        marginBottom: '1em',
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center'
     },
-    registerTitle: {
-        marginBottom: '1em'
+    mainBox: {
+        display: 'grid',
+        gridTemplateColumns: 'auto auto',
+        placeItems: 'center',
+        gap: '1em',
     },
 
     registerButton: {
-        width: '100%'
+        width: '80%',
     },
+
     frame: {
         marginTop: '1em',
-        marginBottom: '1em'
+        marginBottom: '1em',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     signInBox: {
         textAlign: 'center'

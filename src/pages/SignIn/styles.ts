@@ -1,10 +1,6 @@
 import { createStyles } from '@mui/styles';
 
 export const styles = createStyles({
-    paper: {
-        padding: '2em',
-        width: '30%'
-    },
     mainBox: {
         display: 'flex',
         flexDirection: 'column',
