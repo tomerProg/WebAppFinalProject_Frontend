@@ -4,7 +4,7 @@ import { User } from './types';
 
 export const getUserById = (userId: string) =>
     AbortableRequest((abortController) =>
-        apiClient.get<User>(`/users/${userId}`, {
+        apiClient.get<User>(`/user/${userId}`, {
             signal: abortController.signal
         })
     );
@@ -16,15 +16,15 @@ export const updateUser = async (
     const imageUrl = imageFile ? await uploadProfileImage(imageFile) : null;
     const updatedUser: Omit<User, 'email'> = {
         username,
-        ...(imageUrl ? { profileImageUrl: imageUrl.data } : {})
+        ...(imageUrl ? { profileImage: imageUrl.data } : {})
     };
 
-    return apiClient.put<User>('/users', updatedUser);
+    return apiClient.put<User>('/user', updatedUser);
 };
 
 export const getMyUser = () =>
     AbortableRequest((abortController) =>
-        apiClient.get<User>('/users/me', { signal: abortController.signal })
+        apiClient.get<User>('/user', { signal: abortController.signal })
     );
 
 export const uploadProfileImage = (profileImage: File) => {

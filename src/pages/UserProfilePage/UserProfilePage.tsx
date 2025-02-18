@@ -35,7 +35,7 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
     useEffect(() => {
         if (user) {
             setUsername(user.username);
-            setProfileImageUrl(user.profileImageUrl);
+            setProfileImageUrl(user.profileImage);
         }
     }, [user]);
 
@@ -61,7 +61,7 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
     const handleCancel = () => {
         if (user) {
             setUsername(user.username);
-            setProfileImageUrl(user.profileImageUrl);
+            setProfileImageUrl(user.profileImage);
         }
         stopEdit();
     };
@@ -85,7 +85,7 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
                 <div className={classes.profileImageDiv}>
                     <Avatar
                         src={profileImageUrl}
-                        alt=''
+                        alt={user?.username ?? 'Profile'}
                         sx={{ width: 150, height: 150, mb: 2, fontSize: '3em' }}
                     />
                     {isEditing && (
