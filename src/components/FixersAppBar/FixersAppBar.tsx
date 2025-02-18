@@ -36,16 +36,17 @@ const FixersAppBar: FunctionComponent<WithStyles<typeof styles>> = (props) => {
 
   return (
     <>
-    {visible && (<AppBar position="static" color="default" elevation={1} >
+    {visible && (
+    <AppBar position="static" color="default" elevation={1} className={classes.appBar}>
       <Toolbar>
         <Box className={classes.leftBox}>          
-          <Icon sx={{height: "4rem", width: "3rem"}} >
+          <Icon sx={{height: "50px", width: "50px"}} >
             <img src="/favicon.svg" alt="icon" width={50} height={50}/>
           </Icon>
           <Typography variant="h4">Fixers</Typography>
         </Box>
         <Box className={classes.middleBox}/>                    
-        <Box >          
+        <Box>          
           <IconButton edge="end" className={classes.avatarButton} onClick={handleOpenUserProfile}>
             <Avatar alt="User Avatar" sx={{width: '100%', height: '100%'}} 
               src={loginUser ? loginUser.profileImageUrl : undefined} />

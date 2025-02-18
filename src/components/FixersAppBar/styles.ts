@@ -1,20 +1,27 @@
 import { createStyles } from '@mui/styles';
 
 export const styles = createStyles({
+    appBar: {
+        height: '10vh',
+    },
     middleBox: {
         flexGrow: '1'
     },
     leftBox:{
         display: 'flex', 
-        alignItems: 'center', 
+        alignItems: 'flex-end', 
+
     },
     avatarButton: {
-        width: '3em',
-        height: '3em',
+        width: '10vh',
+        height: '10vh',
         padding: '0'
     },
     fixersIcon: {
         height: "60px", 
-        width: "90px"
+        width: "90px",
+        marginBottom: '1em',
+        marginBlockStart: '1em',
+        marginBlockEnd: '1em',
     }
 });
