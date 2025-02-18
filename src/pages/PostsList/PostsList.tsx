@@ -38,7 +38,7 @@ const PostsPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     }, []);
 
     const onCreatePostClick = () =>
-        alert('Implement Create Post functionality!');
+        navigate('/createPost');
 
     const onPostItemClick = (post: Post) => () => {
         navigate('/post', { state: post });
