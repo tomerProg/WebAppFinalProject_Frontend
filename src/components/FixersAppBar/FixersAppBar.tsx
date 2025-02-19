@@ -1,4 +1,4 @@
-import { FunctionComponent, useContext, useEffect, useState } from 'react';
+import { FunctionComponent, useContext, useEffect, useMemo, useState } from 'react';
 import { AppBar, Toolbar, Typography, IconButton, Avatar, Box, Icon} from '@mui/material';
 import { User } from '../../api/users/types';
 import { getUserById } from '../../api/users/users.api';
@@ -7,14 +7,16 @@ import { withStyles, WithStyles } from '@mui/styles';
 import { styles } from './styles';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { UserIdContext } from '../../Contexts/UserIdContext/UserContext';
+import { isVisibleAppBar } from './components/utils';
 
 const FixersAppBar: FunctionComponent<WithStyles<typeof styles>> = (props) => {
   const userId = useContext(UserIdContext);  
   const { classes } = props;
   const [loginUser, setLoginUser] = useState<User | null>(null);
-  const [visible, setVisible] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const isVisible: boolean = useMemo(() => isVisibleAppBar(location), [location])
 
   useEffect(() => {
           const { request, abort } = getUserById(userId);
@@ -24,10 +26,6 @@ const FixersAppBar: FunctionComponent<WithStyles<typeof styles>> = (props) => {
           return () => abort();
   }, [userId, location]);
 
-  useEffect(() => {
-    const {pathname} = location;
-    setVisible(pathname !== '/' && pathname !=='/register');
-}, [location]);
 
 
   const handleOpenUserProfile = () => {
@@ -36,7 +34,7 @@ const FixersAppBar: FunctionComponent<WithStyles<typeof styles>> = (props) => {
 
   return (
     <>
-    {visible && (
+    {isVisible && (
     <AppBar position="static" color="default" elevation={1} className={classes.appBar}>
       <Toolbar>
         <Box className={classes.leftBox}>          
