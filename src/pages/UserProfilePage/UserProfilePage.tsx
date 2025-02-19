@@ -6,6 +6,7 @@ import {
     Card,
     IconButton,
     Skeleton,
+    Stack,
     TextField,
     Typography
 } from '@mui/material';
@@ -14,6 +15,7 @@ import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
 import { User } from '../../api/users/types';
 import { getMyUser, updateUser } from '../../api/users/users.api';
 import { styles } from './styles';
+import { useNavigate } from 'react-router-dom';
 
 const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
     props
@@ -24,6 +26,7 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
     const [username, setUsername] = useState<string>();
     const [profileImageUrl, setProfileImageUrl] = useState<string>();
     const [imageFile, setImageFile] = useState<File>();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const { request, abort } = getMyUser();
@@ -74,6 +77,10 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
             setImageFile(file);
         }
     };
+
+    const navigatePreviousRoute = () =>{
+        navigate(-1);
+    }
 
     return (
         <div className={classes.root}>
@@ -147,14 +154,27 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
                     </Button>
                 </Box>
             ) : (
-                <Button
+                <Stack direction="row" spacing={2}>
+                    <Button
+                    variant='contained'
+                    color='primary'
+                    onClick={navigatePreviousRoute}
+                    sx={{ mt: 3 }}
+                    >
+                        Back
+                    </Button>
+
+                    <Button
                     variant='contained'
                     color='primary'
                     onClick={() => setIsEditing(true)}
                     sx={{ mt: 3 }}
-                >
-                    Edit Profile
-                </Button>
+                    >
+                        Edit Profile
+                    </Button>
+                
+                </Stack>
+                
             )}
         </div>
     );
