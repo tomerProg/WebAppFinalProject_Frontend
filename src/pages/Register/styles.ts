@@ -1,6 +1,9 @@
 import { createStyles } from '@mui/styles';
 
 export const styles = createStyles({
+    page: {
+        backgroundColor: 'whitesmoke'
+    },
     registerTitle: {
         margin: '0 2em',
         marginBottom: '1em',

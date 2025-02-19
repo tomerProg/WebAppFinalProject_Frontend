@@ -88,7 +88,7 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
     };
 
     return (
-        <CenteredPage>
+        <CenteredPage className={classes.page}>
             <EntryPaper>
                 <Box className={classes.registerTitle}>
                     <Typography component='h1' variant='h4'>

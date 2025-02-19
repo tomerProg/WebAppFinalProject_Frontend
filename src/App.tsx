@@ -1,5 +1,5 @@
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
-import React, { useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { AlertSnackbarProvider } from './components/AlertSnackbar/globalProvider';
 import { UserIdContext } from './Contexts/UserIdContext/UserContext';
@@ -18,7 +18,7 @@ const theme = createTheme({
     }
 });
 
-const App: React.FC = () => {
+const App: FunctionComponent = () => {
     const [userId, setUserId] = useState('');
 
     return (

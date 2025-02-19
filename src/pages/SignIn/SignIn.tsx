@@ -4,7 +4,6 @@ import {
     Button,
     Divider,
     Link,
-    Paper,
     Typography
 } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
@@ -19,14 +18,14 @@ import React, {
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login, loginWithGoogle } from '../../api/auth/auth-api';
+import { LoginResponse } from '../../api/auth/types';
+import { useAlertSnackbar } from '../../components/AlertSnackbar/globalProvider';
 import CenteredPage from '../../components/CenteredPage/CenteredPage';
+import EntryPaper from '../../components/EntryPaper/EntryPaper';
 import InputFields from './components/InputFields';
 import { SignInError, SignInInput } from './components/types';
 import { getSignInError } from './components/utils';
 import { styles } from './styles';
-import { LoginResponse } from '../../api/auth/types';
-import { useAlertSnackbar } from '../../components/AlertSnackbar/globalProvider';
-import EntryPaper from '../../components/EntryPaper/EntryPaper';
 
 interface SignInProps extends WithStyles<typeof styles> {
     setUserId: Dispatch<SetStateAction<string>>;
@@ -96,7 +95,7 @@ const SignIn: FunctionComponent<SignInProps> = (props) => {
     };
 
     return (
-        <CenteredPage>
+        <CenteredPage className={classes.page}>
             <EntryPaper>
                 <Box className={classes.mainBox}>
                     <Typography component='h1' variant='h4'>

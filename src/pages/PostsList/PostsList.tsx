@@ -66,7 +66,6 @@ const PostsPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
                                     <Avatar
                                         src={post.imageSrc}
                                         alt={post.owner}
-                                        sx={{color: 'lemonchiffon'}}
                                     />
                                 </ListItemAvatar>
                                 <ListItemText

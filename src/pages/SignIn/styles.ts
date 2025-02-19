@@ -1,6 +1,9 @@
 import { createStyles } from '@mui/styles';
 
 export const styles = createStyles({
+    page: {
+        backgroundColor: 'whitesmoke'
+    },
     mainBox: {
         display: 'flex',
         flexDirection: 'column',

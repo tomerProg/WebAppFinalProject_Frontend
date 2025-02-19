@@ -72,7 +72,6 @@ const FixersAppBar: FunctionComponent<WithStyles<typeof styles>> = (props) => {
                         >
                             <Avatar
                                 alt='User Avatar'
-                                sx={{ color: 'lemonchiffon' }}
                                 src={
                                     loginUser
                                         ? loginUser.profileImageUrl
