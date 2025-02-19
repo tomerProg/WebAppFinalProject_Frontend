@@ -1,10 +1,11 @@
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
-import React, { FunctionComponent, useState } from 'react';
-import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
-import { useAuth } from './api/auth/use.auth';
+import { FunctionComponent, useState } from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import { AlertSnackbarProvider } from './components/AlertSnackbar/globalProvider';
 import { UserIdContext } from './Contexts/UserIdContext/UserContext';
-import { createRouter } from './router';
+
+import FixersAppBar from './components/FixersAppBar/FixersAppBar';
+import Layout from './components/Layout/Layout';
 
 const theme = createTheme({
     palette: {
@@ -12,37 +13,24 @@ const theme = createTheme({
             main: '#1976d2'
         },
         background: {
-            default: '#f5f5f5'
+            default: 'white'
         }
     }
 });
 
-const Layout: FunctionComponent = () => {
-    const navigate = useNavigate();
+const App: FunctionComponent = () => {
     const [userId, setUserId] = useState('');
-    const { setToken: setAccessToken } = useAuth(navigate);
 
-    return (
-        <UserIdContext.Provider value={userId}>
-            <Routes>
-                {createRouter(setUserId, setAccessToken).map(
-                    ({ path, element }) => (
-                        <Route key={path} path={path} element={element} />
-                    )
-                )}
-            </Routes>
-        </UserIdContext.Provider>
-    );
-};
-
-const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
             <AlertSnackbarProvider>
-                <BrowserRouter>
-                    <CssBaseline />
-                    <Layout />
-                </BrowserRouter>
+                <UserIdContext.Provider value={userId}>
+                    <BrowserRouter>
+                        <CssBaseline />
+                        <FixersAppBar />
+                        <Layout setUserId={setUserId} />
+                    </BrowserRouter>
+                </UserIdContext.Provider>
             </AlertSnackbarProvider>
         </ThemeProvider>
     );

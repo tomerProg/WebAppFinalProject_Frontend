@@ -1,6 +1,8 @@
-import { createStyles } from '@mui/styles';
+import { Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
-export const styles = createStyles({
+export const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
     mainBox: {
         display: 'flex',
         flexDirection: 'column',
@@ -8,8 +10,22 @@ export const styles = createStyles({
         justifyContent: 'center',
     },    
     iconButton: {
-        width: '6em',
-        height: '6em',
+        [theme.breakpoints.down("sm")]: {
+            height: '5em',
+            width: '5em',
+        },
+        [theme.breakpoints.up("sm")]: {
+            height: '6em',
+            width: '6em',
+        },
+        [theme.breakpoints.up("md")]: {
+            height: '8em',
+            width: '8em',
+        },
+        [theme.breakpoints.up("lg")]: {
+            height: '10em',
+            width: '10em',
+        },
         padding: '0'
     },
     selectedAvatar:{
@@ -32,4 +48,4 @@ export const styles = createStyles({
         clip: 'rect(0 0 0 0)', 
         position: 'absolute'
     },
-});
+}));
