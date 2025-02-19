@@ -48,7 +48,7 @@ const FixersAppBar: FunctionComponent<WithStyles<typeof styles>> = (props) => {
         <Box className={classes.middleBox}/>                    
         <Box>          
           <IconButton edge="end" className={classes.avatarButton} onClick={handleOpenUserProfile}>
-            <Avatar alt="User Avatar" sx={{width: '100%', height: '100%'}} 
+            <Avatar alt="User Avatar" sx={{width: '100%', height: '100%', color: 'lemonchiffon'}} 
               src={loginUser ? loginUser.profileImageUrl : undefined} />
           </IconButton>
         </Box>        

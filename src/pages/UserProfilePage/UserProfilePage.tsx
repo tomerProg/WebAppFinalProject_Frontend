@@ -86,7 +86,7 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
                     <Avatar
                         src={profileImageUrl}
                         alt=''
-                        sx={{ width: 150, height: 150, mb: 2, fontSize: '3em' }}
+                        sx={{ width: 150, height: 150, mb: 2, fontSize: '3em', color: 'lemonchiffon' }}
                     />
                     {isEditing && (
                         <IconButton
