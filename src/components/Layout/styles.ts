@@ -1,7 +1,10 @@
-import { createStyles } from "@mui/styles";
+import { createStyles } from '@mui/styles';
 
 export const styles = createStyles({
-    root:{
-        height: '90vh'
+    rootWithAppBar: {
+        height: '90%'
+    },
+    rootWithoutAppBar: {
+        height: '100%'
     }
 });

@@ -2,26 +2,25 @@ import { createStyles } from '@mui/styles';
 
 export const styles = createStyles({
     appBar: {
-        height: '10vh',
+        height: '10%'
     },
-    middleBox: {
-        flexGrow: '1'
+    toolBar: {
+        display: 'flex',
+        justifyContent: 'space-between'
     },
-    leftBox:{
-        display: 'flex', 
-        alignItems: 'flex-end', 
-
+    logo: {
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center'
+    },
+    logoImage: {
+        aspectRatio: 1,
+        height: '100%',
+        paddingBottom: '10px'
     },
     avatarButton: {
-        width: '10vh',
-        height: '10vh',
+        height: '100%',
+        aspectRatio: '1',
         padding: '0'
-    },
-    fixersIcon: {
-        height: "60px", 
-        width: "90px",
-        marginBottom: '1em',
-        marginBlockStart: '1em',
-        marginBlockEnd: '1em',
     }
 });
