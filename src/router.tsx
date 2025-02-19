@@ -4,6 +4,7 @@ import PostsList from './pages/PostsList/PostsList';
 import Register from './pages/Register/Register';
 import SignIn from './pages/SignIn/SignIn';
 import UserProfilePage from './pages/UserProfilePage/UserProfilePage';
+import CreatePostPage from './pages/CreatePostPage/CreatePostPage';
 
 export const createRouter = (
     setUserId: Dispatch<SetStateAction<string>>,
@@ -23,5 +24,6 @@ export const createRouter = (
     },
     { path: '/profile', element: <UserProfilePage /> },
     { path: '/posts', element: <PostsList /> },
-    { path: '/post', element: <PostPage /> }
+    { path: '/post', element: <PostPage /> },
+    { path: '/createPost', element: <CreatePostPage /> }
 ];
