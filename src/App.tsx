@@ -13,11 +13,10 @@ const theme = createTheme({
             main: '#1976d2'
         },
         background: {
-            default: 'LightBlue'//'#f5f5f5'
+            default: 'white'
         }
     }
 });
-
 
 const App: React.FC = () => {
     const [userId, setUserId] = useState('');
@@ -25,13 +24,13 @@ const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
             <AlertSnackbarProvider>
-            <UserIdContext.Provider value={userId}>
-                <BrowserRouter>
-                    <CssBaseline /> 
-                    <FixersAppBar />
-                    <Layout setUserId={setUserId} />
-                </BrowserRouter>
-            </UserIdContext.Provider>
+                <UserIdContext.Provider value={userId}>
+                    <BrowserRouter>
+                        <CssBaseline />
+                        <FixersAppBar />
+                        <Layout setUserId={setUserId} />
+                    </BrowserRouter>
+                </UserIdContext.Provider>
             </AlertSnackbarProvider>
         </ThemeProvider>
     );

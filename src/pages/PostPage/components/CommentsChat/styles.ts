@@ -8,7 +8,8 @@ export const styles = createStyles({
         display: 'flex',
         flexDirection: 'column',
         height: '60%',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        background: 'whitesmoke'
     },
     comments: {
         display: 'flex',
