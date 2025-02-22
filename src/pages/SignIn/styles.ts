@@ -1,9 +1,8 @@
 import { createStyles } from '@mui/styles';
 
 export const styles = createStyles({
-    paper: {
-        padding: '2em',
-        width: '30%'
+    page: {
+        backgroundColor: 'whitesmoke'
     },
     mainBox: {
         display: 'flex',

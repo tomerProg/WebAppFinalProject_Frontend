@@ -12,6 +12,7 @@ export const styles = createStyles({
     postsList: {
         flexGrow: 1,
         overflowY: 'auto',
+        backgroundColor: 'whitesmoke',
         '&::-webkit-scrollbar': {
             width: '5px'
         },

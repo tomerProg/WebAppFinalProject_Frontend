@@ -1,15 +1,19 @@
-import React from 'react';
-import { TextField } from '@mui/material';
+import React, { FunctionComponent } from 'react';
+import { TextField, useMediaQuery } from '@mui/material';
 import { RegisterInput, RegisterError } from './types';
+import { useTheme } from "@mui/material/styles";
 
 interface InputFieldsProps{
   setRegisterInput: React.Dispatch<React.SetStateAction<RegisterInput>>;
   registerInput: RegisterInput;
-  setRegisterError: React.Dispatch<React.SetStateAction<RegisterError>>;
+  setRegisterErrors: React.Dispatch<React.SetStateAction<RegisterError>>;
   registerError: RegisterError;
 }
 
-const InputFields: React.FC<InputFieldsProps> = ({setRegisterInput, registerInput, setRegisterError: setRegisterErrors, registerError: registerError}: InputFieldsProps) => {
+const InputFields: FunctionComponent<InputFieldsProps> = ({setRegisterInput, registerInput, setRegisterErrors, registerError}: InputFieldsProps) => {
+  const theme = useTheme();
+  const isMediumScreen = useMediaQuery(theme.breakpoints.down("md")); 
+  
   const onChangeField = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setRegisterInput(prev => ({
@@ -27,33 +31,41 @@ const InputFields: React.FC<InputFieldsProps> = ({setRegisterInput, registerInpu
 
   return (
     <>
-      <TextField id="userName" label="Username" name="userName" autoComplete="userName" margin="normal"
-        required fullWidth autoFocus
+      <TextField id="userName" label="Username" name="userName" autoComplete="userName" 
+        required fullWidth autoFocus 
         value={registerInput.userName}
         onChange={onChangeField}
         error={!!registerError.userName}
         helperText={registerError.userName}
+        size={isMediumScreen ? "small" : "medium"}
+        margin={isMediumScreen ? "dense" : "normal"}
       />
-      <TextField id="email" label="Email Address" name="email" autoComplete="email" margin="normal"
+      <TextField id="email" label="Email Address" name="email" autoComplete="email"
         required fullWidth
         value={registerInput.email}
         onChange={onChangeField}
         error={!!registerError.email}
         helperText={registerError.email}
+        size={isMediumScreen ? "small" : "medium"}
+        margin={isMediumScreen ? "dense" : "normal"}
       />
       <TextField id="password" label="Password" name="password" type="password" autoComplete="new-password"
-        margin="normal" required fullWidth
+        required fullWidth 
         value={registerInput.password}
         onChange={onChangeField}
         error={!!registerError.password}
         helperText={registerError.password}
+        size={isMediumScreen ? "small" : "medium"}
+        margin={isMediumScreen ? "dense" : "normal"}
       />
       <TextField id="confirmPassword" label="Confirm Password" name="confirmPassword" type="password"
-        autoComplete="new-password" margin="normal" required fullWidth
+        autoComplete="new-password" required fullWidth
         value={registerInput.confirmPassword}
         onChange={onChangeField}
         error={!!registerError.confirmPassword}
         helperText={registerError.confirmPassword}
+        size={isMediumScreen ? "small" : "medium"}
+        margin={isMediumScreen ? "dense" : "normal"}
       />
     </>   
   );

@@ -22,16 +22,17 @@ const BaseCommentsChat: FunctionComponent<CommentsChatProps> = (props) => {
 
     useEffect(() => {
         const abortControler = new AbortController();
-        const requestPostComments = getPostComments(postId);
-
-        const intervalId = setInterval(() => {
-            requestPostComments(abortControler)
-                .then(({ data: comments }) => setComments(comments))
+        const refreshComments = () =>
+            getPostComments(postId, abortControler)
+                .then(({ data: comments }) => {
+                    setComments(comments);
+                    setTimeout(refreshComments, 1_000);
+                })
                 .catch(ignoreCanceledRequest);
-        }, 10_000);
+
+        refreshComments();
 
         return () => {
-            clearInterval(intervalId);
             abortControler.abort();
         };
     }, [postId]);
@@ -42,7 +43,7 @@ const BaseCommentsChat: FunctionComponent<CommentsChatProps> = (props) => {
         }
 
         const content = commentInputRef.current?.value.trim();
-        const { data: comment } = await uploadComment(content);
+        const { data: comment } = await uploadComment(postId, content);
         setComments((comments) => comments.concat(comment));
         commentInputRef.current.value = '';
     };

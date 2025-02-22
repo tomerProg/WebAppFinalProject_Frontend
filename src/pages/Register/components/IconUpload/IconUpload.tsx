@@ -1,15 +1,15 @@
 import React, { useState, useRef, FunctionComponent } from 'react';
 import { IconButton, Avatar, Box, Button } from '@mui/material';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import { withStyles, WithStyles } from '@mui/styles';
-import { styles } from './styles';
+import { useStyles } from './styles';
 
-interface IconUploadProps extends WithStyles<typeof styles> {
+interface IconUploadProps {
     setProfileImageFile: (profileImage: File) => void;
 }
 
 const IconUpload: FunctionComponent<IconUploadProps> = (props) => {
-    const { classes, setProfileImageFile } = props;
+    const classes = useStyles();
+    const { setProfileImageFile } = props;
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -84,4 +84,4 @@ const IconUpload: FunctionComponent<IconUploadProps> = (props) => {
     );
 };
 
-export default withStyles(styles)(IconUpload);
+export default IconUpload;

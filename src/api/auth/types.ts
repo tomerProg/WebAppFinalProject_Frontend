@@ -1,3 +1,5 @@
+import { InternalAxiosRequestConfig } from 'axios';
+
 type User = {
     email: string;
     username: string;
@@ -16,3 +18,10 @@ export type LoginResponse = {
     _id: string;
     accessToken: string;
 };
+
+export type RetriableInternalAxiosRequestConfig = InternalAxiosRequestConfig & {
+    _retry?: boolean;
+};
+
+
+export type SetAccessTokenFunction = (token: string | null) => void

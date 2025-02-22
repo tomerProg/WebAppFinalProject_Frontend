@@ -1,15 +1,15 @@
 import { Dispatch, SetStateAction } from 'react';
-// import { createBrowserRouter } from 'react-router-dom';
 import PostPage from './pages/PostPage/PostPage';
 import PostsList from './pages/PostsList/PostsList';
 import Register from './pages/Register/Register';
 import SignIn from './pages/SignIn/SignIn';
 import UserProfilePage from './pages/UserProfilePage/UserProfilePage';
+import { SetAccessTokenFunction } from './api/auth/types';
 import CreatePostPage from './pages/CreatePostPage/CreatePostPage';
 
 export const createRouter = (
     setUserId: Dispatch<SetStateAction<string>>,
-    setAccessToken: Dispatch<SetStateAction<string | null>>
+    setAccessToken: SetAccessTokenFunction
 ) => [
     {
         path: '/',

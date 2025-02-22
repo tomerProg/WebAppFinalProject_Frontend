@@ -21,7 +21,6 @@ export const styles = createStyles({
     pannel: {
         margin: '1%',
         flexGrow: 1,
-        background: 'white',
         display: 'flex',
         flexDirection: 'column'
     },
