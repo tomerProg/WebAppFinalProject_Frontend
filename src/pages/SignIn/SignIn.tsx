@@ -24,6 +24,7 @@ interface SignInProps extends WithStyles<typeof styles> {
     setUserId: Dispatch<SetStateAction<string>>;
     setAccessToken: SetAccessTokenFunction;
 }
+
 const SignIn: FunctionComponent<SignInProps> = (props) => {
     const { classes, setUserId, setAccessToken } = props;
     const navigate = useNavigate();
