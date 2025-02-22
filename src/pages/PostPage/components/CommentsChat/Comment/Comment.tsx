@@ -5,10 +5,9 @@ import { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { PostComment } from '../../../../../api/comments/types';
 import { User } from '../../../../../api/users/types';
 import { getUserById } from '../../../../../api/users/users.api';
-import defaultAvatar from '../../../../../assets/default avatar.png';
+import { ignoreCanceledRequest } from '../../../../../api/utils';
 import { UserIdContext } from '../../../../../Contexts/UserIdContext/UserContext';
 import { styles } from './styles';
-import { ignoreCanceledRequest } from '../../../../../api/utils';
 
 interface CommentProps extends WithStyles<typeof styles> {
     comment: PostComment;
@@ -31,10 +30,10 @@ const Comment: FunctionComponent<CommentProps> = (props) => {
     return (
         <div
             className={clsx(classes.root, {
-                [classes.ownComment]: comment.owner === userId
+                [classes.ownComment]: comment.isUserTheOwner || comment.owner === userId
             })}
         >
-            <Avatar alt={defaultAvatar} src={commentOwner?.profileImage} />
+            <Avatar alt={commentOwner?.username} src={commentOwner?.profileImage} />
             <Paper className={classes.commentContent}>
                 {commentOwner ? (
                     <Typography
