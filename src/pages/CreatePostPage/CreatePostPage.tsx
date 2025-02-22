@@ -20,13 +20,14 @@ import { UserIdContext } from '../../Contexts/UserIdContext/UserContext';
 import PostInfo from './components/Layout/Layout';
 import { styles } from './styles';
 import PostImage from './components/PostImage/PostImage';
-import { uploadPostImage } from '../../api/posts/posts.api';
+import { createPost, uploadPostImage } from '../../api/posts/posts.api';
 
 const CreatePostPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     const { classes } = props;
-    const location = useLocation();
     const navigate = useNavigate();
-    const [post, setPost] = useState<Post>({
+
+    const userId = useContext(UserIdContext);
+    const [postInput, setPostInput] = useState<Post>({
         _id: '',
         title: '',
         owner: '',
@@ -37,61 +38,51 @@ const CreatePostPage: FunctionComponent<WithStyles<typeof styles>> = (props) => 
         imageSrc: ''
     });
     const [postImage, setPostImage] = useState<File | null>(null);
-
+    
     const tryUploadPostImage = useCallback(async () => {
-            if (!postImage) return undefined;
+        if (!postImage) return undefined;
+
+        try {
+            const { data: imageUrl } = await uploadPostImage(postImage);
+            return imageUrl;
+        } catch (error) {
+            console.error('failed uploading post image', error);
+            return undefined;
+        }
+    }, [postImage]);
+    
+    const isValidPostInput = (): boolean => {
+        return true;
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+            e.preventDefault();
+            // setSubmitError('');
+    
+            if (!isValidPostInput()) {
+                return;
+            }
+    
+            const postImageUrl = await tryUploadPostImage();
+            const postToCreate: Post = {
+                ...postInput,
+                owner: userId,
+                imageSrc: postImageUrl
+            };
     
             try {
-                const { data: imageUrl } = await uploadPostImage(postImage);
-                return imageUrl;
+                await createPost(postToCreate);
+                navigate('/posts');
             } catch (error) {
-                console.error('failed uploading post image', error);
-                return undefined;
+                console.error(error);
+                // setSubmitError('Failed to register. Please try again.');
             }
-        }, [postImage]);
-    
-
-    // const userId = useContext(UserIdContext);
-    // const [post, setPost] = useState<Post | null>(null);
-    // const [postOwner, setPostOwner] = useState<User | null>(null);
-    // const [likedPost, setLikedPost] = useState<boolean>();
-    // const { showSnackbar } = useAlertSnackbar();
-
-    // useEffect(() => {
-    //     const post = location.state;
-    //     const validation = postZodSchema.safeParse(post);
-    //     if (validation.error) {
-    //         console.error(validation.error);
-    //         navigate('/posts');
-    //     } else {
-    //         setPost(validation.data);
-    //     }
-    // }, [location, navigate]);
-
-    // useEffect(() => {
-    //     if (post) {
-    //         const { request, abort } = getUserById(post.owner);
-    //         request
-    //             .then(({ data }) => setPostOwner(data))
-    //             .catch(ignoreCanceledRequest);
-
-    //         return () => abort();
-    //     }
-    // }, [post]);
-
-    // useEffect(() => {
-    //     const isLiked = (post?.likes ?? []).includes(userId);
-    //     const isDisliked = (post?.dislikes ?? []).includes(userId);
-
-    //     if (isLiked || isDisliked) {
-    //         setLikedPost(isLiked && !isDisliked);
-    //     }
-    // }, [post, userId]);
+        };
 
     return (
         <div className={classes.root}>
             <section id='left-pannel' className={clsx(classes.pannel, classes.leftPannel)}>
-                <PostInfo setPost={setPost} post={post} />
+                <PostInfo setPost={setPostInput} post={postInput} />
             </section>
 
             <section
