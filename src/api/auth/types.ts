@@ -22,3 +22,6 @@ export type LoginResponse = {
 export type RetriableInternalAxiosRequestConfig = InternalAxiosRequestConfig & {
     _retry?: boolean;
 };
+
+
+export type SetAccessTokenFunction = (token: string | null) => void

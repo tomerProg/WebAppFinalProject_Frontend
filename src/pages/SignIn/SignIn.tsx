@@ -1,11 +1,4 @@
-import {
-    Alert,
-    Box,
-    Button,
-    Divider,
-    Link,
-    Typography
-} from '@mui/material';
+import { Alert, Box, Button, Divider, Link, Typography } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { isEmpty } from 'ramda';
@@ -18,7 +11,7 @@ import React, {
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login, loginWithGoogle } from '../../api/auth/auth-api';
-import { LoginResponse } from '../../api/auth/types';
+import { LoginResponse, SetAccessTokenFunction } from '../../api/auth/types';
 import { useAlertSnackbar } from '../../components/AlertSnackbar/globalProvider';
 import CenteredPage from '../../components/CenteredPage/CenteredPage';
 import EntryPaper from '../../components/EntryPaper/EntryPaper';
@@ -29,7 +22,7 @@ import { styles } from './styles';
 
 interface SignInProps extends WithStyles<typeof styles> {
     setUserId: Dispatch<SetStateAction<string>>;
-    setAccessToken: Dispatch<SetStateAction<string | null>>;
+    setAccessToken: SetAccessTokenFunction;
 }
 const SignIn: FunctionComponent<SignInProps> = (props) => {
     const { classes, setUserId, setAccessToken } = props;

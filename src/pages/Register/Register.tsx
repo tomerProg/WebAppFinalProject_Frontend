@@ -9,7 +9,7 @@ import React, {
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login, register } from '../../api/auth/auth-api';
-import { UserWithPassword } from '../../api/auth/types';
+import { SetAccessTokenFunction, UserWithPassword } from '../../api/auth/types';
 import { uploadProfileImage } from '../../api/users/users.api';
 import CenteredPage from '../../components/CenteredPage/CenteredPage';
 import EntryPaper from '../../components/EntryPaper/EntryPaper';
@@ -21,7 +21,7 @@ import { styles } from './styles';
 
 interface RegisterProps extends WithStyles<typeof styles> {
     setUserId: Dispatch<SetStateAction<string>>;
-    setAccessToken: Dispatch<SetStateAction<string | null>>;
+    setAccessToken: SetAccessTokenFunction;
 }
 
 const Register: FunctionComponent<RegisterProps> = (props) => {

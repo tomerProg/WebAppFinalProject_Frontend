@@ -15,7 +15,7 @@ const Layout: FunctionComponent<LayoutProps> = (props) => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const { setToken: setAccessToken } = useAuth(navigate);
+    const { setAccessToken } = useAuth(navigate);
 
     const visibleAppBar: boolean = useMemo<boolean>(
         () => isVisibleAppBar(location),

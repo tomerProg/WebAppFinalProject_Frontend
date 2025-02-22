@@ -4,10 +4,11 @@ import PostsList from './pages/PostsList/PostsList';
 import Register from './pages/Register/Register';
 import SignIn from './pages/SignIn/SignIn';
 import UserProfilePage from './pages/UserProfilePage/UserProfilePage';
+import { SetAccessTokenFunction } from './api/auth/types';
 
 export const createRouter = (
     setUserId: Dispatch<SetStateAction<string>>,
-    setAccessToken: Dispatch<SetStateAction<string | null>>
+    setAccessToken: SetAccessTokenFunction
 ) => [
     {
         path: '/',

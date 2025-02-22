@@ -1,23 +1,28 @@
 import { AxiosError, HttpStatusCode, isAxiosError } from 'axios';
 import { identity, isNil } from 'ramda';
-import { useLayoutEffect, useState } from 'react';
+import { useCallback, useLayoutEffect, useState } from 'react';
 import { NavigateFunction } from 'react-router-dom';
 import apiClient from '../api-client';
 import { refreshAuthAccessToken } from './auth-api';
-import { RetriableInternalAxiosRequestConfig } from './types';
-
+import {
+    RetriableInternalAxiosRequestConfig,
+    SetAccessTokenFunction
+} from './types';
 
 export const useAuth = (navigate: NavigateFunction) => {
     const [token, setToken] = useState<string | null>(
         localStorage.getItem('accessToken')
     );
 
-    const setAccessToken = (token: string | null) => {
-        if (token) {
-            localStorage.setItem('accessToken', token);
-        }
-        setToken(token);
-    };
+    const setAccessToken: SetAccessTokenFunction = useCallback(
+        (token: string | null) => {
+            if (token) {
+                localStorage.setItem('accessToken', token);
+            }
+            setToken(token);
+        },
+        []
+    );
 
     useLayoutEffect(() => {
         const authInterceptor = apiClient.interceptors.request.use(
@@ -78,9 +83,9 @@ export const useAuth = (navigate: NavigateFunction) => {
         return () => {
             apiClient.interceptors.response.eject(refreshInterceptor);
         };
-    }, [navigate, token]);
+    }, [navigate, token, setAccessToken]);
 
     return {
-        setToken: setAccessToken
+        setAccessToken
     };
 };
