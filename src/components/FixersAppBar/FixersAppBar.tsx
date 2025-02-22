@@ -11,21 +11,18 @@ import {
 import { withStyles, WithStyles } from '@mui/styles';
 import {
     FunctionComponent,
-    useContext,
     useEffect,
     useMemo,
     useState
 } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { User } from '../../api/users/types';
-import { getUserById } from '../../api/users/users.api';
+import { getMyUser } from '../../api/users/users.api';
 import { ignoreCanceledRequest } from '../../api/utils';
-import { UserIdContext } from '../../Contexts/UserIdContext/UserContext';
 import { styles } from './styles';
 import { createAppbarMenu, isVisibleAppBar } from './utils';
 
 const FixersAppBar: FunctionComponent<WithStyles<typeof styles>> = (props) => {
-    const userId = useContext(UserIdContext);
     const { classes } = props;
     const [loginUser, setLoginUser] = useState<User | null>(null);
     const navigate = useNavigate();
@@ -46,14 +43,14 @@ const FixersAppBar: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     );
 
     useEffect(() => {
-        if (isVisible && userId !== '') {
-            const { request, abort } = getUserById(userId);
+        if (isVisible) {
+            const { request, abort } = getMyUser();
             request
                 .then(({ data }) => setLoginUser(data))
                 .catch(ignoreCanceledRequest);
             return () => abort();
         }
-    }, [isVisible, userId, location]);
+    }, [isVisible, location]);
 
     return (
         <>
