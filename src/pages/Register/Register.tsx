@@ -1,9 +1,7 @@
 import { Alert, Box, Button, Divider, Link, Typography } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
 import React, {
-    Dispatch,
     FunctionComponent,
-    SetStateAction,
     useCallback,
     useState
 } from 'react';
@@ -20,12 +18,11 @@ import { getRegisterError } from './components/utils';
 import { styles } from './styles';
 
 interface RegisterProps extends WithStyles<typeof styles> {
-    setUserId: Dispatch<SetStateAction<string>>;
     setAccessToken: SetAccessTokenFunction;
 }
 
 const Register: FunctionComponent<RegisterProps> = (props) => {
-    const { classes, setUserId, setAccessToken } = props;
+    const { classes, setAccessToken } = props;
     const navigate = useNavigate();
 
     const [registerInput, setRegisterInput] = useState<RegisterInput>({
@@ -78,7 +75,6 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
                 userToRegister.email,
                 userToRegister.password
             );
-            setUserId(loginReposne._id);
             setAccessToken(loginReposne.accessToken);
             navigate('/posts');
         } catch (error) {
