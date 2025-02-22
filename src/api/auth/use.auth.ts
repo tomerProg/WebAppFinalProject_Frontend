@@ -64,7 +64,6 @@ export const useAuth = (navigate: NavigateFunction) => {
 
                         return apiClient(originalRequest);
                     } catch (error) {
-                        console.log('Tomer', error);
                         setAccessToken(null);
                         console.error('refresh token error:', error);
 
