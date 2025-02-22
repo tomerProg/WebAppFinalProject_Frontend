@@ -16,6 +16,14 @@ export const styles = createStyles({
     root: {
         width: '100%',
         height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center', 
+        alignItems: 'center'
+    },
+    mainBox: {
+        width: '100%',
+        height: '100%',
         display: 'flex'
     },
     pannel: {
@@ -32,22 +40,18 @@ export const styles = createStyles({
         width: '40%',
         padding: '2%'
     },
-    postImage: {
+    containerButtonCreatePost: {
+        width: '100%',
         height: '50%',
-        objectFit: 'contain',
-        background: 'whitesmoke',
-        borderRadius: '16px',
-        border: '1px solid #0000001c'
-    },
-    defaultPostImage: {
-        padding: '8px '
-    },
-    userCardSection: {
-        flexGrow: 1,
+        paddingLeft: '15%',
         display: 'flex',
-        alignItems: 'center'
+        flexDirection: 'column', 
+        alignItems: 'center',
     },
-    userCard: {
-        width: '100%'
+    buttonCreatePost:{
+        width: '40%',
+    },
+    errorAlert:{
+        width: '20%'
     }
 });

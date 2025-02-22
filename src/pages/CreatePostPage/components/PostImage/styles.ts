@@ -4,7 +4,7 @@ import { createStyles, makeStyles } from '@mui/styles';
 export const useStyles = makeStyles((theme: Theme) =>
     createStyles({
     mainBox: {
-        height: '50%',
+        height: '80%',
         background: 'whitesmoke',
         borderRadius: '16px',
         border: '1px solid #0000001c',
