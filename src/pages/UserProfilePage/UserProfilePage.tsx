@@ -38,7 +38,7 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
     useEffect(() => {
         if (user) {
             setUsername(user.username);
-            setProfileImageUrl(user.profileImageUrl);
+            setProfileImageUrl(user.profileImage);
         }
     }, [user]);
 
@@ -64,7 +64,7 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
     const handleCancel = () => {
         if (user) {
             setUsername(user.username);
-            setProfileImageUrl(user.profileImageUrl);
+            setProfileImageUrl(user.profileImage);
         }
         stopEdit();
     };

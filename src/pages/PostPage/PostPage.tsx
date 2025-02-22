@@ -99,7 +99,7 @@ const PostPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
                 {post && (
                     <>
                         <PostInfo post={post} />
-                        <CommentsChat postId={post?._id ?? ''} />
+                        <CommentsChat postId={post._id} />
                     </>
                 )}
             </section>

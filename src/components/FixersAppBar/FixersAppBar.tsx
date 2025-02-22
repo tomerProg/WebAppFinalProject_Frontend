@@ -35,12 +35,14 @@ const FixersAppBar: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     );
 
     useEffect(() => {
-        const { request, abort } = getUserById(userId);
-        request
-            .then(({ data }) => setLoginUser(data))
-            .catch(ignoreCanceledRequest);
-        return () => abort();
-    }, [userId, location]);
+        if (isVisible && userId !== '') {
+            const { request, abort } = getUserById(userId);
+            request
+                .then(({ data }) => setLoginUser(data))
+                .catch(ignoreCanceledRequest);
+            return () => abort();
+        }
+    }, [isVisible, userId, location]);
 
     const handleOpenUserProfile = () => {
         navigate('/profile');
@@ -74,7 +76,7 @@ const FixersAppBar: FunctionComponent<WithStyles<typeof styles>> = (props) => {
                                 alt='User Avatar'
                                 src={
                                     loginUser
-                                        ? loginUser.profileImageUrl
+                                        ? loginUser.profileImage
                                         : undefined
                                 }
                             />
