@@ -3,7 +3,7 @@ import { Dispatch, FunctionComponent, SetStateAction, useMemo } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../api/auth/use.auth';
 import { createRouter } from '../../router';
-import { isVisibleAppBar } from '../FixersAppBar/components/utils';
+import { isVisibleAppBar } from '../FixersAppBar/utils';
 import { styles } from './styles';
 
 interface LayoutProps extends WithStyles<typeof styles> {
