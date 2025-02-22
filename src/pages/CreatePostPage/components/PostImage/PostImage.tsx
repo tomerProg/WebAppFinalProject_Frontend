@@ -1,9 +1,7 @@
 import React, { useState, useRef, FunctionComponent } from 'react';
 import {Box, Button, ButtonBase, Tooltip } from '@mui/material';
 import defaultPostImage from '../../../../assets/default-post-image.png';
-import { withStyles, WithStyles } from '@mui/styles';
 import { useStyles } from './styles';
-
 
 interface PostImageProps {
     setPostImage: (postImage: File) => void;

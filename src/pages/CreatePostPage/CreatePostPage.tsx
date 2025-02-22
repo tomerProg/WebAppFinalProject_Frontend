@@ -9,7 +9,6 @@ import {
     useState
 } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { updatePostLike } from '../../api/posts/posts.api';
 import { Post, postZodSchema } from '../../api/posts/types';
 import { User } from '../../api/users/types';
 import { getUserById } from '../../api/users/users.api';
@@ -21,6 +20,7 @@ import { UserIdContext } from '../../Contexts/UserIdContext/UserContext';
 import PostInfo from './components/Layout/Layout';
 import { styles } from './styles';
 import PostImage from './components/PostImage/PostImage';
+import { uploadPostImage } from '../../api/posts/posts.api';
 
 const CreatePostPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     const { classes } = props;
@@ -37,6 +37,19 @@ const CreatePostPage: FunctionComponent<WithStyles<typeof styles>> = (props) => 
         imageSrc: ''
     });
     const [postImage, setPostImage] = useState<File | null>(null);
+
+    const tryUploadPostImage = useCallback(async () => {
+            if (!postImage) return undefined;
+    
+            try {
+                const { data: imageUrl } = await uploadPostImage(postImage);
+                return imageUrl;
+            } catch (error) {
+                console.error('failed uploading post image', error);
+                return undefined;
+            }
+        }, [postImage]);
+    
 
     // const userId = useContext(UserIdContext);
     // const [post, setPost] = useState<Post | null>(null);

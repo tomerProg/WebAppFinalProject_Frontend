@@ -8,3 +8,17 @@ export const updatePostLike = async (postId: string, like?: boolean) =>
 export const getAllPosts = () => AbortableRequest((abortController) =>
     apiClient.get<Post[]>('/post', { signal: abortController.signal })
 );
+
+export const uploadPostImage = (postImage: File) => {
+    const formData = new FormData();
+    formData.append('postImage', postImage);
+    return apiClient.post<string>(
+        'files/post-image',
+        formData,
+        {
+            headers: {
+                'Content-Type': 'image/jpeg'
+            }
+        }
+    );
+};
