@@ -62,6 +62,7 @@ const CreatePostPage: FunctionComponent<WithStyles<typeof styles>> = (props) => 
                 _id: '',
                 title: postInput.title,
                 description: postInput.description,
+                suggestion: 'my suggestion',
                 owner: userId,
                 imageSrc: postImageUrl,
                 likes: [],

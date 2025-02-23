@@ -10,10 +10,7 @@ export const getAllPosts = () => AbortableRequest((abortController) =>
 );
 
 export const createPost = async (post: Post) =>
-    AbortableRequest((abortController) =>
-    apiClient.post('/post', { ...post, 
-                            signal: abortController.signal })
-);
+    apiClient.post('/post', post); 
 
 export const uploadPostImage = (postImage: File) => {
     const formData = new FormData();
