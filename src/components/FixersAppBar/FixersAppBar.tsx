@@ -9,12 +9,7 @@ import {
     Typography
 } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
-import {
-    FunctionComponent,
-    useEffect,
-    useMemo,
-    useState
-} from 'react';
+import { FunctionComponent, useEffect, useMemo, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { User } from '../../api/users/types';
 import { getMyUser } from '../../api/users/users.api';
@@ -62,7 +57,10 @@ const FixersAppBar: FunctionComponent<WithStyles<typeof styles>> = (props) => {
                     className={classes.appBar}
                 >
                     <Toolbar className={classes.toolBar}>
-                        <Box className={classes.logo}>
+                        <Box
+                            className={classes.logo}
+                            onClick={() => navigate('/posts')}
+                        >
                             <img
                                 src='/favicon.svg'
                                 alt='icon'
