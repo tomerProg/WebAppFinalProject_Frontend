@@ -2,7 +2,6 @@ import { createStyles } from '@mui/styles';
 
 export const styles = createStyles({
     root: {
-        // height: '40%',
         height: '70%',
         display: 'flex',
         flexDirection: 'column'

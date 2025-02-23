@@ -1,7 +1,8 @@
-import React, { useState, useRef, FunctionComponent } from 'react';
+import React, { useState, useRef, FunctionComponent, useMemo } from 'react';
 import {Box, Button, ButtonBase, Tooltip } from '@mui/material';
 import defaultPostImage from '../../../../assets/default-post-image.png';
 import { useStyles } from './styles';
+import clsx from 'clsx';
 
 interface PostImageProps {
     setPostImage: (postImage: File) => void;
@@ -12,7 +13,7 @@ const PostImage: FunctionComponent<PostImageProps> = (props) => {
     const classes = useStyles();
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
-
+    
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
@@ -33,8 +34,8 @@ const PostImage: FunctionComponent<PostImageProps> = (props) => {
     };
 
     return (
-        <Box className={classes.mainBox}>
-            <Tooltip title='Add Image' arrow>
+        <Box className={clsx(classes.root, )}>
+            <Tooltip title='Add Image' arrow disableHoverListener={!!selectedImage}>
                 <ButtonBase
                     className={classes.imageButton}
                     onClick={() => inputRef.current?.click()}
@@ -54,14 +55,17 @@ const PostImage: FunctionComponent<PostImageProps> = (props) => {
             />
 
             {selectedImage && (
-                <Button
+                <Box className={classes.removeImageContainer}>
+                    <Button
                     variant='text'
                     color='error'
                     size='small'
                     onClick={handleRemoveIcon}
-                >
-                    Remove Image
-                </Button>
+                    >
+                        Remove Image
+                    </Button>
+                </Box>    
+                
             )}            
         </Box>
         

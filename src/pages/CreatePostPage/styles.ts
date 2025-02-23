@@ -23,7 +23,7 @@ export const styles = createStyles({
     },
     mainBox: {
         width: '100%',
-        height: '100%',
+        height: '65%',
         display: 'flex'
     },
     pannel: {
@@ -31,7 +31,7 @@ export const styles = createStyles({
         flexGrow: 1,
         background: 'white',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
     },
     leftPannel: {
         width: '56%'
@@ -42,7 +42,7 @@ export const styles = createStyles({
     },
     containerButtonCreatePost: {
         width: '100%',
-        height: '50%',
+        height: '100%',
         paddingLeft: '15%',
         display: 'flex',
         flexDirection: 'column', 

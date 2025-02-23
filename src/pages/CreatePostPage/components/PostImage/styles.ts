@@ -3,7 +3,7 @@ import { createStyles, makeStyles } from '@mui/styles';
 
 export const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-    mainBox: {
+    root:{
         height: '80%',
         background: 'whitesmoke',
         borderRadius: '16px',
@@ -15,11 +15,16 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     postImage: {
         height: '100%',
+        width: '100%', 
         objectFit: 'contain',
-        
     },
     hideInput: {
         clip: 'rect(0 0 0 0)', 
         position: 'absolute'
     },
+    removeImageContainer:{
+       display:  'flex',
+       alignItems: 'center',
+       justifyContent: 'center' 
+    }
 }));
