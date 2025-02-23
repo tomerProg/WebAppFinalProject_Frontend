@@ -11,3 +11,5 @@ export const postZodSchema = z.object({
     imageSrc: z.string().optional()
 });
 export type Post = z.infer<typeof postZodSchema>;
+
+export type PostForCreation = Pick<Post, 'title' | 'description' | 'imageSrc'>;
