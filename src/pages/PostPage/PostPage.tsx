@@ -1,23 +1,16 @@
 import { withStyles, WithStyles } from '@mui/styles';
 import clsx from 'clsx';
 import { isNil } from 'ramda';
-import {
-    FunctionComponent,
-    useCallback,
-    useContext,
-    useEffect,
-    useState
-} from 'react';
+import { FunctionComponent, useCallback, useEffect, useState } from 'react';
 import { Location, useLocation, useNavigate } from 'react-router-dom';
 import { updatePostLike } from '../../api/posts/posts.api';
 import { Post, postZodSchema } from '../../api/posts/types';
 import { User } from '../../api/users/types';
-import { getUserById } from '../../api/users/users.api';
+import { getMyUser, getUserById } from '../../api/users/users.api';
 import { ignoreCanceledRequest } from '../../api/utils';
 import defaultPostImage from '../../assets/default-post-image.png';
 import { useAlertSnackbar } from '../../components/AlertSnackbar/globalProvider';
 import UserCard from '../../components/UserCard/UserCard';
-import { UserIdContext } from '../../Contexts/UserIdContext/UserContext';
 import CommentsChat from './components/CommentsChat/CommentsChat';
 import LikeDislike from './components/LikeDislike/LikeDislike';
 import PostInfo from './components/PostInfo/PostInfo';
@@ -30,7 +23,7 @@ const PostPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     const location: Location<PostPageLocationState> = useLocation();
     const navigate = useNavigate();
 
-    const userId = useContext(UserIdContext);
+    const [userId, setUserId] = useState('');
     const [post, setPost] = useState<Post | null>(null);
     const [postOwner, setPostOwner] = useState<User>();
     const [likedPost, setLikedPost] = useState<boolean>();
@@ -45,6 +38,12 @@ const PostPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
         } else {
             setPostOwner(owner);
             setPost(validation.data);
+            const { request, abort } = getMyUser();
+            request
+                .then(({ data: { _id } }) => setUserId(_id))
+                .catch(ignoreCanceledRequest);
+
+            return () => abort();
         }
     }, [location, navigate]);
 
@@ -103,7 +102,7 @@ const PostPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
                 {post && (
                     <>
                         <PostInfo post={post} />
-                        <CommentsChat postId={post._id} />
+                        <CommentsChat postId={post._id} loggedUserId={userId} />
                     </>
                 )}
             </section>

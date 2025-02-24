@@ -2,13 +2,7 @@ import { Alert, Box, Button, Divider, Link, Typography } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { isEmpty } from 'ramda';
-import React, {
-    Dispatch,
-    FunctionComponent,
-    SetStateAction,
-    useCallback,
-    useState
-} from 'react';
+import React, { FunctionComponent, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login, loginWithGoogle } from '../../api/auth/auth-api';
 import { LoginResponse, SetAccessTokenFunction } from '../../api/auth/types';
@@ -21,12 +15,11 @@ import { getSignInError } from './components/utils';
 import { styles } from './styles';
 
 interface SignInProps extends WithStyles<typeof styles> {
-    setUserId: Dispatch<SetStateAction<string>>;
     setAccessToken: SetAccessTokenFunction;
 }
 
 const SignIn: FunctionComponent<SignInProps> = (props) => {
-    const { classes, setUserId, setAccessToken } = props;
+    const { classes, setAccessToken } = props;
     const navigate = useNavigate();
     const { showSnackbar } = useAlertSnackbar();
 
@@ -39,11 +32,10 @@ const SignIn: FunctionComponent<SignInProps> = (props) => {
 
     const handleSuccessLogin = useCallback(
         (loginResponse: LoginResponse) => {
-            setUserId(loginResponse._id);
             setAccessToken(loginResponse.accessToken);
             navigate('/posts');
         },
-        [setUserId, setAccessToken, navigate]
+        [setAccessToken, navigate]
     );
 
     const checkInput = (): boolean => {
