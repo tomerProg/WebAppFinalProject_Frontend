@@ -1,7 +1,8 @@
 import { withStyles, WithStyles } from '@mui/styles';
 import clsx from 'clsx';
+import { isNil } from 'ramda';
 import { FunctionComponent, useCallback, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Location, useLocation, useNavigate } from 'react-router-dom';
 import { updatePostLike } from '../../api/posts/posts.api';
 import { Post, postZodSchema } from '../../api/posts/types';
 import { User } from '../../api/users/types';
@@ -15,24 +16,27 @@ import LikeDislike from './components/LikeDislike/LikeDislike';
 import PostInfo from './components/PostInfo/PostInfo';
 import { styles } from './styles';
 
+export type PostPageLocationState = { post: Post; owner?: User };
+
 const PostPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     const { classes } = props;
-    const location = useLocation();
+    const location: Location<PostPageLocationState> = useLocation();
     const navigate = useNavigate();
 
     const [userId, setUserId] = useState('');
     const [post, setPost] = useState<Post | null>(null);
-    const [postOwner, setPostOwner] = useState<User | null>(null);
+    const [postOwner, setPostOwner] = useState<User>();
     const [likedPost, setLikedPost] = useState<boolean>();
     const { showSnackbar } = useAlertSnackbar();
 
     useEffect(() => {
-        const post = location.state;
+        const { post, owner } = location.state;
         const validation = postZodSchema.safeParse(post);
         if (validation.error) {
             console.error(validation.error);
             navigate('/posts');
         } else {
+            setPostOwner(owner);
             setPost(validation.data);
             const { request, abort } = getMyUser();
             request
@@ -44,7 +48,7 @@ const PostPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     }, [location, navigate]);
 
     useEffect(() => {
-        if (post) {
+        if (post && isNil(location.state.owner)) {
             const { request, abort } = getUserById(post.owner);
             request
                 .then(({ data }) => setPostOwner(data))
@@ -52,7 +56,7 @@ const PostPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
 
             return () => abort();
         }
-    }, [post]);
+    }, [post, location]);
 
     useEffect(() => {
         const isLiked = (post?.likes ?? []).includes(userId);

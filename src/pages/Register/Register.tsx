@@ -2,13 +2,11 @@ import { Alert, Box, Button, Divider, Link, Typography } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
 import React, {
     FunctionComponent,
-    useCallback,
     useState
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login, register } from '../../api/auth/auth-api';
-import { SetAccessTokenFunction, UserWithPassword } from '../../api/auth/types';
-import { uploadProfileImage } from '../../api/users/users.api';
+import { SetAccessTokenFunction } from '../../api/auth/types';
 import CenteredPage from '../../components/CenteredPage/CenteredPage';
 import EntryPaper from '../../components/EntryPaper/EntryPaper';
 import IconUpload from './components/IconUpload/IconUpload';
@@ -33,25 +31,13 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
     });
     const [registerError, setRegisterError] = useState<RegisterError>({});
     const [submitError, setSubmitError] = useState<string>('');
-    const [profileImage, setProfileImage] = useState<File | null>(null);
+    const [profileImage, setProfileImage] = useState<File>();
 
     const isValidRegisterInput = (): boolean => {
         const newError = getRegisterError(registerInput);
         setRegisterError(newError);
         return Object.keys(newError).length === 0;
     };
-
-    const tryUploadProfileFile = useCallback(async () => {
-        if (!profileImage) return undefined;
-
-        try {
-            const { data: imageUrl } = await uploadProfileImage(profileImage);
-            return imageUrl;
-        } catch (error) {
-            console.error('failed uploading profile image', error);
-            return undefined;
-        }
-    }, [profileImage]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -61,19 +47,11 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
             return;
         }
 
-        const profileImageUrl = await tryUploadProfileFile();
-        const userToRegister: UserWithPassword = {
-            email: registerInput.email,
-            password: registerInput.password,
-            username: registerInput.userName,
-            profileImage: profileImageUrl
-        };
-
         try {
-            await register(userToRegister);
+            await register(registerInput, profileImage);
             const { data: loginReposne } = await login(
-                userToRegister.email,
-                userToRegister.password
+                registerInput.email,
+                registerInput.password
             );
             setAccessToken(loginReposne.accessToken);
             navigate('/posts');

@@ -1,4 +1,5 @@
 import { SetAccessTokenFunction } from './api/auth/types';
+import CreatePostPage from './pages/CreatePostPage/CreatePostPage';
 import PostPage from './pages/PostPage/PostPage';
 import PostsList from './pages/PostsList/PostsList';
 import Register from './pages/Register/Register';
@@ -16,5 +17,6 @@ export const createRouter = (setAccessToken: SetAccessTokenFunction) => [
     },
     { path: '/profile', element: <UserProfilePage /> },
     { path: '/posts', element: <PostsList /> },
-    { path: '/post', element: <PostPage /> }
+    { path: '/post', element: <PostPage /> },
+    { path: '/createPost', element: <CreatePostPage /> }
 ];
