@@ -2,26 +2,32 @@ import { createStyles } from '@mui/styles';
 
 export const styles = createStyles({
     root: {
-        height: '70%',
+        height: '100%',
         display: 'flex',
         flexDirection: 'column'
     },
-    description: {
-        minHeight: '30%',
-        overflowY: 'auto',
-        margin: '4px 0',
-        flexGrow: 1
-    },
-    suggastionIcon: {
-        margin: '0px 12px 8px 0px'
-    },
-    suggastionPaper: {
+    title: {
         display: 'flex',
-        minHeight: '15%',
-        margin: '12px 0',
-        flexGrow: 1
+        alignItems: 'baseline',
+        paddingBottom: '5%',
+        maxHeight: '20%'
     },
-    suggastionText: {
-        overflowY: 'auto'
+    titleLabel: {
+        padding: '0 0.5em'
+    },
+    description: {
+        maxHeight: '80%',
+        '& textarea': {
+            '&::-webkit-scrollbar': {
+                width: '5px'
+            },
+            '&::-webkit-scrollbar-track': {
+                background: '#E4EFEF'
+            },
+            '&::-webkit-scrollbar-thumb': {
+                background: '#1D388F61',
+                borderRadius: '2px'
+            }
+        }
     }
 });
