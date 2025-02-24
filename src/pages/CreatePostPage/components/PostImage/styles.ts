@@ -5,13 +5,26 @@ export const styles = createStyles({
         height: '100%',
         width: '100%'
     },
-    imageButton: {
+    actionsSection: {
+        maxHeight: '10%',
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        margin: '4px'
+    },
+    imagePreview: {
         width: '100%',
         height: '90%',
         background: 'whitesmoke',
         borderRadius: '16px',
         border: '1px solid #0000001c',
-        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center'
+    },
+    imagePreviewText: {
+        width: '100%',
+        textAlign: 'center',
+        userSelect: 'none'
     },
     postImage: {
         height: '100%',
@@ -20,11 +33,5 @@ export const styles = createStyles({
     },
     hideInput: {
         display: 'none'
-    },
-    removeImageContainer: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        maxHeight: '10%'
     }
 });

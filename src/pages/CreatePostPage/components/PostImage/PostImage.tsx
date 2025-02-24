@@ -1,9 +1,8 @@
-import { Button, Tooltip } from '@mui/material';
+import { AddPhotoAlternate, ImageNotSupported } from '@mui/icons-material';
+import { IconButton, Typography } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
-import { isNil } from 'ramda';
 import React, { FunctionComponent, useRef, useState } from 'react';
 import { styles } from './styles';
-import { AddPhotoAlternate } from '@mui/icons-material';
 
 interface PostImageProps extends WithStyles<typeof styles> {
     setPostImage: (postImage: File) => void;
@@ -35,27 +34,40 @@ const PostImage: FunctionComponent<PostImageProps> = (props) => {
 
     return (
         <div className={classes.root}>
-            <Tooltip
-                title='Add Image'
-                arrow
-                disableHoverListener={!isNil(selectedImage)}
-            >
-                <div
-                    className={classes.imageButton}
-                    onClick={() => inputRef.current?.click()}
+            <section className={classes.actionsSection}>
+                <IconButton
+                    sx={{
+                        borderRadius: '4px',
+                        padding: '1px'
+                    }}
+                    onClick={
+                        selectedImage
+                            ? handleRemoveIcon
+                            : () => inputRef.current?.click()
+                    }
                 >
                     {selectedImage ? (
-                        <img
-                            className={classes.postImage}
-                            src={selectedImage}
-                        />
+                        <ImageNotSupported fontSize='large' htmlColor='black' />
                     ) : (
-                        <AddPhotoAlternate 
-                        style={{fontSize: '10em', height: '100%', width: '100%'}} 
-                        />
+                        <AddPhotoAlternate fontSize='large' htmlColor='black' />
                     )}
-                </div>
-            </Tooltip>
+                </IconButton>
+            </section>
+
+            <div className={classes.imagePreview}>
+                {selectedImage ? (
+                    <img className={classes.postImage} src={selectedImage} />
+                ) : (
+                    <Typography
+                        className={classes.imagePreviewText}
+                        variant='h4'
+                        color='textDisabled'
+                    >
+                        Image Preview
+                    </Typography>
+                )}
+            </div>
+
             <input
                 type='file'
                 accept='image/*'
@@ -63,19 +75,6 @@ const PostImage: FunctionComponent<PostImageProps> = (props) => {
                 ref={inputRef}
                 onChange={handleImageChange}
             />
-
-            {selectedImage && (
-                <div className={classes.removeImageContainer}>
-                    <Button
-                        variant='text'
-                        color='error'
-                        size='small'
-                        onClick={handleRemoveIcon}
-                    >
-                        Remove Image
-                    </Button>
-                </div>
-            )}
         </div>
     );
 };
