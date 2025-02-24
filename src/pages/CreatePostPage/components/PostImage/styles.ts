@@ -7,10 +7,10 @@ export const styles = createStyles({
     },
     actionsSection: {
         maxHeight: '10%',
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        margin: '4px'
+        // width: '100%',
+        // display: 'flex',
+        // justifyContent: 'center',
+        // margin: '4px'
     },
     imagePreview: {
         width: '100%',
@@ -19,7 +19,8 @@ export const styles = createStyles({
         borderRadius: '16px',
         border: '1px solid #0000001c',
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        cursor: 'pointer'
     },
     imagePreviewText: {
         width: '100%',

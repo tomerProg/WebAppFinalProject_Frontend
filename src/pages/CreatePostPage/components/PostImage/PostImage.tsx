@@ -1,4 +1,4 @@
-import { AddPhotoAlternate, ImageNotSupported } from '@mui/icons-material';
+import { ImageNotSupported } from '@mui/icons-material';
 import { IconButton, Typography } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
 import React, { FunctionComponent, useRef, useState } from 'react';
@@ -34,27 +34,10 @@ const PostImage: FunctionComponent<PostImageProps> = (props) => {
 
     return (
         <div className={classes.root}>
-            <section className={classes.actionsSection}>
-                <IconButton
-                    sx={{
-                        borderRadius: '4px',
-                        padding: '1px'
-                    }}
-                    onClick={
-                        selectedImage
-                            ? handleRemoveIcon
-                            : () => inputRef.current?.click()
-                    }
-                >
-                    {selectedImage ? (
-                        <ImageNotSupported fontSize='large' htmlColor='black' />
-                    ) : (
-                        <AddPhotoAlternate fontSize='large' htmlColor='black' />
-                    )}
-                </IconButton>
-            </section>
-
-            <div className={classes.imagePreview}>
+            <div
+                className={classes.imagePreview}
+                onClick={() => inputRef.current?.click()}
+            >
                 {selectedImage ? (
                     <img className={classes.postImage} src={selectedImage} />
                 ) : (
@@ -67,6 +50,20 @@ const PostImage: FunctionComponent<PostImageProps> = (props) => {
                     </Typography>
                 )}
             </div>
+            {selectedImage && (
+                <section className={classes.actionsSection}>
+                    <IconButton
+                        sx={{
+                            borderRadius: '4px',
+                            padding: '1px',
+                            margin: '4px 12px'
+                        }}
+                        onClick={handleRemoveIcon}
+                    >
+                        <ImageNotSupported fontSize='large' htmlColor='black' />
+                    </IconButton>
+                </section>
+            )}
 
             <input
                 type='file'
