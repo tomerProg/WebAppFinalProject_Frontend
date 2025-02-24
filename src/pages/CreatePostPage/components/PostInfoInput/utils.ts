@@ -1,10 +1,10 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction } from 'react';
 import { PostInput, PostInputError } from '../types';
 
 export const createChangePostInputField =
     (
-        setPostInput: React.Dispatch<React.SetStateAction<PostInput>>,
-        setPostInputError: React.Dispatch<React.SetStateAction<PostInputError>>
+        setPostInput: Dispatch<SetStateAction<PostInput>>,
+        setPostInputError: Dispatch<SetStateAction<PostInputError>>
     ) =>
     <K extends keyof PostInput>(field: K) =>
     (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
