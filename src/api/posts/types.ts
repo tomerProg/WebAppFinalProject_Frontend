@@ -5,9 +5,11 @@ export const postZodSchema = z.object({
     title: z.string(),
     owner: z.string(),
     description: z.string(),
-    suggastion: z.string().optional(),
+    suggestion: z.string().optional(),
     likes: z.array(z.string()).default([]),
     dislikes: z.array(z.string()).default([]),
     imageSrc: z.string().optional()
 });
 export type Post = z.infer<typeof postZodSchema>;
+
+export type PostForCreation = Pick<Post, 'title' | 'description' | 'imageSrc'>;

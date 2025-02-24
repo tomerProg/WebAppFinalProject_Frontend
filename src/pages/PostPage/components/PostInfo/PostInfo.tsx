@@ -3,7 +3,8 @@ import { Divider, Typography } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
 import { FunctionComponent } from 'react';
 import { styles } from './styles';
-import { Post } from '../../types';
+import { Post } from '../../../../api/posts/types';
+
 
 interface PostInfoProps extends WithStyles<typeof styles> {
     post: Post;
@@ -28,7 +29,7 @@ const BasePostInfo: FunctionComponent<PostInfoProps> = (props) => {
                     variant='subtitle2'
                     className={classes.suggastionText}
                 >
-                    {post?.suggastion ?? 'there is no suggastion yet, we think about your isue'}
+                    {post?.suggestion ?? 'there is no suggastion yet, we think about your isue'}
                 </Typography>
             </section>
         </div>
