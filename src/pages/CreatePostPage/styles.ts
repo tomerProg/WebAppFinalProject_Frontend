@@ -1,57 +1,42 @@
 import { createStyles } from '@mui/styles';
 
 export const styles = createStyles({
-    '@global': {
-        '*::-webkit-scrollbar': {
-            width: '5px'
-        },
-        '*::-webkit-scrollbar-track': {
-            background: '#E4EFEF'
-        },
-        '*::-webkit-scrollbar-thumb': {
-            background: '#1D388F61',
-            borderRadius: '2px'
-        }
-    },
     root: {
         width: '100%',
         height: '100%',
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center', 
-        alignItems: 'center'
+        flexDirection: 'column'
     },
     mainBox: {
         width: '100%',
-        height: '65%',
-        display: 'flex'
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'space-around'
     },
     pannel: {
-        margin: '1%',
-        flexGrow: 1,
-        background: 'white',
+        height: '100%',
         display: 'flex',
         flexDirection: 'column',
+        padding: '2%',
+        boxSizing: 'border-box'
     },
     leftPannel: {
-        width: '56%'
+        width: '60%'
     },
     rightPannel: {
         width: '40%',
-        padding: '2%'
+        justifyContent: 'space-between'
+    },
+    postImage: {
+        width: '100%',
+        height: '80%'
     },
     containerButtonCreatePost: {
         width: '100%',
-        height: '100%',
-        paddingLeft: '15%',
         display: 'flex',
-        flexDirection: 'column', 
-        alignItems: 'center',
-    },
-    buttonCreatePost:{
-        width: '40%',
-    },
-    errorAlert:{
-        width: '20%'
+        justifyContent: 'flex-end',
+        padding: '0 2em',
+        boxSizing: 'border-box',
+        maxHeight: '20%'
     }
 });

@@ -1,9 +1,10 @@
-import { Alert, Box, Button } from '@mui/material';
+import { Button } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
 import clsx from 'clsx';
 import { FunctionComponent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createPost } from '../../api/posts/posts.api';
+import { useAlertSnackbar } from '../../components/AlertSnackbar/globalProvider';
 import PostImage from './components/PostImage/PostImage';
 import PostInfoInput from './components/PostInfoInput/PostInfoInput';
 import { PostInput, PostInputError } from './components/types';
@@ -21,8 +22,8 @@ const CreatePostPage: FunctionComponent<WithStyles<typeof styles>> = (
         description: ''
     });
     const [postInputError, setPostInputError] = useState<PostInputError>({});
-    const [submitError, setSubmitError] = useState<string>('');
     const [postImage, setPostImage] = useState<File>();
+    const { showSnackbar } = useAlertSnackbar();
 
     const isValidPostInput = (): boolean => {
         const newError = getPostInputError(postInput);
@@ -32,8 +33,6 @@ const CreatePostPage: FunctionComponent<WithStyles<typeof styles>> = (
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setSubmitError('');
-
         if (!isValidPostInput()) {
             return;
         }
@@ -43,17 +42,14 @@ const CreatePostPage: FunctionComponent<WithStyles<typeof styles>> = (
             navigate('/posts');
         } catch (error) {
             console.error(error);
-            setSubmitError('Failed to post. Please try again.');
+            showSnackbar('Failed to post. Please try again.', 'error');
         }
     };
 
     return (
-        <Box className={classes.root}>
-            <Box className={classes.mainBox}>
-                <section
-                    id='left-pannel'
-                    className={clsx(classes.pannel, classes.leftPannel)}
-                >
+        <div className={classes.root}>
+            <div className={classes.mainBox}>
+                <section className={clsx(classes.pannel, classes.leftPannel)}>
                     <PostInfoInput
                         setPostInput={setPostInput}
                         postInput={postInput}
@@ -62,34 +58,22 @@ const CreatePostPage: FunctionComponent<WithStyles<typeof styles>> = (
                     />
                 </section>
 
-                <section
-                    id='right-pannel'
-                    className={clsx(classes.pannel, classes.rightPannel)}
-                >
-                    <PostImage setPostImage={setPostImage} />
+                <section className={clsx(classes.pannel, classes.rightPannel)}>
+                    <div style={{ width: '100%', height: '80%' }}>
+                        <PostImage setPostImage={setPostImage} />
+                    </div>
+                    <div className={classes.containerButtonCreatePost}>
+                        <Button
+                            type='submit'
+                            variant='contained'
+                            onClick={handleSubmit}
+                        >
+                            Create Post
+                        </Button>
+                    </div>
                 </section>
-            </Box>
-
-            <Box
-                component='section'
-                gap={2}
-                className={classes.containerButtonCreatePost}
-            >
-                <Button
-                    type='submit'
-                    variant='contained'
-                    onClick={handleSubmit}
-                    className={classes.buttonCreatePost}
-                >
-                    Create Post
-                </Button>
-                {submitError && (
-                    <Alert severity='error' className={classes.errorAlert}>
-                        {submitError}
-                    </Alert>
-                )}
-            </Box>
-        </Box>
+            </div>
+        </div>
     );
 };
 
