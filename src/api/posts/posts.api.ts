@@ -10,7 +10,6 @@ export const getAllPosts = () =>
         apiClient.get<Post[]>('/post', { signal: abortController.signal })
     );
 
-
 export const createPost = async (post: PostForCreation, imageFile?: File) => {
     const imageUrl = imageFile ? await uploadPostImage(imageFile) : null;
     const postForCreate: PostForCreation = {
@@ -18,7 +17,7 @@ export const createPost = async (post: PostForCreation, imageFile?: File) => {
         ...(imageUrl ? { imageSrc: imageUrl.data } : {})
     };
 
-    return apiClient.post('/post', { postForCreate });
+    return apiClient.post('/post', postForCreate);
 };
 
 export const uploadPostImage = (postImage: File) => {
