@@ -1,13 +1,8 @@
 import {
-    Avatar,
     Button,
     Divider,
     LinearProgress,
     List,
-    ListItem,
-    ListItemAvatar,
-    ListItemText,
-    Paper,
     Skeleton,
     Typography
 } from '@mui/material';
@@ -18,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { getAllPosts } from '../../api/posts/posts.api';
 import { Post } from '../../api/posts/types';
 import { ignoreCanceledRequest } from '../../api/utils';
+import PostListItem from './components/PostListItem/PostListItem';
 import { styles } from './styles';
 
 const PostsPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
@@ -37,12 +33,7 @@ const PostsPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
         return () => abort();
     }, []);
 
-    const onCreatePostClick = () =>
-        navigate('/createPost');
-
-    const onPostItemClick = (post: Post) => () => {
-        navigate('/post', { state: post });
-    };
+    const onCreatePostClick = () => navigate('/createPost');
 
     return (
         <div className={classes.root}>
@@ -60,28 +51,7 @@ const PostsPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
                     <Typography variant='h5'>No posts found</Typography>
                 ) : (
                     posts.map((post, index) => (
-                        <ListItem key={index} onClick={onPostItemClick(post)}>
-                            <Paper className={classes.postItem}>
-                                <ListItemAvatar>
-                                    <Avatar
-                                        src={post.imageSrc}
-                                        alt={post.owner}
-                                    />
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary={<strong>{post.title}</strong>}
-                                    secondary={
-                                        <Typography
-                                            variant='body2'
-                                            color='textSecondary'
-                                            className={classes.postDescription}
-                                        >
-                                            {post.description}
-                                        </Typography>
-                                    }
-                                />
-                            </Paper>
-                        </ListItem>
+                        <PostListItem post={post} key={index} />
                     ))
                 )}
             </List>
