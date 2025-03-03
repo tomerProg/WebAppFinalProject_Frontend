@@ -1,6 +1,6 @@
 import { Alert, Box, Button, Divider, Link, Typography } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
-import React, {
+import {
     Dispatch,
     FunctionComponent,
     SetStateAction,
@@ -42,8 +42,7 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
         return Object.keys(newError).length === 0;
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const submitRegister = async () => {
         setSubmitError('');
 
         if (!isValidRegisterInput()) {
@@ -80,7 +79,7 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
                 <Box className={classes.mainBox}>
                     <IconUpload setProfileImageFile={setProfileImage} />
 
-                    <Box component='form' onSubmit={handleSubmit}>
+                    <Box>
                         <InputFields
                             setRegisterInput={setRegisterInput}
                             registerInput={registerInput}
@@ -93,9 +92,9 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
                 <Divider />
                 <Box className={classes.frame}>
                     <Button
-                        type='submit'
                         variant='contained'
                         className={classes.registerButton}
+                        onClick={submitRegister}
                     >
                         Register
                     </Button>

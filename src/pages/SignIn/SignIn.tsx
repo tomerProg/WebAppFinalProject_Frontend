@@ -2,7 +2,7 @@ import { Alert, Box, Button, Divider, Link, Typography } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { isEmpty } from 'ramda';
-import React, {
+import {
     Dispatch,
     FunctionComponent,
     SetStateAction,
@@ -68,8 +68,7 @@ const SignIn: FunctionComponent<SignInProps> = (props) => {
         handleSuccessLogin(loginResponse);
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const submitLogin = async () => {
         setSubmitError('');
 
         if (!checkInput()) {
@@ -100,7 +99,7 @@ const SignIn: FunctionComponent<SignInProps> = (props) => {
                         <Alert severity='error'> {submitError} </Alert>
                     )}
 
-                    <Box component='form' onSubmit={handleSubmit}>
+                    <Box>
                         <InputFields
                             setSignInInput={setSignInInput}
                             signInInput={signInInput}
@@ -109,9 +108,9 @@ const SignIn: FunctionComponent<SignInProps> = (props) => {
                         />
                         <div className={classes.signinActions}>
                             <Button
-                                type='submit'
                                 variant='contained'
                                 className={classes.signInButton}
+                                onClick={submitLogin}
                             >
                                 Sign In
                             </Button>
