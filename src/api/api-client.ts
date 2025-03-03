@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const backendURL = import.meta.env.VITE_BACKEND_URL;
+const backendURL: string = import.meta.env.VITE_BACKEND_URL;
 
 const apiClient = axios.create({
-    baseURL: backendURL,
+    baseURL: backendURL.concat('/api'),
     withCredentials: true
 });
 
