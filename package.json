@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "build:prod": "npm run build && cp -r ./dist/* ../WebAppFinalProject_Backend/front/",
+    "build:prod": "tsc -b && vite build --mode production",
+    "prod": "npm run build:prod &&  && cp -r ./dist/* ../WebAppFinalProject_Backend/front/",
     "lint": "eslint .",
     "preview": "vite preview"
   },
