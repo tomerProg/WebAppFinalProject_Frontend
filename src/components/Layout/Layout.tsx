@@ -2,7 +2,7 @@ import { withStyles, WithStyles } from '@mui/styles';
 import { Dispatch, FunctionComponent, SetStateAction, useMemo } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../api/auth/use.auth';
-import { createRouter } from '../../router';
+import { createRouter } from '../../routes/router';
 import { isVisibleAppBar } from '../FixersAppBar/components/utils';
 import { styles } from './styles';
 
