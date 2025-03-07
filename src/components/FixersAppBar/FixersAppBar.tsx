@@ -21,6 +21,7 @@ import { ignoreCanceledRequest } from '../../api/utils';
 import { UserIdContext } from '../../Contexts/UserIdContext/UserContext';
 import { isVisibleAppBar } from './components/utils';
 import { styles } from './styles';
+import { PAGES_ROUTES } from '../../routes/routes.const';
 
 const FixersAppBar: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     const userId = useContext(UserIdContext);
@@ -45,7 +46,7 @@ const FixersAppBar: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     }, [isVisible, userId, location]);
 
     const handleOpenUserProfile = () => {
-        navigate('/profile');
+        navigate(PAGES_ROUTES.PROFILE);
     };
 
     return (

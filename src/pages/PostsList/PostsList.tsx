@@ -15,6 +15,7 @@ import { Post } from '../../api/posts/types';
 import { ignoreCanceledRequest } from '../../api/utils';
 import PostListItem from './components/PostListItem/PostListItem';
 import { styles } from './styles';
+import { PAGES_ROUTES } from '../../routes/routes.const';
 
 const PostsPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     const { classes } = props;
@@ -33,7 +34,7 @@ const PostsPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
         return () => abort();
     }, []);
 
-    const onCreatePostClick = () => navigate('/createPost');
+    const onCreatePostClick = () => navigate(PAGES_ROUTES.CREATE_POST);
 
     return (
         <div className={classes.root}>

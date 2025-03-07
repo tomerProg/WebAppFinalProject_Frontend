@@ -2,6 +2,7 @@ import { AxiosError, HttpStatusCode, isAxiosError } from 'axios';
 import { identity, isNil } from 'ramda';
 import { useCallback, useLayoutEffect, useState } from 'react';
 import { NavigateFunction } from 'react-router-dom';
+import { PAGES_ROUTES } from '../../routes/routes.const';
 import apiClient from '../api-client';
 import { refreshAuthAccessToken } from './auth-api';
 import {
@@ -72,7 +73,7 @@ export const useAuth = (navigate: NavigateFunction) => {
                         setAccessToken(null);
                         console.error('refresh token error:', error);
 
-                        return navigate('/');
+                        return navigate(PAGES_ROUTES.LOGIN);
                     }
                 }
 

@@ -16,6 +16,7 @@ import InputFields from './components/InputFields';
 import { RegisterError, RegisterInput } from './components/types';
 import { getRegisterError } from './components/utils';
 import { styles } from './styles';
+import { PAGES_ROUTES } from '../../routes/routes.const';
 
 interface RegisterProps extends WithStyles<typeof styles> {
     setUserId: Dispatch<SetStateAction<string>>;
@@ -57,7 +58,7 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
             );
             setUserId(loginReposne._id);
             setAccessToken(loginReposne.accessToken);
-            navigate('/posts');
+            navigate(PAGES_ROUTES.POSTS_LIST);
         } catch (error) {
             console.error(error);
             setSubmitError('Failed to register. Please try again.');

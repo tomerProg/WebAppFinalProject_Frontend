@@ -19,6 +19,7 @@ import InputFields from './components/InputFields';
 import { SignInError, SignInInput } from './components/types';
 import { getSignInError } from './components/utils';
 import { styles } from './styles';
+import { PAGES_ROUTES } from '../../routes/routes.const';
 
 interface SignInProps extends WithStyles<typeof styles> {
     setUserId: Dispatch<SetStateAction<string>>;
@@ -41,7 +42,7 @@ const SignIn: FunctionComponent<SignInProps> = (props) => {
         (loginResponse: LoginResponse) => {
             setUserId(loginResponse._id);
             setAccessToken(loginResponse.accessToken);
-            navigate('/posts');
+            navigate(PAGES_ROUTES.POSTS_LIST);
         },
         [setUserId, setAccessToken, navigate]
     );
