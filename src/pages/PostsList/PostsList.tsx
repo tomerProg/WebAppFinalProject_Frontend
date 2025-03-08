@@ -13,9 +13,9 @@ import { useNavigate } from 'react-router-dom';
 import { getAllPosts } from '../../api/posts/posts.api';
 import { Post } from '../../api/posts/types';
 import { ignoreCanceledRequest } from '../../api/utils';
+import { PAGES_ROUTES } from '../../routes/routes.const';
 import PostListItem from './components/PostListItem/PostListItem';
 import { styles } from './styles';
-import { PAGES_ROUTES } from '../../routes/routes.const';
 
 const PostsPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
     const { classes } = props;

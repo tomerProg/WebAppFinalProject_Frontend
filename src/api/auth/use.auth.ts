@@ -10,6 +10,27 @@ import {
     SetAccessTokenFunction
 } from './types';
 
+const applyAuthTokenToConfig = (
+    config: RetriableInternalAxiosRequestConfig,
+    token: string | null
+) => {
+    if (!config._retry && token) {
+        config.headers.Authorization = `JWT ${token}`;
+    }
+    return config;
+};
+
+const requestRefresh = async (
+    originalRequest: RetriableInternalAxiosRequestConfig
+) => {
+    const {
+        data: { accessToken }
+    } = await refreshAuthAccessToken();
+    originalRequest.headers.Authorization = `JWT ${accessToken}`;
+    originalRequest._retry = true;
+    return { accessToken, refreshedRequest: originalRequest };
+};
+
 export const useAuth = (navigate: NavigateFunction) => {
     const [token, setToken] = useState<string | null>(
         localStorage.getItem('accessToken')
@@ -26,13 +47,8 @@ export const useAuth = (navigate: NavigateFunction) => {
     );
 
     useLayoutEffect(() => {
-        const authInterceptor = apiClient.interceptors.request.use(
-            (config: RetriableInternalAxiosRequestConfig) => {
-                if (!config._retry && token) {
-                    config.headers.Authorization = `JWT ${token}`;
-                }
-                return config;
-            }
+        const authInterceptor = apiClient.interceptors.request.use((config) =>
+            applyAuthTokenToConfig(config, token)
         );
 
         return () => {
@@ -41,6 +57,7 @@ export const useAuth = (navigate: NavigateFunction) => {
     }, [token]);
 
     useLayoutEffect(() => {
+        let isRefreshing = false;
         const refreshInterceptor = apiClient.interceptors.response.use(
             identity,
             async (error: AxiosError | Error) => {
@@ -60,15 +77,18 @@ export const useAuth = (navigate: NavigateFunction) => {
                     !originalRequest._retry
                 ) {
                     try {
-                        const {
-                            data: { accessToken }
-                        } = await refreshAuthAccessToken();
+                        if (isRefreshing) {
+                            await new Promise((res) => setTimeout(res, 100));
+                            return apiClient(originalRequest);
+                        }
 
+                        isRefreshing = true;
+                        const { accessToken, refreshedRequest } =
+                            await requestRefresh(originalRequest);
+                        isRefreshing = false;
                         setAccessToken(accessToken);
-                        originalRequest.headers.Authorization = `JWT ${accessToken}`;
-                        originalRequest._retry = true;
-
-                        return apiClient(originalRequest);
+                        
+                        return apiClient(refreshedRequest);
                     } catch (error) {
                         setAccessToken(null);
                         console.error('refresh token error:', error);
