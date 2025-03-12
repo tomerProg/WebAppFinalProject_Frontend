@@ -3,7 +3,7 @@ import { AbortableRequest } from '../utils';
 import { Post, PostForCreation } from './types';
 
 export const updatePostLike = async (postId: string, like?: boolean) =>
-    apiClient.put(`/posts/like/${postId}`, { like });
+    apiClient.put(`/post/like/${postId}`, { like });
 
 export const getAllPosts = () =>
     AbortableRequest((abortController) =>
