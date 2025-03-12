@@ -1,17 +1,13 @@
 import { withStyles, WithStyles } from '@mui/styles';
-import { Dispatch, FunctionComponent, SetStateAction, useMemo } from 'react';
+import { FunctionComponent, useMemo } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../api/auth/use.auth';
 import { createRouter } from '../../routes/router';
-import { isVisibleAppBar } from '../FixersAppBar/components/utils';
+import { isVisibleAppBar } from '../FixersAppBar/utils';
 import { styles } from './styles';
 
-interface LayoutProps extends WithStyles<typeof styles> {
-    setUserId: Dispatch<SetStateAction<string>>;
-}
-
-const Layout: FunctionComponent<LayoutProps> = (props) => {
-    const { setUserId, classes } = props;
+const Layout: FunctionComponent<WithStyles<typeof styles>> = (props) => {
+    const { classes } = props;
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -31,11 +27,9 @@ const Layout: FunctionComponent<LayoutProps> = (props) => {
             }
         >
             <Routes>
-                {createRouter(setUserId, setAccessToken).map(
-                    ({ path, element }) => (
-                        <Route key={path} path={path} element={element} />
-                    )
-                )}
+                {createRouter(setAccessToken).map(({ path, element }) => (
+                    <Route key={path} path={path} element={element} />
+                ))}
             </Routes>
         </div>
     );

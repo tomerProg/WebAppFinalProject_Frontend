@@ -1,21 +1,20 @@
 import EditIcon from '@mui/icons-material/Edit';
 import {
     Avatar,
-    Box,
-    Button,
     Card,
     IconButton,
     Skeleton,
-    Stack,
     TextField,
     Typography
 } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
 import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { User } from '../../api/users/types';
 import { getMyUser, updateUser } from '../../api/users/users.api';
+import EditingActions from './components/EditingActions/EditingActions';
+import NotEditingActions from './components/NotEditingActions/NotEditingActions';
 import { styles } from './styles';
-import { useNavigate } from 'react-router-dom';
 
 const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
     props
@@ -49,12 +48,12 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
 
     const handleSave = async () => {
         try {
-            if (username) {
-                const { data: updatedUser } = await updateUser(
+            if (user && (username || imageFile)) {
+                const { data: updatedUser } = await updateUser(user, {
                     username,
                     imageFile
-                );
-                setUser({ ...user, ...updatedUser });
+                });
+                setUser(updatedUser);
             }
         } finally {
             stopEdit();
@@ -78,9 +77,9 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
         }
     };
 
-    const navigatePreviousRoute = () =>{
+    const navigatePreviousRoute = () => {
         navigate(-1);
-    }
+    };
 
     return (
         <div className={classes.root}>
@@ -137,44 +136,15 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
                 )}
             </Card>
             {isEditing ? (
-                <Box display='flex' gap={2} mt={3}>
-                    <Button
-                        variant='contained'
-                        color='primary'
-                        onClick={handleSave}
-                    >
-                        Save
-                    </Button>
-                    <Button
-                        variant='outlined'
-                        color='secondary'
-                        onClick={handleCancel}
-                    >
-                        Cancel
-                    </Button>
-                </Box>
+                <EditingActions
+                    saveEdit={handleSave}
+                    cancelEditing={handleCancel}
+                />
             ) : (
-                <Stack direction="row" spacing={2}>
-                    <Button
-                    variant='contained'
-                    color='primary'
-                    onClick={navigatePreviousRoute}
-                    sx={{ mt: 3 }}
-                    >
-                        Back
-                    </Button>
-
-                    <Button
-                    variant='contained'
-                    color='primary'
-                    onClick={() => setIsEditing(true)}
-                    sx={{ mt: 3 }}
-                    >
-                        Edit Profile
-                    </Button>
-                
-                </Stack>
-                
+                <NotEditingActions
+                    navigatePreviousRoute={navigatePreviousRoute}
+                    startEdit={() => setIsEditing(true)}
+                />
             )}
         </div>
     );

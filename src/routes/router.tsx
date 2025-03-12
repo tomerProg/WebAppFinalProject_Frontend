@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
 import { SetAccessTokenFunction } from '../api/auth/types';
 import CreatePostPage from '../pages/CreatePostPage/CreatePostPage';
 import PostPage from '../pages/PostPage/PostPage';
@@ -9,19 +8,18 @@ import UserProfilePage from '../pages/UserProfilePage/UserProfilePage';
 import { PAGES_ROUTES } from './routes.const';
 
 export const createRouter = (
-    setUserId: Dispatch<SetStateAction<string>>,
     setAccessToken: SetAccessTokenFunction
 ) => [
     {
         path: PAGES_ROUTES.LOGIN,
         element: (
-            <SignIn setUserId={setUserId} setAccessToken={setAccessToken} />
+            <SignIn setAccessToken={setAccessToken} />
         )
     },
     {
         path: PAGES_ROUTES.REGISTER,
         element: (
-            <Register setUserId={setUserId} setAccessToken={setAccessToken} />
+            <Register setAccessToken={setAccessToken} />
         )
     },
     { path: PAGES_ROUTES.PROFILE, element: <UserProfilePage /> },

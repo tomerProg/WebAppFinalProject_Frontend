@@ -3,9 +3,7 @@ import { withStyles, WithStyles } from '@mui/styles';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { isEmpty } from 'ramda';
 import {
-    Dispatch,
     FunctionComponent,
-    SetStateAction,
     useCallback,
     useState
 } from 'react';
@@ -15,19 +13,18 @@ import { LoginResponse, SetAccessTokenFunction } from '../../api/auth/types';
 import { useAlertSnackbar } from '../../components/AlertSnackbar/globalProvider';
 import CenteredPage from '../../components/CenteredPage/CenteredPage';
 import EntryPaper from '../../components/EntryPaper/EntryPaper';
+import { PAGES_ROUTES } from '../../routes/routes.const';
 import InputFields from './components/InputFields';
 import { SignInError, SignInInput } from './components/types';
 import { getSignInError } from './components/utils';
 import { styles } from './styles';
-import { PAGES_ROUTES } from '../../routes/routes.const';
 
 interface SignInProps extends WithStyles<typeof styles> {
-    setUserId: Dispatch<SetStateAction<string>>;
     setAccessToken: SetAccessTokenFunction;
 }
 
 const SignIn: FunctionComponent<SignInProps> = (props) => {
-    const { classes, setUserId, setAccessToken } = props;
+    const { classes, setAccessToken } = props;
     const navigate = useNavigate();
     const { showSnackbar } = useAlertSnackbar();
 
@@ -40,11 +37,10 @@ const SignIn: FunctionComponent<SignInProps> = (props) => {
 
     const handleSuccessLogin = useCallback(
         (loginResponse: LoginResponse) => {
-            setUserId(loginResponse._id);
             setAccessToken(loginResponse.accessToken);
             navigate(PAGES_ROUTES.POSTS_LIST);
         },
-        [setUserId, setAccessToken, navigate]
+        [setAccessToken, navigate]
     );
 
     const checkInput = (): boolean => {

@@ -10,12 +10,17 @@ export const getUserById = (userId: string) =>
     );
 
 export const updateUser = async (
-    username: User['username'],
-    imageFile?: File
+    baseUser: User,
+    updateFields: {
+        username?: User['username'];
+        imageFile?: File;
+    }
 ) => {
+    const { username, imageFile } = updateFields;
     const imageUrl = imageFile ? await uploadProfileImage(imageFile) : null;
     const updatedUser: Omit<User, 'email'> = {
-        username,
+        ...baseUser,
+        username: username ?? baseUser.username,
         ...(imageUrl ? { profileImage: imageUrl.data } : {})
     };
 
@@ -30,13 +35,9 @@ export const getMyUser = () =>
 export const uploadProfileImage = (profileImage: File) => {
     const formData = new FormData();
     formData.append('profileImage', profileImage);
-    return apiClient.post<string>(
-        'files/profile-image',
-        formData,
-        {
-            headers: {
-                'Content-Type': 'image/jpeg'
-            }
+    return apiClient.post<string>('files/profile-image', formData, {
+        headers: {
+            'Content-Type': 'image/jpeg'
         }
-    );
+    });
 };

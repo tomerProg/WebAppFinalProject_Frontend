@@ -1,21 +1,20 @@
 import { Avatar, Paper, Skeleton, Typography } from '@mui/material';
 import { WithStyles, withStyles } from '@mui/styles';
 import clsx from 'clsx';
-import { FunctionComponent, useContext, useEffect, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { PostComment } from '../../../../../api/comments/types';
 import { User } from '../../../../../api/users/types';
 import { getUserById } from '../../../../../api/users/users.api';
 import { ignoreCanceledRequest } from '../../../../../api/utils';
-import { UserIdContext } from '../../../../../Contexts/UserIdContext/UserContext';
 import { styles } from './styles';
 
 interface CommentProps extends WithStyles<typeof styles> {
+    loggedUserId: string;
     comment: PostComment;
 }
 
 const Comment: FunctionComponent<CommentProps> = (props) => {
-    const { classes, comment } = props;
-    const userId = useContext(UserIdContext);
+    const { classes, comment, loggedUserId } = props;
     const [commentOwner, setCommentOwner] = useState<User | null>(null);
 
     useEffect(() => {
@@ -30,10 +29,14 @@ const Comment: FunctionComponent<CommentProps> = (props) => {
     return (
         <div
             className={clsx(classes.root, {
-                [classes.ownComment]: comment.isUserTheOwner || comment.owner === userId
+                [classes.ownComment]:
+                    comment.isUserTheOwner || comment.owner === loggedUserId
             })}
         >
-            <Avatar alt={commentOwner?.username} src={commentOwner?.profileImage} />
+            <Avatar
+                alt={commentOwner?.username}
+                src={commentOwner?.profileImage}
+            />
             <Paper className={classes.commentContent}>
                 {commentOwner ? (
                     <Typography

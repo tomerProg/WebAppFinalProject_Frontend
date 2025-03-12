@@ -1,9 +1,7 @@
 import { Alert, Box, Button, Divider, Link, Typography } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
 import {
-    Dispatch,
     FunctionComponent,
-    SetStateAction,
     useState
 } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -11,20 +9,19 @@ import { login, register } from '../../api/auth/auth-api';
 import { SetAccessTokenFunction } from '../../api/auth/types';
 import CenteredPage from '../../components/CenteredPage/CenteredPage';
 import EntryPaper from '../../components/EntryPaper/EntryPaper';
+import { PAGES_ROUTES } from '../../routes/routes.const';
 import IconUpload from './components/IconUpload/IconUpload';
 import InputFields from './components/InputFields';
 import { RegisterError, RegisterInput } from './components/types';
 import { getRegisterError } from './components/utils';
 import { styles } from './styles';
-import { PAGES_ROUTES } from '../../routes/routes.const';
 
 interface RegisterProps extends WithStyles<typeof styles> {
-    setUserId: Dispatch<SetStateAction<string>>;
     setAccessToken: SetAccessTokenFunction;
 }
 
 const Register: FunctionComponent<RegisterProps> = (props) => {
-    const { classes, setUserId, setAccessToken } = props;
+    const { classes, setAccessToken } = props;
     const navigate = useNavigate();
 
     const [registerInput, setRegisterInput] = useState<RegisterInput>({
@@ -56,7 +53,6 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
                 registerInput.email,
                 registerInput.password
             );
-            setUserId(loginReposne._id);
             setAccessToken(loginReposne.accessToken);
             navigate(PAGES_ROUTES.POSTS_LIST);
         } catch (error) {
