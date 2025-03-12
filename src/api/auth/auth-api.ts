@@ -31,3 +31,6 @@ export const refreshAuthAccessToken = () =>
 
 export const loginWithGoogle = (credential: string) =>
     apiClient.post<LoginResponse>('/auth/google-login', { credential });
+
+export const logout = () => 
+    apiClient.post('/auth/logout');

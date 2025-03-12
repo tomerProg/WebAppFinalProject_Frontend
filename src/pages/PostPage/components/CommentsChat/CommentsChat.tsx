@@ -12,11 +12,12 @@ import Comment from './Comment/Comment';
 import { styles } from './styles';
 
 interface CommentsChatProps extends WithStyles<typeof styles> {
+    loggedUserId: string;
     postId: string;
 }
 
 const BaseCommentsChat: FunctionComponent<CommentsChatProps> = (props) => {
-    const { classes, postId } = props;
+    const { classes, postId, loggedUserId } = props;
     const [comments, setComments] = useState<PostComment[]>([]);
     const commentInputRef = useRef<HTMLInputElement>(null);
 
@@ -52,7 +53,11 @@ const BaseCommentsChat: FunctionComponent<CommentsChatProps> = (props) => {
         <Box id='chat' className={classes.root}>
             <section className={classes.comments}>
                 {comments.map((comment, index) => (
-                    <Comment key={index} comment={comment} />
+                    <Comment
+                        key={index}
+                        loggedUserId={loggedUserId}
+                        comment={comment}
+                    />
                 ))}
             </section>
             <section className={classes.commentInput}>

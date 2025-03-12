@@ -11,12 +11,13 @@ export const styles = createStyles({
     logo: {
         height: '100%',
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        cursor: 'pointer'
     },
     logoImage: {
         aspectRatio: 1,
         height: '100%',
-        paddingBottom: '10px'
+        paddingBottom: '10px',
     },
     avatarButton: {
         height: '100%',

@@ -1,8 +1,7 @@
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { AlertSnackbarProvider } from './components/AlertSnackbar/globalProvider';
-import { UserIdContext } from './Contexts/UserIdContext/UserContext';
 
 import FixersAppBar from './components/FixersAppBar/FixersAppBar';
 import Layout from './components/Layout/Layout';
@@ -19,18 +18,14 @@ const theme = createTheme({
 });
 
 const App: FunctionComponent = () => {
-    const [userId, setUserId] = useState('');
-
     return (
         <ThemeProvider theme={theme}>
             <AlertSnackbarProvider>
-                <UserIdContext.Provider value={userId}>
-                    <BrowserRouter>
-                        <CssBaseline />
-                        <FixersAppBar />
-                        <Layout setUserId={setUserId} />
-                    </BrowserRouter>
-                </UserIdContext.Provider>
+                <BrowserRouter>
+                    <CssBaseline />
+                    <FixersAppBar />
+                    <Layout />
+                </BrowserRouter>
             </AlertSnackbarProvider>
         </ThemeProvider>
     );
