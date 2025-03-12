@@ -6,7 +6,6 @@ export const styles = createStyles({
     },
     registerTitle: {
         margin: '0 2em',
-        marginBottom: '1em',
         display: 'flex',
         alignItems: 'center'
     },

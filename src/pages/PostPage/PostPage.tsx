@@ -15,6 +15,7 @@ import CommentsChat from './components/CommentsChat/CommentsChat';
 import LikeDislike from './components/LikeDislike/LikeDislike';
 import PostInfo from './components/PostInfo/PostInfo';
 import { styles } from './styles';
+import { PAGES_ROUTES } from '../../routes/routes.const';
 
 export type PostPageLocationState = { post: Post; owner?: User };
 
@@ -34,7 +35,7 @@ const PostPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
         const validation = postZodSchema.safeParse(post);
         if (validation.error) {
             console.error(validation.error);
-            navigate('/posts');
+            navigate(PAGES_ROUTES.POSTS_LIST);
         } else {
             setPostOwner(owner);
             setPost(validation.data);

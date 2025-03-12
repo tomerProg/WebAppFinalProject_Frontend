@@ -10,6 +10,7 @@ import PostInfoInput from './components/PostInfoInput/PostInfoInput';
 import { PostInput, PostInputError } from './components/types';
 import { getPostInputError } from './components/utils';
 import { styles } from './styles';
+import { PAGES_ROUTES } from '../../routes/routes.const';
 
 const CreatePostPage: FunctionComponent<WithStyles<typeof styles>> = (
     props
@@ -39,7 +40,7 @@ const CreatePostPage: FunctionComponent<WithStyles<typeof styles>> = (
 
         try {
             await createPost(postInput, postImage);
-            navigate('/posts');
+            navigate(PAGES_ROUTES.POSTS_LIST);
         } catch (error) {
             console.error(error);
             showSnackbar('Failed to post. Please try again.', 'error');

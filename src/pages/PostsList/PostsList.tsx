@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { getAllPosts } from '../../api/posts/posts.api';
 import { Post } from '../../api/posts/types';
 import { ignoreCanceledRequest } from '../../api/utils';
+import { PAGES_ROUTES } from '../../routes/routes.const';
 import PostListItem from './components/PostListItem/PostListItem';
 import { styles } from './styles';
 
@@ -33,7 +34,7 @@ const PostsPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
         return () => abort();
     }, []);
 
-    const onCreatePostClick = () => navigate('/createPost');
+    const onCreatePostClick = () => navigate(PAGES_ROUTES.CREATE_POST);
 
     return (
         <div className={classes.root}>

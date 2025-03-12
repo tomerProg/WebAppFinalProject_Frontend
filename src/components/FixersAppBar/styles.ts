@@ -17,7 +17,7 @@ export const styles = createStyles({
     logoImage: {
         aspectRatio: 1,
         height: '100%',
-        paddingBottom: '10px',
+        paddingBottom: '10px'
     },
     avatarButton: {
         height: '100%',

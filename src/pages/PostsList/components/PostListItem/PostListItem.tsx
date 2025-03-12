@@ -13,6 +13,7 @@ import { Post } from '../../../../api/posts/types';
 import { User } from '../../../../api/users/types';
 import { getUserById } from '../../../../api/users/users.api';
 import { ignoreCanceledRequest } from '../../../../api/utils';
+import { PAGES_ROUTES } from '../../../../routes/routes.const';
 import { PostPageLocationState } from '../../../PostPage/PostPage';
 import { styles } from './styles';
 
@@ -37,7 +38,7 @@ const PostListItem: FunctionComponent<PostListItemProps> = (props) => {
 
     const onPostItemClick = () => {
         const postPageState: PostPageLocationState = { post, owner: postOwner };
-        navigate('/post', { state: postPageState });
+        navigate(PAGES_ROUTES.POST, { state: postPageState });
     };
 
     return (

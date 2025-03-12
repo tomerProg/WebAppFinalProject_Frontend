@@ -14,6 +14,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { User } from '../../api/users/types';
 import { getMyUser } from '../../api/users/users.api';
 import { ignoreCanceledRequest } from '../../api/utils';
+import { PAGES_ROUTES } from '../../routes/routes.const';
 import { styles } from './styles';
 import { createAppbarMenu, isVisibleAppBar } from './utils';
 
@@ -59,7 +60,7 @@ const FixersAppBar: FunctionComponent<WithStyles<typeof styles>> = (props) => {
                     <Toolbar className={classes.toolBar}>
                         <Box
                             className={classes.logo}
-                            onClick={() => navigate('/posts')}
+                            onClick={() => navigate(PAGES_ROUTES.POSTS_LIST)}
                         >
                             <img
                                 src='/favicon.svg'

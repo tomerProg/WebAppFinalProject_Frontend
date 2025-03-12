@@ -2,13 +2,18 @@ import { Alert, Box, Button, Divider, Link, Typography } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { isEmpty } from 'ramda';
-import React, { FunctionComponent, useCallback, useState } from 'react';
+import {
+    FunctionComponent,
+    useCallback,
+    useState
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login, loginWithGoogle } from '../../api/auth/auth-api';
 import { LoginResponse, SetAccessTokenFunction } from '../../api/auth/types';
 import { useAlertSnackbar } from '../../components/AlertSnackbar/globalProvider';
 import CenteredPage from '../../components/CenteredPage/CenteredPage';
 import EntryPaper from '../../components/EntryPaper/EntryPaper';
+import { PAGES_ROUTES } from '../../routes/routes.const';
 import InputFields from './components/InputFields';
 import { SignInError, SignInInput } from './components/types';
 import { getSignInError } from './components/utils';
@@ -33,7 +38,7 @@ const SignIn: FunctionComponent<SignInProps> = (props) => {
     const handleSuccessLogin = useCallback(
         (loginResponse: LoginResponse) => {
             setAccessToken(loginResponse.accessToken);
-            navigate('/posts');
+            navigate(PAGES_ROUTES.POSTS_LIST);
         },
         [setAccessToken, navigate]
     );
@@ -60,8 +65,7 @@ const SignIn: FunctionComponent<SignInProps> = (props) => {
         handleSuccessLogin(loginResponse);
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const submitLogin = async () => {
         setSubmitError('');
 
         if (!checkInput()) {
@@ -92,7 +96,7 @@ const SignIn: FunctionComponent<SignInProps> = (props) => {
                         <Alert severity='error'> {submitError} </Alert>
                     )}
 
-                    <Box component='form' onSubmit={handleSubmit}>
+                    <Box>
                         <InputFields
                             setSignInInput={setSignInInput}
                             signInInput={signInInput}
@@ -101,9 +105,9 @@ const SignIn: FunctionComponent<SignInProps> = (props) => {
                         />
                         <div className={classes.signinActions}>
                             <Button
-                                type='submit'
                                 variant='contained'
                                 className={classes.signInButton}
+                                onClick={submitLogin}
                             >
                                 Sign In
                             </Button>

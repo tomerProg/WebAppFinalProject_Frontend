@@ -1,8 +1,9 @@
 import { NavigateFunction } from 'react-router-dom';
 import { logout } from '../../api/auth/auth-api';
+import { PAGES_ROUTES } from '../../routes/routes.const';
 
 export const isVisibleAppBar = ({ pathname }: { pathname: string }): boolean =>
-    pathname !== '/' && pathname !== '/register';
+    pathname !== PAGES_ROUTES.LOGIN && pathname !== PAGES_ROUTES.REGISTER;
 
 export const createAppbarMenu = (
     navigate: NavigateFunction
@@ -10,13 +11,13 @@ export const createAppbarMenu = (
     {
         label: 'Profile',
         onClick: () => {
-            navigate('/profile');
+            navigate(PAGES_ROUTES.PROFILE);
         }
     },
     {
         label: 'Sign Out',
         onClick: () => {
-            logout().finally(() => navigate('/'));
+            logout().finally(() => navigate(PAGES_ROUTES.LOGIN));
         }
     }
 ];
