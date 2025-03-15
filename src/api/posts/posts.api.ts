@@ -1,14 +1,24 @@
+import { isNil } from 'ramda';
 import apiClient from '../api-client';
 import { AbortableRequest } from '../utils';
-import { Post, PostForCreation } from './types';
+import { GetPostsFilter, Post, PostForCreation } from './types';
 
 export const updatePostLike = async (postId: string, like?: boolean) =>
     apiClient.put(`/post/like/${postId}`, { like });
 
-export const getAllPosts = () =>
-    AbortableRequest((abortController) =>
-        apiClient.get<Post[]>('/post', { signal: abortController.signal })
+export const getPosts = (filter: GetPostsFilter = {}) => {
+    const params = {
+        ...(isNil(filter.owner) ? {} : { owner: filter.owner }),
+        ...(isNil(filter.pagination) ? {} : filter.pagination)
+    };
+
+    return AbortableRequest((abortController) =>
+        apiClient.get<Post[]>('/post', {
+            signal: abortController.signal,
+            params
+        })
     );
+};
 
 export const createPost = async (post: PostForCreation, imageFile?: File) => {
     const imageUrl = imageFile ? await uploadPostImage(imageFile) : null;
