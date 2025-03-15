@@ -1,31 +1,20 @@
-import EditIcon from '@mui/icons-material/Edit';
-import {
-    Avatar,
-    Card,
-    IconButton,
-    Skeleton,
-    TextField,
-    Typography
-} from '@mui/material';
+import { Divider, List, Typography } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
-import { ChangeEvent, FunctionComponent, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FunctionComponent, useEffect, useState } from 'react';
+import { getPosts } from '../../api/posts/posts.api';
+import { Post } from '../../api/posts/types';
 import { User } from '../../api/users/types';
-import { getMyUser, updateUser } from '../../api/users/users.api';
-import EditingActions from './components/EditingActions/EditingActions';
-import NotEditingActions from './components/NotEditingActions/NotEditingActions';
+import { getMyUser } from '../../api/users/users.api';
+import PostListItem from '../PostsList/components/PostListItem/PostListItem';
+import UserProfile from './components/UserProfile/UserProfile';
 import { styles } from './styles';
 
 const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
     props
 ) => {
     const { classes } = props;
+    const [userPosts, setUserPosts] = useState<Post[]>([]);
     const [user, setUser] = useState<User>();
-    const [isEditing, setIsEditing] = useState(false);
-    const [username, setUsername] = useState<string>();
-    const [profileImageUrl, setProfileImageUrl] = useState<string>();
-    const [imageFile, setImageFile] = useState<File>();
-    const navigate = useNavigate();
 
     useEffect(() => {
         const { request, abort } = getMyUser();
@@ -36,116 +25,34 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
 
     useEffect(() => {
         if (user) {
-            setUsername(user.username);
-            setProfileImageUrl(user.profileImage);
+            const { request, abort } = getPosts({ owner: user._id });
+            request.then(({ data: posts }) => setUserPosts(posts));
+
+            return () => abort();
         }
     }, [user]);
 
-    const stopEdit = () => {
-        setImageFile(undefined);
-        setIsEditing(false);
-    };
-
-    const handleSave = async () => {
-        try {
-            if (user && (username || imageFile)) {
-                const { data: updatedUser } = await updateUser(user, {
-                    username,
-                    imageFile
-                });
-                setUser(updatedUser);
-            }
-        } finally {
-            stopEdit();
-        }
-    };
-
-    const handleCancel = () => {
-        if (user) {
-            setUsername(user.username);
-            setProfileImageUrl(user.profileImage);
-        }
-        stopEdit();
-    };
-
-    const handleProfileImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            setProfileImageUrl(imageUrl);
-            setImageFile(file);
-        }
-    };
-
-    const navigatePreviousRoute = () => {
-        navigate(-1);
-    };
-
     return (
         <div className={classes.root}>
-            <Card className={classes.card}>
-                <Typography variant='h4' gutterBottom>
-                    User Profile
-                </Typography>
-
-                <div className={classes.profileImageDiv}>
-                    <Avatar
-                        src={profileImageUrl}
-                        alt={user?.username ?? 'Profile'}
-                        sx={{ width: 150, height: 150, mb: 2, fontSize: '3em' }}
-                    />
-                    {isEditing && (
-                        <IconButton
-                            component='label'
-                            className={classes.imageEditIcon}
-                            sx={{ position: 'absolute' }}
-                        >
-                            <EditIcon />
-                            <input
-                                type='file'
-                                accept='image/*'
-                                hidden
-                                onChange={handleProfileImageChange}
-                            />
-                        </IconButton>
-                    )}
-                </div>
-
-                <Typography
-                    className={classes.userTextProperty}
-                    variant='subtitle1'
-                    color='textSecondary'
-                >
-                    {user ? user.email : <Skeleton />}
-                </Typography>
-                {isEditing ? (
-                    <TextField
-                        label='Username'
-                        variant='outlined'
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        sx={{ mt: 2 }}
-                    />
-                ) : (
-                    <Typography
-                        className={classes.userTextProperty}
-                        variant='h6'
-                    >
-                        {user ? user.username : <Skeleton />}
+            <section className={classes.postsPannel}>
+                <section className={classes.postsTitle}>
+                    <Typography variant='h6'>My Posts</Typography>
+                    <Typography variant='caption'>
+                        {userPosts.length} posts
                     </Typography>
-                )}
-            </Card>
-            {isEditing ? (
-                <EditingActions
-                    saveEdit={handleSave}
-                    cancelEditing={handleCancel}
-                />
-            ) : (
-                <NotEditingActions
-                    navigatePreviousRoute={navigatePreviousRoute}
-                    startEdit={() => setIsEditing(true)}
-                />
-            )}
+                </section>
+                <Divider />
+                <List className={classes.postsList}>
+                    {userPosts.map((post) => (
+                        <PostListItem post={post} />
+                    ))}
+                </List>
+                <Divider />
+            </section>
+
+            <section className={classes.profilePannel}>
+                <UserProfile user={user} setUser={setUser} />
+            </section>
         </div>
     );
 };
