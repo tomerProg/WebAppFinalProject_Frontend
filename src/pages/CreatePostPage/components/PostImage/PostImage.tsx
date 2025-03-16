@@ -5,12 +5,15 @@ import React, { FunctionComponent, useRef, useState } from 'react';
 import { styles } from './styles';
 
 interface PostImageProps extends WithStyles<typeof styles> {
+    initialPicture?: string;
     setPostImage: (postImage: File) => void;
 }
 
 const PostImage: FunctionComponent<PostImageProps> = (props) => {
-    const { setPostImage, classes } = props;
-    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const { setPostImage, initialPicture, classes } = props;
+    const [selectedImage, setSelectedImage] = useState<string | null>(
+        initialPicture ?? null
+    );
     const inputRef = useRef<HTMLInputElement>(null);
 
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +63,7 @@ const PostImage: FunctionComponent<PostImageProps> = (props) => {
                         }}
                         onClick={handleRemoveIcon}
                     >
-                        <ImageNotSupported fontSize='large' htmlColor='black' />
+                        <ImageNotSupported htmlColor='black' />
                     </IconButton>
                 </section>
             )}

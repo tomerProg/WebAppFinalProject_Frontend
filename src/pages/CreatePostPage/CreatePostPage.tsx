@@ -1,21 +1,32 @@
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { withStyles, WithStyles } from '@mui/styles';
 import clsx from 'clsx';
-import { FunctionComponent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { createPost } from '../../api/posts/posts.api';
+import { isNil } from 'ramda';
+import { FunctionComponent, useEffect, useState } from 'react';
+import { Location, useLocation, useNavigate } from 'react-router-dom';
+import {
+    createPost,
+    updatePost,
+    uploadPostImage
+} from '../../api/posts/posts.api';
+import { Post, PostForCreation } from '../../api/posts/types';
 import { useAlertSnackbar } from '../../components/AlertSnackbar/globalProvider';
+import { PAGES_ROUTES } from '../../routes/routes.const';
+import { pickDefinedValues } from '../../utils/type.guards';
 import PostImage from './components/PostImage/PostImage';
 import PostInfoInput from './components/PostInfoInput/PostInfoInput';
 import { PostInput, PostInputError } from './components/types';
 import { getPostInputError } from './components/utils';
 import { styles } from './styles';
-import { PAGES_ROUTES } from '../../routes/routes.const';
+
+export type CreatePostPageLocationState = { post?: Post };
 
 const CreatePostPage: FunctionComponent<WithStyles<typeof styles>> = (
     props
 ) => {
     const { classes } = props;
+    const location: Location<CreatePostPageLocationState> = useLocation();
+    const { post }: CreatePostPageLocationState = location.state ?? {};
     const navigate = useNavigate();
 
     const [postInput, setPostInput] = useState<PostInput>({
@@ -26,25 +37,47 @@ const CreatePostPage: FunctionComponent<WithStyles<typeof styles>> = (
     const [postImage, setPostImage] = useState<File>();
     const { showSnackbar } = useAlertSnackbar();
 
+    useEffect(() => {
+        if (post) {
+            setPostInput({ title: post.title, description: post.description });
+        }
+    }, []);
+
     const isValidPostInput = (): boolean => {
         const newError = getPostInputError(postInput);
         setPostInputError(newError);
         return Object.keys(newError).length === 0;
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const submitPost = async () => {
         if (!isValidPostInput()) {
             return;
         }
 
         try {
-            await createPost(postInput, postImage);
-            navigate(PAGES_ROUTES.POSTS_LIST);
+            const imageSrc = isNil(postImage)
+                ? undefined
+                : (await uploadPostImage(postImage)).data;
+            const postFields: PostForCreation = pickDefinedValues({
+                ...postInput,
+                imageSrc
+            });
+
+            if (isNil(post)) {
+                await createPost(postFields);
+                navigate(PAGES_ROUTES.POSTS_LIST);
+            } else {
+                await updatePost(post._id, postFields);
+                navigate(-1);
+            }
         } catch (error) {
             console.error(error);
             showSnackbar('Failed to post. Please try again.', 'error');
         }
+    };
+
+    const cancelEditing = () => {
+        navigate(-1);
     };
 
     return (
@@ -61,16 +94,34 @@ const CreatePostPage: FunctionComponent<WithStyles<typeof styles>> = (
 
                 <section className={clsx(classes.pannel, classes.rightPannel)}>
                     <div style={{ width: '100%', height: '80%' }}>
-                        <PostImage setPostImage={setPostImage} />
+                        <PostImage
+                            setPostImage={setPostImage}
+                            initialPicture={post?.imageSrc}
+                        />
                     </div>
                     <div className={classes.containerButtonCreatePost}>
-                        <Button
-                            type='submit'
-                            variant='contained'
-                            onClick={handleSubmit}
-                        >
-                            Create Post
-                        </Button>
+                        {isNil(post) ? (
+                            <Button variant='contained' onClick={submitPost}>
+                                Create Post
+                            </Button>
+                        ) : (
+                            <Box display='flex' gap={2} mt={3}>
+                                <Button
+                                    variant='contained'
+                                    color='primary'
+                                    onClick={submitPost}
+                                >
+                                    Save
+                                </Button>
+                                <Button
+                                    variant='outlined'
+                                    color='secondary'
+                                    onClick={cancelEditing}
+                                >
+                                    Cancel
+                                </Button>
+                            </Box>
+                        )}
                     </div>
                 </section>
             </div>

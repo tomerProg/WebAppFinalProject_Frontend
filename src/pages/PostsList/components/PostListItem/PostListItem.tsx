@@ -1,5 +1,7 @@
+import { Edit } from '@mui/icons-material';
 import {
     Avatar,
+    IconButton,
     ListItem,
     ListItemAvatar,
     ListItemText,
@@ -20,10 +22,11 @@ import { styles } from './styles';
 interface PostListItemProps extends WithStyles<typeof styles> {
     key?: ReactKey;
     post: Post;
+    isEditable?: boolean;
 }
 
 const PostListItem: FunctionComponent<PostListItemProps> = (props) => {
-    const { key, post, classes } = props;
+    const { key, post, classes, isEditable = false } = props;
     const navigate = useNavigate();
     const [postOwner, setPostOwner] = useState<User>();
 
@@ -39,6 +42,10 @@ const PostListItem: FunctionComponent<PostListItemProps> = (props) => {
     const onPostItemClick = () => {
         const postPageState: PostPageLocationState = { post, owner: postOwner };
         navigate(PAGES_ROUTES.POST, { state: postPageState });
+    };
+
+    const editPost = () => {
+        navigate(PAGES_ROUTES.CREATE_POST, { state: { post } });
     };
 
     return (
@@ -63,6 +70,18 @@ const PostListItem: FunctionComponent<PostListItemProps> = (props) => {
                     }
                 />
             </Paper>
+            {isEditable && (
+                <IconButton
+                    sx={{
+                        borderRadius: '4px',
+                        padding: '5px',
+                        margin: '4px 12px'
+                    }}
+                    onClick={editPost}
+                >
+                    <Edit htmlColor='black' />
+                </IconButton>
+            )}
         </ListItem>
     );
 };
