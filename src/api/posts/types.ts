@@ -13,3 +13,11 @@ export const postZodSchema = z.object({
 export type Post = z.infer<typeof postZodSchema>;
 
 export type PostForCreation = Pick<Post, 'title' | 'description' | 'imageSrc'>;
+
+export type GetPostsFilter = Partial<{
+    owner: string;
+    pagination: {
+        page: number;
+        limit: number;
+    };
+}>;

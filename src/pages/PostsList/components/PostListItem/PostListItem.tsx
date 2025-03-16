@@ -42,8 +42,8 @@ const PostListItem: FunctionComponent<PostListItemProps> = (props) => {
     };
 
     return (
-        <ListItem key={key} onClick={onPostItemClick}>
-            <Paper className={classes.postItem}>
+        <ListItem key={key}>
+            <Paper className={classes.postItem} onClick={onPostItemClick}>
                 <ListItemAvatar>
                     <Avatar
                         src={postOwner?.profileImage}

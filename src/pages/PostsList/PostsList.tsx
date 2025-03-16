@@ -10,7 +10,7 @@ import { withStyles, WithStyles } from '@mui/styles';
 import { isEmpty, repeat } from 'ramda';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAllPosts } from '../../api/posts/posts.api';
+import { getPosts } from '../../api/posts/posts.api';
 import { Post } from '../../api/posts/types';
 import { ignoreCanceledRequest } from '../../api/utils';
 import { PAGES_ROUTES } from '../../routes/routes.const';
@@ -25,7 +25,7 @@ const PostsPage: FunctionComponent<WithStyles<typeof styles>> = (props) => {
 
     useEffect(() => {
         setIsLoading(true);
-        const { request, abort } = getAllPosts();
+        const { request, abort } = getPosts();
         request
             .then(({ data }) => setPosts(data))
             .catch(ignoreCanceledRequest)
