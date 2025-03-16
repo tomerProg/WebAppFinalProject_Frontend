@@ -44,7 +44,7 @@ const UserProfilePage: FunctionComponent<WithStyles<typeof styles>> = (
                 <Divider />
                 <List className={classes.postsList}>
                     {userPosts.map((post) => (
-                        <PostListItem post={post} />
+                        <PostListItem key={post._id} post={post} isEditable />
                     ))}
                 </List>
                 <Divider />

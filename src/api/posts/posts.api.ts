@@ -20,15 +20,8 @@ export const getPosts = (filter: GetPostsFilter = {}) => {
     );
 };
 
-export const createPost = async (post: PostForCreation, imageFile?: File) => {
-    const imageUrl = imageFile ? await uploadPostImage(imageFile) : null;
-    const postForCreate: PostForCreation = {
-        ...post,
-        ...(imageUrl ? { imageSrc: imageUrl.data } : {})
-    };
-
-    return apiClient.post('/post', postForCreate);
-};
+export const createPost = async (post: PostForCreation) =>
+    apiClient.post('/post', post);
 
 export const uploadPostImage = (postImage: File) => {
     const formData = new FormData();
@@ -39,3 +32,6 @@ export const uploadPostImage = (postImage: File) => {
         }
     });
 };
+
+export const updatePost = (postId: string, editFields: PostForCreation) =>
+    apiClient.put(`/post/${postId}`, editFields);
