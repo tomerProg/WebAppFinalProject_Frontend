@@ -125,7 +125,7 @@ const SignIn: FunctionComponent<SignInProps> = (props) => {
                         </div>
 
                         <Box className={classes.registerBox}>
-                            <Link href='/register' variant='body2'>
+                            <Link href={PAGES_ROUTES.REGISTER} variant='body2'>
                                 Don't have an account? Sign Up
                             </Link>
                         </Box>

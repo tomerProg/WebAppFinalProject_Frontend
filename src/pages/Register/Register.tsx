@@ -97,7 +97,7 @@ const Register: FunctionComponent<RegisterProps> = (props) => {
                     </Button>
                 </Box>
                 <Box className={classes.signInBox}>
-                    <Link href='/' variant='body2'>
+                    <Link href={PAGES_ROUTES.LOGIN} variant='body2'>
                         Already have an account? Sign In
                     </Link>
                 </Box>
